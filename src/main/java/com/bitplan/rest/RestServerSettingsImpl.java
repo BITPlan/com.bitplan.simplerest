@@ -1,0 +1,346 @@
+/**
+ * Copyright (C) 2011-2013 BITPlan GmbH
+ *
+ * Pater-Delp-Str. 1
+ * D-47877 Willich-Schiefbahn
+ *
+ * http://www.bitplan.com
+ * 
+ */
+package com.bitplan.rest;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.apache.commons.io.FileUtils;
+import org.kohsuke.args4j.CmdLineParser;
+import org.kohsuke.args4j.Option;
+
+import com.bitplan.jaxb.JaxbFactory;
+import com.bitplan.jaxb.JaxbFactoryApi;
+import com.bitplan.jaxb.JaxbPersistenceApi;
+
+/**
+ * RestServer Settings
+ * 
+ * @author wf
+ *
+ */
+@XmlRootElement
+public class RestServerSettingsImpl implements RestServerSettings,
+    JaxbPersistenceApi<RestServerSettings> {
+
+  @Option(name = "-contextPath", usage = "Sets the context Path for the server")
+  String contextPath = "";
+
+  @Option(name = "-host", usage = "Sets the hostname to run from")
+  String host = "localhost";
+
+  @Option(name = "-port", usage = "TCP Port to run from")
+  protected int port = 8080;
+
+  @Option(name = "-secure", usage = "true if https/SSL should be used")
+  protected boolean secure = false;
+
+  @Option(name = "-debug", usage = "true if debug information should be shown")
+  protected boolean debug = false;
+
+  @Option(name = "-wantClientAuth", usage = "true if SSL ClientAuthentication should be made available")
+  protected boolean wantClientAuth = false;
+
+  @Option(name = "-needClientAuth", usage = "true if SSL ClientAuthentication should be enforced")
+  protected boolean needClientAuth = false;
+
+  @Option(name = "-timeout", usage = "timeout in seconds after which server shuts itself down")
+  long timeOut = 86400 * 365;
+
+  @Option(name = "-packages", usage = "classpath entries to search entities")
+  String packages;
+
+  // @Option(name="-containerRequestFilters",usage="filters for all requests")
+  String[] containerRequestFilters;
+
+  @Option(name = "-persistencePropertyFileName", usage = "persistence property file name")
+  String persistencePropertyFileName;
+
+  @Option(name = "-config", usage = "configuration filename with command line options in XMLformat")
+  String configfilename;
+
+  public boolean testmode = false;
+
+  /**
+   * @return the contextPath
+   */
+  public String getContextPath() {
+    return contextPath;
+  }
+
+  /**
+   * @param contextPath
+   *          the contextPath to set
+   */
+  public void setContextPath(String contextPath) {
+    this.contextPath = contextPath;
+  }
+
+  /**
+   * @return the debug
+   */
+  public boolean isDebug() {
+    return debug;
+  }
+
+  /**
+   * @param debug
+   *          the debug to set
+   */
+  public void setDebug(boolean debug) {
+    this.debug = debug;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.bitplan.resthelper.RestServerSettingsInterface#getHost()
+   */
+  @Override
+  public String getHost() {
+    return host;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.bitplan.resthelper.RestServerSettingsInterface#setHost(java.lang.String
+   * )
+   */
+  @Override
+  public void setHost(String host) {
+    this.host = host;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.bitplan.resthelper.RestServerSettingsInterface#getPort()
+   */
+  @Override
+  public int getPort() {
+    return port;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.bitplan.resthelper.RestServerSettingsInterface#setPort(int)
+   */
+  @Override
+  public void setPort(int port) {
+    this.port = port;
+  }
+
+  @Override
+  public boolean isSecure() {
+    return secure;
+  }
+
+  @Override
+  public void setSecure(boolean pSecure) {
+    secure = pSecure;
+  }
+
+  /**
+   * @return the wantClientAuth
+   */
+  public boolean isWantClientAuth() {
+    return wantClientAuth;
+  }
+
+  /**
+   * @param wantClientAuth
+   *          the wantClientAuth to set
+   */
+  public void setWantClientAuth(boolean wantClientAuth) {
+    this.wantClientAuth = wantClientAuth;
+  }
+
+  /**
+   * @return the needClientAuth
+   */
+  public boolean isNeedClientAuth() {
+    return needClientAuth;
+  }
+
+  /**
+   * @param needClientAuth
+   *          the needClientAuth to set
+   */
+  public void setNeedClientAuth(boolean needClientAuth) {
+    this.needClientAuth = needClientAuth;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.bitplan.resthelper.RestServerSettingsInterface#getTimeOut()
+   */
+  @Override
+  public long getTimeOut() {
+    return timeOut;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.bitplan.resthelper.RestServerSettingsInterface#setTimeOut(long)
+   */
+  @Override
+  public void setTimeOut(long timeOut) {
+    this.timeOut = timeOut;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.bitplan.resthelper.RestServerSettingsInterface#getPackages()
+   */
+  @Override
+  public String getPackages() {
+    return packages;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.bitplan.resthelper.RestServerSettingsInterface#setPackages(java.lang
+   * .String)
+   */
+  @Override
+  public void setPackages(String packages) {
+    this.packages = packages;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.bitplan.restinterface.RestServerSettings#getContainerRequestFilters()
+   */
+  @Override
+  public String[] getContainerRequestFilters() {
+    return containerRequestFilters;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.bitplan.restinterface.RestServerSettings#setContainerRequestFilters
+   * (java.lang.String)
+   */
+  @Override
+  public void setContainerRequestFilters(String[] containerRequestFilters) {
+    this.containerRequestFilters = containerRequestFilters;
+  }
+
+  /**
+   * @return the persistence property file name
+   */
+  public String getPersistencePropertyFileName() {
+    return persistencePropertyFileName;
+  }
+
+  /**
+   * @param pName
+   *          the the persistence property file name to set
+   */
+  public void setPersistencePropertyFileName(String pName) {
+    this.persistencePropertyFileName = pName;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.bitplan.resthelper.RestServerSettingsInterface#parseArguments(java.
+   * lang.String[])
+   */
+  @Override
+  public void parseArguments(String[] args) {
+    CmdLineParser parser = new CmdLineParser(this);
+    try {
+      parser.parseArgument(args);
+      if (configfilename != null)
+        this.fromXMLFile(new File(configfilename));
+    } catch (Exception e) {
+      // handling of wrong arguments
+      System.err.println(e.getMessage());
+      parser.printUsage(System.err);
+      if (!testmode)
+        System.exit(1);
+    }
+  }
+
+  /**
+   * readme from the given XML file
+   * @param file
+   * @throws Exception
+   */
+  private void fromXMLFile(File file) throws Exception {
+    String xml=FileUtils.readFileToString(file);
+    RestServerSettings s = getFactory().fromXML(xml);
+    this.setContainerRequestFilters(s.getContainerRequestFilters());
+    this.setContextPath(s.getContextPath());
+    this.setDebug(s.isDebug());
+    this.setHost(s.getHost());
+    this.setNeedClientAuth(s.isNeedClientAuth());
+    this.setPackages(s.getPackages());
+    this.setPersistencePropertyFileName(s.getPersistencePropertyFileName());
+    this.setPort(s.getPort());
+    this.setSecure(s.isSecure());
+    this.setTimeOut(s.getTimeOut());
+    this.setWantClientAuth(s.isWantClientAuth());
+  }
+
+  /**
+   * add the given class Path Handler
+   */
+  Map<String, String> classPathHandlers = new HashMap<String, String>();
+
+  @Override
+  public void addClassPathHandler(String directoryRoot, String classpathPath)
+      throws Exception {
+    if (classPathHandlers.containsKey(directoryRoot))
+      throw new Exception("duplicate directoryRoot '" + directoryRoot + "'");
+    classPathHandlers.put(directoryRoot, classpathPath);
+  }
+
+  @Override
+  public Map<String, String> getClassPathHandlers() {
+    return classPathHandlers;
+  }
+  
+  @Override
+  public JaxbFactoryApi<RestServerSettings> getFactory() {
+    return new JaxbFactory<RestServerSettings>(RestServerSettings.class);
+  }
+
+  @Override
+  public String asJson() throws JAXBException {
+    String result=getFactory().asJson(this);
+    return result;
+  }
+
+  @Override
+  public String asXML() throws JAXBException {
+    String result=getFactory().asXML(this);
+    return result;
+  }
+
+}
