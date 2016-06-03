@@ -1,0 +1,4 @@
+#!/bin/bash
+# WF 2016-06-03
+. jdk7
+mvn deploy -DaltDeploymentRepository=BITPlan-release-repository::default::scp://tol.bitplan.com/srv/repo/releases
