@@ -1,0 +1,254 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.bitplan.rest</groupId>
+	<artifactId>com.bitplan.simplerest</artifactId>
+	<version>0.0.1</version>
+	<name>Simple Jersey RestFul Framework</name>
+	<description>Needed Base Utitlities and Functions for Jersey 1.x RESTFul apps</description>
+	<properties>
+		<!-- <apache-poi.version>3.12-beta1</apache-poi.version> -->
+		<apache-poi.version>3.13</apache-poi.version>
+		<!-- jersey version -->
+		<!-- <jersey.version>2.22.2</jersey.version> -->
+		<jersey.version>1.19.1</jersey.version>
+		<!-- Guice dependency injection framework -->
+		<guice.version>3.0</guice.version>
+		<!-- http://grizzly.java.net/ -->
+		<grizzly.version>2.3.13</grizzly.version>
+		<!-- Rythm Template Engine -->
+		<rythm.version>1.1.6-SNAPSHOT</rythm.version>
+		<!-- JUnit unit testing framework -->
+		<junit4.version>4.11</junit4.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<!--
+		<dependencyManagement>
+		<dependencies>
+		<dependency>
+		<groupId>org.glassfish.jersey</groupId>
+		<artifactId>jersey-bom</artifactId>
+		<version>${jersey.version}</version>
+		<type>pom</type>
+		<scope>import</scope>
+		</dependency>
+		</dependencies>
+		</dependencyManagement> -->
+	<dependencies>
+		<!-- Google guice dependency injection tool -->
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
+
+		<!-- <dependency>
+			Moxy media JSOn support - Jersey 2.0 only
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-moxy</artifactId>
+			</dependency> -->
+		<!-- http://mvnrepository.com/artifact/com.sun.jersey/jersey-bundle -->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-bundle</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<!-- Grizzly server -->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-grizzly2</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-grizzly2-servlet</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.grizzly</groupId>
+			<artifactId>grizzly-http-server</artifactId>
+			<version>${grizzly.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.grizzly</groupId>
+			<artifactId>grizzly-http-servlet</artifactId>
+			<version>${grizzly.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.grizzly</groupId>
+			<artifactId>grizzly-http</artifactId>
+			<version>${grizzly.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.servlet</artifactId>
+			<version>3.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- bundle <dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>${jersey.version}</version>
+			</dependency>
+			<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-core</artifactId>
+			<version>${jersey.version}</version>
+			</dependency>
+			<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-servlet</artifactId>
+			<version>${jersey.version}</version>
+			</dependency>
+			<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey.version}</version>
+			</dependency>
+			<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-json</artifactId>
+			<version>${jersey.version}</version>
+			</dependency> -->
+		<!-- Guice support for jersey -->
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-guice</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<!-- Multipart support -->
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-multipart</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<!-- Log 4 j (light) -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.sun.jdmk</groupId>
+					<artifactId>jmxtools</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.jmx</groupId>
+					<artifactId>jmxri</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.mail</groupId>
+					<artifactId>mail</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.jms</groupId>
+					<artifactId>jms</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- Junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit4.version}</version>
+		</dependency>
+		<!-- Apache POI support -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${apache-poi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${apache-poi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-scratchpad</artifactId>
+			<version>${apache-poi.version}</version>
+		</dependency>
+		<!-- args4j command line utility -->
+		<dependency>
+			<groupId>args4j</groupId>
+			<artifactId>args4j</artifactId>
+			<version>2.0.15</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>eclipselink</artifactId>
+			<!-- <version>2.4.2-RC1</version> -->
+			<!-- <version>2.5.1-RC3</version> -->
+			<!-- <version>2.5.1</version> -->
+			<!-- <version>2.5.2-M1</version> -->
+			<!-- <version>2.5.2</version> -->
+			<!-- <version>2.6.2</version> -->
+			<version>2.6.3</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commonj.sdo</artifactId>
+					<groupId>commonj.sdo</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- http://mvnrepository.com/artifact/org.eclipse.persistence/org.eclipse.persistence.moxy -->
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>org.eclipse.persistence.moxy</artifactId>
+			<version>2.6.3</version>
+		</dependency>
+		<!-- http://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.rythmengine</groupId>
+			<artifactId>rythm-engine</artifactId>
+			<version>${rythm.version}</version>
+		</dependency>
+		<!-- Jersey
+			<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-grizzly2-http</artifactId>
+			</dependency>
+			<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-moxy</artifactId>
+			</dependency> -->
+
+	</dependencies>
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<plugins>
+			<!-- Compile -->
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<!-- Test -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<argLine>-Xmx1024m</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>2.10</version>
+			</extension>
+		</extensions>
+	</build>
+
+</project>
