@@ -35,6 +35,8 @@ import org.eclipse.persistence.jaxb.MarshallerProperties;
 public class JaxbFactory<T> implements JaxbFactoryApi<T> {
   final Class<T> classOfT;
   private JAXBContext context;
+  @SuppressWarnings("rawtypes")
+  private Class[] otherClasses=new Class[0];
 
   /**
    * allow access to the type that would otherwise not be available due to Java
@@ -54,9 +56,21 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
    * erasure
    * 
    * @param pClassOfT
+   * @param class1 
    */
   public JaxbFactory(Class<T> pClassOfT) {
     classOfT = pClassOfT;
+  }
+  
+  /**
+   * construct me with neighbour classes
+   * @param pClassOfT
+   * @param pOtherClasses
+   */
+  @SuppressWarnings("rawtypes")
+  public JaxbFactory(Class<T> pClassOfT,Class...pOtherClasses) {
+    this(pClassOfT);
+    otherClasses=pOtherClasses;
   }
   
   /**
@@ -64,11 +78,18 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
    * @return - the JaxB Context
    * @throws JAXBException 
    */
+  @SuppressWarnings("rawtypes")
   public JAXBContext getJAXBContext() throws JAXBException {
     if (context==null) {
       // http://stackoverflow.com/questions/21185947/set-moxy-as-jaxb-provider-programatically
       Map<String, Object> properties = new HashMap<String, Object>();
-      context=JAXBContextFactory.createContext(new Class[] {classOfT}, properties);
+      Class[] classes=new Class[otherClasses.length+1];
+      int index=0;
+      classes[index++]=classOfT;
+      for (Class clazz:otherClasses) {
+        classes[index++]=clazz;
+      }
+      context=JAXBContextFactory.createContext(classes, properties);
     }
     return context;
   }
