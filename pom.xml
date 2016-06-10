@@ -35,6 +35,12 @@
 		</dependencies>
 		</dependencyManagement> -->
 	<dependencies>
+		<!-- simplerest -api-->
+		<dependency>
+			<groupId>com.bitplan.simplerest-api</groupId>
+			<artifactId>com.bitplan.simplerest-api</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 		<!-- Google guice dependency injection tool -->
 		<dependency>
 			<groupId>com.google.inject</groupId>
