@@ -37,7 +37,7 @@
 	<dependencies>
 		<!-- simplerest -api-->
 		<dependency>
-			<groupId>com.bitplan.simplerest-api</groupId>
+			<groupId>com.bitplan.rest</groupId>
 			<artifactId>com.bitplan.simplerest-api</artifactId>
 			<version>0.0.1</version>
 		</dependency>
