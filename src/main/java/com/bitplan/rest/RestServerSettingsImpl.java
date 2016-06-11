@@ -69,6 +69,9 @@ public class RestServerSettingsImpl implements RestServerSettings,
 
   @Option(name = "-config", usage = "configuration filename with command line options in XMLformat")
   String configfilename;
+  
+  @Option(name="-options", usage="application specific options")
+  String options;
 
   public boolean testmode = false;
 
@@ -224,6 +227,20 @@ public class RestServerSettingsImpl implements RestServerSettings,
   @Override
   public void setPackages(String packages) {
     this.packages = packages;
+  }
+
+  /**
+   * @return the options
+   */
+  public String getOptions() {
+    return options;
+  }
+
+  /**
+   * @param options the options to set
+   */
+  public void setOptions(String options) {
+    this.options = options;
   }
 
   /*
