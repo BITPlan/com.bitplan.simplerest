@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014-1016 BITPlan GmbH
+ * Copyright (C) 2014-2016 BITPlan GmbH
  *
  * Pater-Delp-Str. 1
  * D-47877 Willich-Schiefbahn
@@ -69,6 +69,35 @@ public abstract class TestRestServer {
       "application/json", "application/xml" };
 
   /**
+   * start the given Rest Server
+   * @param rs
+   * @return
+   * @throws Exception
+   */
+  public void startServer(RestServer rs) throws Exception {
+    // find an available port
+    while (!rs.isPortAvailable(testPort))
+      testPort++;
+    rs.getSettings().setPort(testPort);
+    rs.setStarter(semaphore);
+    String args[] = {};
+    rs.startServer(args);
+    synchronized (semaphore) {
+      semaphore.wait();
+    }  
+  }
+  
+  /**
+   * get the base URL of the given RESTFul server
+   * @param rs
+   * @return
+   */
+  public String getBaseUrl(RestServer rs) {
+    String baseUrl = rs.getUrl().replace("0.0.0.0", "localhost");
+    return baseUrl;
+  }
+  
+  /**
    * start the Server
    * 
    * @return the baseUrl
@@ -77,16 +106,9 @@ public abstract class TestRestServer {
   public String startServer() throws Exception {
     if (rs == null) {
       rs = createServer();
-      rs.getSettings().setPort(testPort);
-      rs.setStarter(semaphore);
-      String args[] = {};
-      rs.startServer(args);
-      synchronized (semaphore) {
-        semaphore.wait();
-      }
+      startServer(rs);
     }
-    String baseUrl = rs.getUrl().replace("0.0.0.0", "localhost");
-    return baseUrl;
+    return getBaseUrl(rs);
   }
 
   /**
