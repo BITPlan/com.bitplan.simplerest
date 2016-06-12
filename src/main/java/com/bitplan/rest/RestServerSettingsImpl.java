@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 BITPlan GmbH
+ * Copyright (C) 2011-2016 BITPlan GmbH
  *
  * Pater-Delp-Str. 1
  * D-47877 Willich-Schiefbahn
@@ -25,14 +25,14 @@ import com.bitplan.jaxb.JaxbFactoryApi;
 import com.bitplan.jaxb.JaxbPersistenceApi;
 
 /**
- * RestServer Settings
+ * RestServer Settings - JaxB Version
  * 
  * @author wf
  *
  */
-@XmlRootElement
+@XmlRootElement(name="RestServerSettings")
 public class RestServerSettingsImpl implements RestServerSettings,
-    JaxbPersistenceApi<RestServerSettings> {
+    JaxbPersistenceApi<RestServerSettingsImpl> {
 
   @Option(name = "-contextPath", usage = "Sets the context Path for the server")
   String contextPath = "";
@@ -309,7 +309,7 @@ public class RestServerSettingsImpl implements RestServerSettings,
    * @param file
    * @throws Exception
    */
-  private void fromXMLFile(File file) throws Exception {
+  public void fromXMLFile(File file) throws Exception {
     String xml=FileUtils.readFileToString(file);
     RestServerSettings s = getFactory().fromXML(xml);
     this.setContainerRequestFilters(s.getContainerRequestFilters());
@@ -344,8 +344,8 @@ public class RestServerSettingsImpl implements RestServerSettings,
   }
   
   @Override
-  public JaxbFactoryApi<RestServerSettings> getFactory() {
-    return new JaxbFactory<RestServerSettings>(RestServerSettings.class);
+  public JaxbFactoryApi<RestServerSettingsImpl> getFactory() {
+    return new JaxbFactory<RestServerSettingsImpl>(RestServerSettingsImpl.class);
   }
 
   @Override
