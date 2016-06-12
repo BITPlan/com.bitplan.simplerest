@@ -46,6 +46,7 @@ import com.sun.jersey.api.container.ContainerFactory;
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.core.ResourceConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 //import com.google.inject.servlet.GuiceFilter;
 // import com.sun.jersey.guice.JerseyServletModule;
@@ -58,7 +59,7 @@ import com.sun.jersey.spi.container.servlet.ServletContainer;
  */
 public class RestServerImpl implements Runnable, RestServer {
 
-  protected Logger LOGGER = Logger.getLogger("com.bitplan.resthelper");
+  protected Logger LOGGER = Logger.getLogger("com.bitplan.rest");
   // TODO add Guice Support
   // http://randomizedsort.blogspot.de/2011/05/using-guice-ified-jersey-in-embedded.html
   //
@@ -249,7 +250,7 @@ public class RestServerImpl implements Runnable, RestServer {
     return result;
   }
 
-  public static final String TRUSTSTORE_PASSWORD = "2fast4u";
+  public static String TRUSTSTORE_PASSWORD = "needs to be set";
 
   /**
    * get the given Store
@@ -447,7 +448,7 @@ public class RestServerImpl implements Runnable, RestServer {
         rc.getMediaTypeMappings().put("json", MediaType.APPLICATION_JSON_TYPE);
         rc.getMediaTypeMappings().put("xml", MediaType.APPLICATION_XML_TYPE);
         // FIXME
-        // rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,Boolean.TRUE);
+        rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,Boolean.TRUE);
 
         String[] containerRequestFilters = settings
             .getContainerRequestFilters();
