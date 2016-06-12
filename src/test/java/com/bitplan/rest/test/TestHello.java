@@ -6,9 +6,17 @@
  */
 package com.bitplan.rest.test;
 
+import static org.junit.Assert.*;
+
+import java.net.URI;
+
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.bitplan.rest.RestServer;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 /**
  * simple test for Hello Werver
@@ -20,6 +28,26 @@ public class TestHello extends TestHelloServer{
   @Test
   public void testHello() throws Exception {
     super.check("/hello/hello", "Hello");
+  }
+  
+  @Ignore
+  public void testEcho() throws Exception {
+    // https://java.net/jira/browse/GRIZZLY-1377
+    String values[]={"World","ÄÖÜßäöü"};
+    for (String value:values) {
+      super.check("/hello/hello/echo/"+value,value);
+    }
+  }
+  
+  @Ignore
+  public void testUmlaute() throws Exception {
+    super.startServer();
+    URI uri=new URI("http://localhost:8085/hello/hello/echo/ÄÖÜßäöü");
+    System.out.println(uri.toASCIIString());
+    System.out.println(uri.toString());
+    WebResource wrs = Client.create().resource(uri);
+    String result= wrs.accept("text/html; charset=utf-8").get(String.class);
+    assertEquals("ÄÖÜßäöü",result);
   }
   
   @Test

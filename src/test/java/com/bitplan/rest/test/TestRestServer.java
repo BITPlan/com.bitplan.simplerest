@@ -120,7 +120,7 @@ public abstract class TestRestServer {
    */
   protected void check(String path, String expected) throws Exception {
     String responseString = getResponseString("text/html; charset=UTF-8", path);
-    assertTrue(responseString.contains(expected));
+    assertTrue(expected,responseString.contains(expected));
   }
 
   /**
@@ -183,11 +183,14 @@ public abstract class TestRestServer {
     if (!path.startsWith("http")) {
       url = startServer() + path;
     }
+    if (debug)
+      System.out.println(url);
     /*
      FIXME - check issue and activate solution
     URI uri = convertToValid(url);
     if (debug)
       System.out.println(uri.toASCIIString());*/
+    // path=path.replace("Ä","%C3%B6");
  
     WebResource wrs = Client.create().resource(url);
     return wrs;

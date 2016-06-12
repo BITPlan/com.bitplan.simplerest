@@ -39,6 +39,7 @@ import org.glassfish.grizzly.servlet.ServletRegistration;
 import org.glassfish.grizzly.servlet.WebappContext;
 import org.glassfish.grizzly.ssl.SSLContextConfigurator;
 import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
+import org.glassfish.grizzly.utils.Charsets;
 
 import com.google.inject.AbstractModule;
 import com.sun.jersey.api.container.ContainerFactory;
@@ -560,6 +561,8 @@ public class RestServerImpl implements Runnable, RestServer {
       addHttpHandler(clPath, path, false);
     }
 
+    // set default encoding
+    httpServer.getServerConfiguration().setDefaultQueryEncoding(Charsets.UTF8_CHARSET);
     // start server
     httpServer.start();
     if (context != null) {
