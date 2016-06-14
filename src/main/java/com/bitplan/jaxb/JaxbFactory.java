@@ -33,7 +33,7 @@ import org.eclipse.persistence.jaxb.MarshallerProperties;
  * @param <T>
  */
 public class JaxbFactory<T> implements JaxbFactoryApi<T> {
-  final Class<T> classOfT;
+  final Class<? extends T> classOfT;
   private JAXBContext context;
   @SuppressWarnings("rawtypes")
   private Class[] otherClasses=new Class[0];
@@ -44,7 +44,7 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
    * 
    * @return the classOfT
    */
-  public Class<T> getClassOfT() {
+  public Class<? extends T> getClassOfT() {
     return classOfT;
   }
 
@@ -58,7 +58,7 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
    * @param pClassOfT
    * @param class1 
    */
-  public JaxbFactory(Class<T> pClassOfT) {
+  public JaxbFactory(Class<? extends T> pClassOfT) {
     classOfT = pClassOfT;
   }
   

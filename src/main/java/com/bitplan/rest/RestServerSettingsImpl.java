@@ -312,6 +312,14 @@ public class RestServerSettingsImpl implements RestServerSettings,
   public void fromXMLFile(File file) throws Exception {
     String xml=FileUtils.readFileToString(file);
     RestServerSettings s = getFactory().fromXML(xml);
+    fromOther(s);
+  }
+  
+  /**
+   * initialize me from another set of Settings
+   * @param s
+   */
+  public void fromOther(RestServerSettings s) {
     this.setContainerRequestFilters(s.getContainerRequestFilters());
     this.setContextPath(s.getContextPath());
     this.setDebug(s.isDebug());
