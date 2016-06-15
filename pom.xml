@@ -74,10 +74,16 @@
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-moxy</artifactId>
 			</dependency> -->
-		<!-- http://mvnrepository.com/artifact/com.sun.jersey/jersey-bundle -->
+		<!-- http://mvnrepository.com/artifact/com.sun.jersey/jersey-bundle 
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-bundle</artifactId>
+			<version>${jersey.version}</version>
+		</dependency> -->
+		<!-- Jersey client -->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
 		<!-- Grizzly server -->
