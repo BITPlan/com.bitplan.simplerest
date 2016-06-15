@@ -77,6 +77,7 @@ public class RestServerImpl implements Runnable, RestServer {
                                 // com.bitplan.testrestarchitecture.test.CustomerApplication
   protected boolean useServerDefaults = true;
   protected boolean useServlet = false;
+	private WebappContext context;
 
   /**
    * @return the httpServer
@@ -424,13 +425,8 @@ public class RestServerImpl implements Runnable, RestServer {
     httpServer.getServerConfiguration().addHttpHandler(handler, path);
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.bitplan.resthelper.RestServerInterface#startWebServer()
-   */
   @Override
-  public synchronized void startWebServer() throws Exception {
+  public synchronized void createServer() throws Exception {
     if (settings == null)
       throw new IllegalArgumentException(
           "Can't start RestServer Settings are not set");
@@ -439,7 +435,7 @@ public class RestServerImpl implements Runnable, RestServer {
     // http://jersey.java.net/nonav/documentation/latest/user-guide.html#d4e52
 
     String packages = settings.getPackages();
-    WebappContext context = null;
+    context = null;
     try {
       if (packages != null) {
         String pa[] = packages.split(";");
@@ -564,6 +560,15 @@ public class RestServerImpl implements Runnable, RestServer {
 
     // set default encoding
     httpServer.getServerConfiguration().setDefaultQueryEncoding(Charsets.UTF8_CHARSET);
+  }
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.bitplan.resthelper.RestServerInterface#startWebServer()
+   */
+  @Override
+  public synchronized void startWebServer() throws Exception {
+    createServer();
     // start server
     httpServer.start();
     if (context != null) {
@@ -575,7 +580,7 @@ public class RestServerImpl implements Runnable, RestServer {
      * if (guiceModule != null) { WebappContext context =
      * createWebappContext(""); context.deploy(srv); }
      */
-    LOGGER.log(Level.INFO, "starting server for URL: " + url);
+    LOGGER.log(Level.INFO, "starting server for URL: " + getUrl());
 
     if (starter != null) {
       synchronized (starter) {
