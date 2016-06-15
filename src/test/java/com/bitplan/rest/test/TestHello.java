@@ -6,7 +6,7 @@
  */
 package com.bitplan.rest.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.net.URI;
 
@@ -15,7 +15,6 @@ import org.junit.Test;
 
 import com.bitplan.rest.RestServer;
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 /**
