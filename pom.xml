@@ -9,14 +9,14 @@
 	<properties>
 		<!-- <apache-poi.version>3.12-beta1</apache-poi.version> -->
 		<apache-poi.version>3.13</apache-poi.version>
-		<!--  JPA / Moxy http://mvnrepository.com/artifact/org.eclipse.persistence/eclipselink/2.6.3 -->
+		<!-- JPA / Moxy http://mvnrepository.com/artifact/org.eclipse.persistence/eclipselink/2.6.3 -->
 		<eclipselink.version>2.6.3</eclipselink.version>
 		<!-- jersey version -->
 		<!-- <jersey.version>2.22.2</jersey.version> -->
 		<jersey.version>1.19.1</jersey.version>
 		<!-- Guice dependency injection framework -->
 		<guice.version>3.0</guice.version>
-		<!--  args4j http://mvnrepository.com/artifact/args4j/args4j/2.33 -->
+		<!-- args4j http://mvnrepository.com/artifact/args4j/args4j/2.33 -->
 		<args4j.version>2.33</args4j.version>
 		<!-- http://grizzly.java.net/ -->
 		<grizzly.version>2.3.25</grizzly.version>
@@ -39,7 +39,7 @@
 		</dependencies>
 		</dependencyManagement> -->
 	<dependencies>
-		<!-- simplerest -api-->
+		<!-- simplerest -api -->
 		<dependency>
 			<groupId>com.bitplan.rest</groupId>
 			<artifactId>com.bitplan.simplerest-api</artifactId>
@@ -115,11 +115,13 @@
 			<artifactId>jersey-client</artifactId>
 			<version>${jersey.version}</version>
 			</dependency>
-			<dependency>
+		-->
+		<!-- JSON support for jersey -->
+		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-json</artifactId>
 			<version>${jersey.version}</version>
-			</dependency> -->
+		</dependency>
 		<!-- Guice support for jersey -->
 		<dependency>
 			<groupId>com.sun.jersey.contribs</groupId>
