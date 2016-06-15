@@ -51,6 +51,23 @@
 			<artifactId>guice</artifactId>
 			<version>${guice.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>eclipselink</artifactId>
+			<version>${eclipselink.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commonj.sdo</artifactId>
+					<groupId>commonj.sdo</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- http://mvnrepository.com/artifact/org.eclipse.persistence/org.eclipse.persistence.moxy -->
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>org.eclipse.persistence.moxy</artifactId>
+			<version>${eclipselink.version}</version>
+		</dependency>
 
 		<!-- <dependency>
 			Moxy media JSOn support - Jersey 2.0 only
@@ -185,23 +202,6 @@
 			<groupId>args4j</groupId>
 			<artifactId>args4j</artifactId>
 			<version>${args4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>eclipselink</artifactId>
-			<version>${eclipselink.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>commonj.sdo</artifactId>
-					<groupId>commonj.sdo</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<!-- http://mvnrepository.com/artifact/org.eclipse.persistence/org.eclipse.persistence.moxy -->
-		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>org.eclipse.persistence.moxy</artifactId>
-			<version>${eclipselink.version}</version>
 		</dependency>
 		<!-- http://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
