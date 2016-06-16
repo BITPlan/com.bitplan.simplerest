@@ -420,6 +420,9 @@ public class RestServerImpl implements Runnable, RestServer {
           context);
       type = "classpath";
     }
+    if (!path.endsWith("/")) {
+    	  path+="/";
+    }
     LOGGER.log(Level.INFO, "adding " + type + " httphandler " + context + "->"
         + path);
     httpServer.getServerConfiguration().addHttpHandler(handler, path);
