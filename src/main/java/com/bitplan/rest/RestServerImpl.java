@@ -1,5 +1,3 @@
-package com.bitplan.rest;
-
 /**
  * Copyright (C) 2011-2016 BITPlan GmbH
  *
@@ -9,6 +7,7 @@ package com.bitplan.rest;
  * http://www.bitplan.com
  * 
  */
+package com.bitplan.rest;
 
 import java.io.File;
 import java.io.IOException;

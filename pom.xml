@@ -31,8 +31,12 @@
 		<rythm.version>1.1.6-SNAPSHOT</rythm.version>
 		<!-- JUnit unit testing framework -->
 		<junit4.version>4.11</junit4.version>
+		<!-- http://stackoverflow.com/questions/3017695/how-to-configure-encoding-in-maven -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<!-- github server corresponds to entry in ~/.m2/settings.xml -->
+		<github.global.server>github</github.global.server>
+	</properties>		
 	<packaging>jar</packaging>
 	<url>https://github.com/BITPlan/com.bitplan.simplerest</url>
 	<licenses>
@@ -58,18 +62,11 @@
 			<organizationUrl>http://www.bitplan.com</organizationUrl>
 		</developer>
 	</developers>
-	<properties>
-		<!-- http://stackoverflow.com/questions/3017695/how-to-configure-encoding-in-maven -->
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<!-- github server corresponds to entry in ~/.m2/settings.xml -->
-		<github.global.server>github</github.global.server>
-	</properties>
 	<dependencies>
-			<!-- simplerest -api -->
+		<!-- simplerest -api -->
 		<dependency>
 			<groupId>com.bitplan.rest</groupId>
-			<artifactId>com.bitplan.simplerest</artifactId>
+			<artifactId>com.bitplan.simplerest-api</artifactId>
 			<version>0.0.1</version>
 		</dependency>
 		<!-- Google guice dependency injection tool -->
@@ -265,8 +262,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source />
-					<target />
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 			<plugin>
