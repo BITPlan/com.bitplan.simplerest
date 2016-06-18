@@ -23,6 +23,7 @@ import javax.xml.bind.ValidationEvent;
 import javax.xml.bind.ValidationEventHandler;
 
 import org.eclipse.persistence.jaxb.JAXBContextFactory;
+import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 
 /**
@@ -70,6 +71,21 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
   public JaxbFactory(Class<T> pClassOfT,Class...pOtherClasses) {
     this(pClassOfT);
     otherClasses=pOtherClasses;
+  }
+  
+  /**
+   * create a JAXBContext for the given contextPath and XML MetaData 
+   * @param contextPath
+   * @param xml
+   * @return
+   * @throws Exception
+   */
+  public static JAXBContext createJAXBContext(String contextPath,String xml) throws Exception {
+    StringReader sr=new StringReader(xml);
+    Map<String, Object> properties = new HashMap<String, Object>();
+    properties.put(JAXBContextProperties.OXM_METADATA_SOURCE, sr);
+    JAXBContext lcontext = JAXBContextFactory.createContext(contextPath, JaxbFactory.class.getClassLoader(), properties);
+    return lcontext;
   }
   
   /**
