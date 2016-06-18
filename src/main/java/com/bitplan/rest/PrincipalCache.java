@@ -34,7 +34,7 @@ public class PrincipalCache {
 	/**
 	 * get the Principal for the given id
 	 * @param id
-	 * @return
+	 * @return the principal
 	 */
 	public static Principal get(String id) {
 		Principal result=principalCache.get(id);
@@ -45,7 +45,7 @@ public class PrincipalCache {
 	/**
 	 * return an id for the principal
 	 * @param principal
-	 * @return
+	 * @return the id of the given principal
 	 */
 	public static String getId(Principal principal) {
 		return principal.getName();

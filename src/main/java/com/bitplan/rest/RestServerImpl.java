@@ -150,7 +150,7 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
   /**
    * get my Instance
    * 
-   * @return
+   * @return the instance of this restserver
    */
   public static RestServer getInstance() {
     return instance;
@@ -158,7 +158,7 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
 
   /**
    * stop this server
-   * @see com.bitplan.resthelper.RestServerInterface#stop()
+   * @see com.bitplan.rest.RestServer#stop()
    */
   @Override
   public void stop() {
@@ -245,7 +245,7 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
    * @param secure
    *          - true if SSL should be used
    * @param contextPath
-   * @return
+   * @return the HttpServer
    * @throws Exception
    */
   public HttpServer createHttpServer(String url, ResourceConfig rc,
@@ -277,7 +277,7 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
    * 
    * @param type
    * @param name
-   * @return
+   * @return the store file
    * @throws IOException
    */
   public File getStoreFile(String type, String name) throws IOException {
@@ -652,7 +652,7 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
    * check the availability of a port
    * 
    * @param port
-   * @return
+   * @return if the port is available
    */
   public boolean isPortAvailable(int port) {
     try (java.net.Socket ignored = new java.net.Socket("localhost", port)) {

@@ -56,7 +56,6 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
    * erasure
    * 
    * @param pClassOfT
-   * @param class1 
    */
   public JaxbFactory(Class<? extends T> pClassOfT) {
     classOfT = pClassOfT;
