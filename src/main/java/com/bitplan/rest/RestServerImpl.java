@@ -11,6 +11,7 @@ package com.bitplan.rest;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.URI;
 import java.net.URL;
 import java.security.Principal;
@@ -39,6 +40,8 @@ import org.glassfish.grizzly.servlet.WebappContext;
 import org.glassfish.grizzly.ssl.SSLContextConfigurator;
 import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
 import org.glassfish.grizzly.utils.Charsets;
+import org.joda.time.DateTime;
+import org.joda.time.Seconds;
 
 import com.google.inject.AbstractModule;
 import com.sun.jersey.api.container.ContainerFactory;
@@ -56,7 +59,7 @@ import com.sun.jersey.spi.container.servlet.ServletContainer;
  * @author wf
  * 
  */
-public class RestServerImpl implements Runnable, RestServer {
+public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestServer {
 
   protected Logger LOGGER = Logger.getLogger("com.bitplan.rest");
   // TODO add Guice Support
@@ -76,7 +79,16 @@ public class RestServerImpl implements Runnable, RestServer {
                                 // com.bitplan.testrestarchitecture.test.CustomerApplication
   protected boolean useServerDefaults = true;
   protected boolean useServlet = false;
-	private WebappContext context;
+  private WebappContext context;
+  private Thread serverThread;
+  
+  // any exception that might have happened
+  private Throwable exception;
+  
+  // are we running?
+  private boolean running;
+  private DateTime startTime;
+  private DateTime stopTime;
 
   /**
    * @return the httpServer
@@ -144,14 +156,22 @@ public class RestServerImpl implements Runnable, RestServer {
     return instance;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
+   * stop this server
    * @see com.bitplan.resthelper.RestServerInterface#stop()
    */
   @Override
   public void stop() {
-    httpServer.shutdown();
+    if (httpServer!=null) {
+      httpServer.shutdown();
+      httpServer=null;
+      running=false;
+      stopTime=DateTime.now();
+      Seconds secs = Seconds.secondsBetween(startTime,stopTime);
+      System.out.println("finished after " + secs.getSeconds() + " secs");
+      // if someone is waiting for us let him continue ..
+      informStarter();
+    }
   }
 
   /*
@@ -420,7 +440,7 @@ public class RestServerImpl implements Runnable, RestServer {
       type = "classpath";
     }
     if (!path.endsWith("/")) {
-    	  path+="/";
+      path += "/";
     }
     LOGGER.log(Level.INFO, "adding " + type + " httphandler " + context + "->"
         + path);
@@ -446,7 +466,8 @@ public class RestServerImpl implements Runnable, RestServer {
         rc.getMediaTypeMappings().put("json", MediaType.APPLICATION_JSON_TYPE);
         rc.getMediaTypeMappings().put("xml", MediaType.APPLICATION_XML_TYPE);
         // FIXME
-        rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,Boolean.TRUE);
+        rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,
+            Boolean.TRUE);
 
         String[] containerRequestFilters = settings
             .getContainerRequestFilters();
@@ -561,8 +582,22 @@ public class RestServerImpl implements Runnable, RestServer {
     }
 
     // set default encoding
-    httpServer.getServerConfiguration().setDefaultQueryEncoding(Charsets.UTF8_CHARSET);
+    httpServer.getServerConfiguration().setDefaultQueryEncoding(
+        Charsets.UTF8_CHARSET);
   }
+
+  /**
+   * if there is some thread waiting for us to start 
+   * inform it that it may continue
+   */
+  public void informStarter() {
+    if (starter != null) {
+      synchronized (starter) {
+        starter.notify();
+      }
+    }
+  }
+  
   /*
    * (non-Javadoc)
    * 
@@ -583,15 +618,17 @@ public class RestServerImpl implements Runnable, RestServer {
      * createWebappContext(""); context.deploy(srv); }
      */
     LOGGER.log(Level.INFO, "starting server for URL: " + getUrl());
-
-    if (starter != null) {
-      synchronized (starter) {
-        starter.notify();
-      }
+    running=true;
+    informStarter();
+    int sleep=0;
+    // timeOut is in Secs - we go by 1/20th of sec = 50 millisecs
+    while (running && (sleep< settings.getTimeOut()*20)) {
+      // System.out.println(sleep+":"+running);
+      // sleep 50 millisecs
+      Thread.sleep(50);
+      sleep++;
     }
-    Thread.sleep(1000 * settings.getTimeOut());
-    httpServer.shutdown();
-    System.out.println("finished after " + settings.getTimeOut() + " secs");
+    stop();
   }
 
   /**
@@ -626,6 +663,20 @@ public class RestServerImpl implements Runnable, RestServer {
   }
 
   /**
+   * @return the exception
+   */
+  public Throwable getException() {
+    return exception;
+  }
+
+  /**
+   * @param exception the exception to set
+   */
+  public void setException(Throwable exception) {
+    this.exception = exception;
+  }
+
+  /**
    * start
    * 
    * @param args
@@ -647,11 +698,20 @@ public class RestServerImpl implements Runnable, RestServer {
     try {
       this.startWebServer();
     } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      if (settings.isDebug())
+        e.printStackTrace();
+      exception=e;
+      stop();
     }
   }
-
+  
+  @Override
+  public void uncaughtException(Thread t, Throwable e) {
+    stop();
+    exception=e;
+    throw new RuntimeException(e);
+  }
+  
   /*
    * (non-Javadoc)
    * 
@@ -661,7 +721,10 @@ public class RestServerImpl implements Runnable, RestServer {
   @Override
   public RestServer startServer(String[] args) {
     settings.parseArguments(args);
-    (new Thread(this)).start();
+    startTime=DateTime.now();
+    serverThread=new Thread(this);
+    serverThread.setUncaughtExceptionHandler(this);
+    serverThread.start();
     return this;
   }
 

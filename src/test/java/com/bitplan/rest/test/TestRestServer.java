@@ -69,26 +69,41 @@ public abstract class TestRestServer {
       "application/json", "application/xml" };
 
   /**
+   * start the server scanning for the next available port
+   * 
+   * @param rs
+   * @throws Exception
+   */
+  public void startServer(RestServer rs) throws Exception {
+    startServer(rs, true);
+  }
+
+  /**
    * start the given Rest Server
+   * 
    * @param rs
    * @return
    * @throws Exception
    */
-  public void startServer(RestServer rs) throws Exception {
+  public void startServer(RestServer rs, boolean scanForAvailablePort)
+      throws Exception {
     // find an available port
-    while (!rs.isPortAvailable(testPort))
-      testPort++;
+    if (scanForAvailablePort) {
+      while (!rs.isPortAvailable(testPort))
+        testPort++;
+    }
     rs.getSettings().setPort(testPort);
     rs.setStarter(semaphore);
     String args[] = {};
     rs.startServer(args);
     synchronized (semaphore) {
       semaphore.wait();
-    }  
+    }
   }
-  
+
   /**
    * get the base URL of the given RESTFul server
+   * 
    * @param rs
    * @return
    */
@@ -96,7 +111,7 @@ public abstract class TestRestServer {
     String baseUrl = rs.getUrl().replace("0.0.0.0", "localhost");
     return baseUrl;
   }
-  
+
   /**
    * start the Server
    * 
@@ -110,6 +125,16 @@ public abstract class TestRestServer {
     }
     return getBaseUrl(rs);
   }
+  
+  /**
+   * stop the server
+   */
+  public void stopServer() {
+    if (rs!=null) {
+      rs.stop();
+      rs=null;
+    }
+  }
 
   /**
    * check the given path whether it contains the expected string
@@ -120,7 +145,7 @@ public abstract class TestRestServer {
    */
   protected void check(String path, String expected) throws Exception {
     String responseString = getResponseString("text/html; charset=UTF-8", path);
-    assertTrue(expected,responseString.contains(expected));
+    assertTrue(expected, responseString.contains(expected));
   }
 
   /**
@@ -145,7 +170,7 @@ public abstract class TestRestServer {
         String.class, form);
     return response;
   }
-  
+
   /**
    * 
    * http://stackoverflow.com/a/9542781/1497139
@@ -186,12 +211,13 @@ public abstract class TestRestServer {
     if (debug)
       System.out.println(url);
     /*
-     FIXME - check issue and activate solution
-    URI uri = convertToValid(url);
-    if (debug)
-      System.out.println(uri.toASCIIString());*/
+     * FIXME - check issue and activate solution
+     * URI uri = convertToValid(url);
+     * if (debug)
+     * System.out.println(uri.toASCIIString());
+     */
     // path=path.replace("Ä","%C3%B6");
- 
+
     WebResource wrs = Client.create().resource(url);
     return wrs;
   }
