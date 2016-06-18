@@ -155,19 +155,30 @@ public class TestJaxbFactory {
   }
 
   /**
+   * get the UserManager
+   * 
+   * @return
+   */
+  public UserManager getUserManager() {
+    UserManager um = new UserManagerImpl();
+    um.add(new UserImpl("jd001", "John", "Doe", "john@doe.org", "badpassword",
+        "John is our admin"));
+    um.add(new UserImpl("bs001", "Bill", "Smith", "bill@smith.com",
+        "simplesecret", "Bill is our secretary"));
+    return um;
+  }
+
+  /**
    * get an xml representation of the UserManager
    * 
    * @return
    * @throws Exception
    */
   public String getUserManagerXml() throws Exception {
-    UserManager um = new UserManagerImpl();
-    um.add(new UserImpl("jd001", "John", "Doe", "john@doe.org", "badpassword",
-        "John is our admin"));
-    um.add(new UserImpl("bs001", "Bill", "Smith", "bill@smith.com",
-        "simplesecret", "Bill is our secretary"));
+    UserManager um = getUserManager();
     String xml = um.asXML();
-    System.out.println(xml);
+    if (debug)
+      System.out.println(xml);
     return xml;
   }
 
@@ -217,28 +228,46 @@ public class TestJaxbFactory {
 
   @SuppressWarnings("rawtypes")
   @Test
-  @Ignore
   public void testUnmarshalViaObjectFactory() throws Exception {
     String xml = getUserManagerXml();
     Map<String, Object> properties = new HashMap<String, Object>();
     Class[] classes = { ObjectFactory.class };
     javax.xml.bind.JAXBContext jaxbContext = JAXBContextFactory.createContext(
         classes, properties);
-    UserManager um3 = unmarshalFromContext(jaxbContext, xml);
-    assertNotNull(um3);
+    UserManagerImpl um3 = (UserManagerImpl) unmarshalFromContext(jaxbContext, xml);
+    um3.reinitUserById();
+    checkUsers(um3);
   }
 
   @Test
-  @Ignore
   public void testUnmarshalViaFromXml() throws Exception {
     String xml = getUserManagerXml();
     UserManager um2 = UserManagerImpl.fromXml(xml);
-    assertEquals(2, um2.getUsers().size());
-    for (User user : um2.getUsers()) {
-      System.out.println(user.getId());
+    checkUsers(um2);
+  }
+  
+  /**
+   * check the correctness of the userManager content unmarshalled in comparsion
+   * to the original
+   * @param um
+   * @throws Exception 
+   */
+  public void checkUsers(UserManager um) throws Exception {
+    assertEquals(2, um.getUsers().size());
+    if (debug) {
+      for (User user : um.getUsers()) {
+        System.out.println(user.getId());
+      }
     }
-    User jd = um2.getById("jd001");
-    jd.deCrypt(um2.getCrypt());
-    assertEquals("badpassword", jd.getPassword());
+    UserManager um1 = getUserManager();
+    for (User user : um1.getUsers()) {
+      User otherUser = um.getById(user.getId());
+      otherUser.deCrypt(um.getCrypt());
+      user.deCrypt(um1.getCrypt());
+      assertEquals(user.getPassword(), otherUser.getPassword());
+      String xml1=user.asXML();
+      String xml2=otherUser.asXML();
+      assertEquals(xml1,xml2);
+    }
   }
 }

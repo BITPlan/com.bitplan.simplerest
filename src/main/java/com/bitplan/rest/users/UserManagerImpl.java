@@ -38,7 +38,7 @@ public class UserManagerImpl implements UserManager {
    * @return the users
    */
   @XmlElementWrapper(name="users")
-  @XmlElement(name="user")
+  @XmlElement(name="User", type=UserImpl.class)
   public List<User> getUsers() {
     return users;
   }
@@ -90,6 +90,16 @@ public class UserManagerImpl implements UserManager {
     }
     return crypt;
   }
+  
+  /**
+   * reinitialize the UserById Map
+   */
+  public void reinitUserById() {
+    List<User> lusers = getUsers();
+    for (User luser:lusers) {
+      userById.put(luser.getId(), luser);
+    }    
+  }
 
   /**
    * create a user manager form the given xml file
@@ -98,12 +108,8 @@ public class UserManagerImpl implements UserManager {
    * @throws Exception
    */
   public static UserManager fromXml(String xml) throws Exception {
-    UserManager um=getJaxbFactory().fromXML(xml);
-    /*List<User> lusers = um.getUsers();
-    for (User luser:lusers) {
-      System.out.println(luser.getId());
-      // um.userById.put(luser.getId(), luser);
-    } */
+    UserManagerImpl um=(UserManagerImpl) getJaxbFactory().fromXML(xml);
+    um.reinitUserById();
     return um;
   }
 
