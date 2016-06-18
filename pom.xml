@@ -36,7 +36,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<!-- github server corresponds to entry in ~/.m2/settings.xml -->
 		<github.global.server>github</github.global.server>
-	</properties>		
+	</properties>
 	<packaging>jar</packaging>
 	<url>https://github.com/BITPlan/com.bitplan.simplerest</url>
 	<licenses>
@@ -98,12 +98,12 @@
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-moxy</artifactId>
 			</dependency> -->
-		<!-- http://mvnrepository.com/artifact/com.sun.jersey/jersey-bundle 
-		<dependency>
+		<!-- http://mvnrepository.com/artifact/com.sun.jersey/jersey-bundle
+			<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-bundle</artifactId>
 			<version>${jersey.version}</version>
-		</dependency> -->
+			</dependency> -->
 		<!-- Jersey client -->
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
@@ -253,7 +253,7 @@
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-moxy</artifactId>
 			</dependency> -->
-	
+
 	</dependencies>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
@@ -268,17 +268,17 @@
 			</plugin>
 			<!-- create test jar -->
 			<plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.0.1</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<!--
 					see
@@ -333,43 +333,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--
-				according to :
 
-				http://central.sonatype.org/pages/apache-maven.html
-
-				Nexus Staging Maven Plugin for Deployment and Release
-
-				The Nexus Staging Maven Plugin is the recommended way to deploy your
-				components
-				to OSSRH and release them to the Central Repository.
-				To configure it simply add the plugin to your Maven pom.xml.
-			-->
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.3</version>
-				<extensions>true</extensions>
-				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<!-- set to true for automation -->
-					<autoReleaseAfterClose>false</autoReleaseAfterClose>
-				</configuration>
-			</plugin>
-			<!-- Maven release plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.5</version>
-				<configuration>
-					<autoVersionSubmodules>true</autoVersionSubmodules>
-					<useReleaseProfile>false</useReleaseProfile>
-					<releaseProfiles>release</releaseProfiles>
-					<goals>deploy</goals>
-					<arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
-				</configuration>
-			</plugin>
 			<!-- git hub site plugin https://github.com/github/maven-plugins -->
 			<plugin>
 				<groupId>com.github.github</groupId>
@@ -398,4 +362,51 @@
 			</extension>
 		</extensions>
 	</build>
+	<profiles>
+		<profile>
+			<id>dist</id>
+			<build>
+				<plugins>
+
+					<!--
+						according to :
+
+						http://central.sonatype.org/pages/apache-maven.html
+
+						Nexus Staging Maven Plugin for Deployment and Release
+
+						The Nexus Staging Maven Plugin is the recommended way to deploy your
+						components
+						to OSSRH and release them to the Central Repository.
+						To configure it simply add the plugin to your Maven pom.xml.
+					-->
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.6.3</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<!-- set to true for automation -->
+							<autoReleaseAfterClose>false</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+					<!-- Maven release plugin -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-release-plugin</artifactId>
+						<version>2.5</version>
+						<configuration>
+							<autoVersionSubmodules>true</autoVersionSubmodules>
+							<useReleaseProfile>false</useReleaseProfile>
+							<releaseProfiles>release</releaseProfiles>
+							<goals>deploy</goals>
+							<arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
