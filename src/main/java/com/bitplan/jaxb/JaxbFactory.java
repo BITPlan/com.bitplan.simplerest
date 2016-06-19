@@ -38,21 +38,25 @@ import org.eclipse.persistence.jaxb.MarshallerProperties;
  * 
  * @author wf
  *
- * @param <T> - the type to be marshalled and unmarshalled
+ * @param <T>
+ *          - the type to be marshalled and unmarshalled
  */
 public class JaxbFactory<T> implements JaxbFactoryApi<T> {
   // since Java generics are implemented using type erasure
   // http://stackoverflow.com/questions/339699/java-generics-type-erasure-when-and-what-happens
   // we need to no the runtime type of the class to be handled by this factory
   final Class<? extends T> classOfT;
-  
-  // a JAXBContext can handle the marshalling and unmarshalling of a set of classes
+
+  // a JAXBContext can handle the marshalling and unmarshalling of a set of
+  // classes
   // this is a specific JAXBContext for T with the type classOfT
   private JAXBContext context;
-  
+
   // a set of "neighbour" classes may also be specified
   @SuppressWarnings("rawtypes")
-  private Class[] otherClasses=new Class[0];
+  private Class[] otherClasses = new Class[0];
+
+  public boolean novalidate=false;
 
   /**
    * allow access to the type that would otherwise not be available due to Java
@@ -77,61 +81,67 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
   public JaxbFactory(Class<? extends T> pClassOfT) {
     classOfT = pClassOfT;
   }
-  
+
   /**
    * construct me with the given neighbour classes pOtherClasses
+   * 
    * @param pClassOfT
    * @param pOtherClasses
    */
   @SuppressWarnings("rawtypes")
-  public JaxbFactory(Class<T> pClassOfT,Class...pOtherClasses) {
+  public JaxbFactory(Class<T> pClassOfT, Class... pOtherClasses) {
     this(pClassOfT);
-    otherClasses=pOtherClasses;
+    otherClasses = pOtherClasses;
   }
-  
+
   /**
-   * create a JAXBContext for the given contextPath and XML MetaData 
+   * create a JAXBContext for the given contextPath and XML MetaData
+   * 
    * @param contextPath
    * @param bindingXml
    * @return a JAXBContext
    * @throws Exception
    */
-  public static JAXBContext createJAXBContext(String contextPath,String bindingXml) throws Exception {
-    StringReader sr=new StringReader(bindingXml);
+  public static JAXBContext createJAXBContext(String contextPath,
+      String bindingXml) throws Exception {
+    StringReader sr = new StringReader(bindingXml);
     Map<String, Object> properties = new HashMap<String, Object>();
     properties.put(JAXBContextProperties.OXM_METADATA_SOURCE, sr);
-    JAXBContext lcontext = JAXBContextFactory.createContext(contextPath, JaxbFactory.class.getClassLoader(), properties);
+    JAXBContext lcontext = JAXBContextFactory.createContext(contextPath,
+        JaxbFactory.class.getClassLoader(), properties);
     return lcontext;
   }
-  
+
   /**
    * set the context based on the given contextPath and xmlBinding File
+   * 
    * @param contextPath
    * @param xmlBinding
    * @throws Exception
    */
-  public void setBinding(String contextPath,File xmlBinding) throws Exception {
-    String bindingXml=FileUtils.readFileToString(xmlBinding);
-    context=createJAXBContext(contextPath,bindingXml);
+  public void setBinding(String contextPath, File xmlBinding) throws Exception {
+    String bindingXml = FileUtils.readFileToString(xmlBinding);
+    context = createJAXBContext(contextPath, bindingXml);
   }
-  
+
   /**
    * get the JaxB Context for me
+   * 
    * @return - the JaxB Context
-   * @throws JAXBException 
+   * @throws JAXBException
    */
   @SuppressWarnings("rawtypes")
   public JAXBContext getJAXBContext() throws JAXBException {
-    if (context==null) {
+    if (context == null) {
       // http://stackoverflow.com/questions/21185947/set-moxy-as-jaxb-provider-programatically
       Map<String, Object> properties = new HashMap<String, Object>();
-      Class[] classes=new Class[otherClasses.length+1];
-      int index=0;
-      classes[index++]=classOfT;
-      for (Class clazz:otherClasses) {
-        classes[index++]=clazz;
+      Class[] classes = new Class[otherClasses.length + 1];
+      int index = 0;
+      classes[index++] = classOfT;
+      for (Class clazz : otherClasses) {
+        classes[index++] = clazz;
       }
-      context=JAXBContextFactory.createContext(classes, properties);
+      context = JAXBContextFactory.createContext(classes, properties);
     }
     return context;
   }
@@ -145,20 +155,23 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
   public Unmarshaller getUnmarshaller() throws JAXBException {
     JAXBContext lcontext = getJAXBContext();
     Unmarshaller u = lcontext.createUnmarshaller();
-    u.setEventHandler(new ValidationEventHandler() {
-      @Override
-      public boolean handleEvent(ValidationEvent event) {
-        return true;
-      }
-    });
+    if (novalidate) {
+      u.setEventHandler(new ValidationEventHandler() {
+        @Override
+        public boolean handleEvent(ValidationEvent event) {
+          return true;
+        }
+      });
+    }
     return u;
   }
 
   /**
    * unmarshal the given string s using the unmarshaller u
+   * 
    * @param u
    * @param s
-   * @return - the Object of Type T 
+   * @return - the Object of Type T
    * @throws Exception
    */
   @SuppressWarnings("unchecked")
@@ -182,10 +195,14 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
         throw new Exception(msg);
       }
     } catch (JAXBException jex) {
-      String msg = "JAXBException: " + jex.getMessage();
+      Throwable ex=jex;
+      if (jex.getLinkedException()!=null) {
+        ex=jex.getLinkedException();
+      }
+      String msg = "JAXBException: " + ex.getMessage();
       LOGGER.log(Level.SEVERE, msg);
       LOGGER.log(Level.SEVERE, s);
-      throw (new Exception(msg, jex));
+      throw (new Exception(msg, ex));
     }
     return result;
   }

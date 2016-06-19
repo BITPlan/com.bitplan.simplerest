@@ -196,75 +196,15 @@ public class TestJaxbFactory {
   }
 
   @Test
-  public void testXmlBindings() throws Exception {
-    // example from http://www.eclipse.org/eclipselink/documentation/2.6/moxy/runtime003.htm
-    File xmlBinding=new File("src/test/resources/test/Employee.xml");
-    JaxbFactory<Company> jaxbFactory=new JaxbFactory<Company>(Company.class);
-    jaxbFactory.setBinding("example",xmlBinding);
-    Company company=new Company();
-    company.setCompanyId("doeinc");
-    company.setCompanyName("Doe & Partner Inc.");
-    for (int i=1;i<=3;i++) {
-      Employee employee=new Employee();
-      employee.setEmpId(i);
-      employee.setEmpName("employee "+i);
-      employee.setSalary(i*10000.0);
-      employee.setType(EmployeeType.values()[i-1]);
-      company.getEmployees().add(employee);
-    }
-    String xml=jaxbFactory.asXML(company);
-    System.out.println(xml);
-    Company company2=jaxbFactory.fromXML(xml);
-    assertNotNull(company2);
-    assertEquals(company.getCompanyId(),company2.getCompanyId());
-    assertEquals(company.getCompanyName(),company2.getCompanyName());
-    for (int i=0;i<company.getEmployees().size();i++) {
-      Employee employee=company.getEmployees().get(i);
-      Employee otherEmployee=company2.getEmployees().get(i);
-      assertEquals(employee.getEmpId(),otherEmployee.getEmpId());
-      assertEquals(employee.getEmpName(),otherEmployee.getEmpName());
-      assertEquals(employee.getSalary(),otherEmployee.getSalary(),1e-15);
-      assertEquals(employee.getType(),otherEmployee.getType());
-    }
-  }
-  
-  @Test
   @Ignore
   public void testUnMarshalViaMetaXML() throws Exception {
     String xml = getUserManagerXml();
-    String metaxml = "<?xml version=\"1.0\"?>\n"
-        + "<xml-bindings\n"
-        + "    xmlns=\"http://www.eclipse.org/eclipselink/xsds/persistence/oxm\"\n"
-        + "    package-name=\"com.bitplan.rest.users\">\n"
-        + "    <xml-schema\n"
-        + "        namespace=\"http://www.example.com/user\"\n"
-        + "        element-form-default=\"QUALIFIED\"/>\n"
-        + "    <java-types>\n"
-        + "            <java-type name=\"UserManagerImpl\">\n"
-        + "            <xml-root-element name=\"UserManager\"/>\n"
-        + "            <java-attributes>\n"
-        + "                <xml-element java-attribute=\"users\">\n"
-        + "                   <xml-element-wrapper name=\"users\"/>\n"
-        + "                </xml-element>\n"
-        + "            </java-attributes>\n"
-        + "        </java-type>\n"
-        + "        <java-type name=\"UserImpl\">\n"
-        + "            <xml-root-element name=\"User\"/>\n"
-        + "            <xml-type prop-order=\"id name firstname email password comment \"/>\n"
-        + "            <java-attributes>\n"
-        + "                <xml-element java-attribute=\"name\" name=\"name\"/>\n"
-        + "                <xml-element java-attribute=\"firstName\" name=\"firstName\"/>\n"
-        + "                <xml-element java-attribute=\"email\" name=\"email\"/>\n"
-        + "                <xml-element java-attribute=\"password\" name=\"password\"/>\n"
-        + "                <xml-element java-attribute=\"comment\" name=\"comment\"/>\n"
-        + "            </java-attributes>\n" + "        </java-type>\n"
-        + "    </java-types>\n" + "</xml-bindings>";
-    metaxml=FileUtils.readFileToString(new File("src/test/resources/test/UserManager.xml"));
-    System.out.println(metaxml);
-    javax.xml.bind.JAXBContext jaxbContext = JaxbFactory.createJAXBContext(
-        "com.bitplan.rest.users", metaxml);
-    UserManager um4 = unmarshalFromContext(jaxbContext, xml);
-    assertNotNull(um4);
+    File metaxml = new File("src/test/resources/test/UserManager.xml");
+    JaxbFactory<UserManager> jaxbFactory = new JaxbFactory<UserManager>(
+        UserManagerImpl.class);
+    jaxbFactory.setBinding("com.bitplan.rest.users", metaxml);
+    UserManager um = jaxbFactory.fromXML(xml);
+    checkUsers(um);
   }
 
   @SuppressWarnings("rawtypes")
@@ -275,7 +215,8 @@ public class TestJaxbFactory {
     Class[] classes = { ObjectFactory.class };
     javax.xml.bind.JAXBContext jaxbContext = JAXBContextFactory.createContext(
         classes, properties);
-    UserManagerImpl um3 = (UserManagerImpl) unmarshalFromContext(jaxbContext, xml);
+    UserManagerImpl um3 = (UserManagerImpl) unmarshalFromContext(jaxbContext,
+        xml);
     um3.reinitUserById();
     checkUsers(um3);
   }
@@ -286,12 +227,13 @@ public class TestJaxbFactory {
     UserManager um2 = UserManagerImpl.fromXml(xml);
     checkUsers(um2);
   }
-  
+
   /**
    * check the correctness of the userManager content unmarshalled in comparsion
    * to the original
+   * 
    * @param um
-   * @throws Exception 
+   * @throws Exception
    */
   public void checkUsers(UserManager um) throws Exception {
     assertEquals(2, um.getUsers().size());
@@ -306,9 +248,82 @@ public class TestJaxbFactory {
       otherUser.deCrypt(um.getCrypt());
       user.deCrypt(um1.getCrypt());
       assertEquals(user.getPassword(), otherUser.getPassword());
-      String xml1=user.asXML();
-      String xml2=otherUser.asXML();
-      assertEquals(xml1,xml2);
+      String xml1 = user.asXML();
+      String xml2 = otherUser.asXML();
+      assertEquals(xml1, xml2);
     }
   }
+
+  /**
+   * get the example company
+   * 
+   * @return the company
+   */
+  public Company getCompany() {
+    Company company = new Company();
+    company.setCompanyId("doeinc");
+    company.setCompanyName("Doe & Partner Inc.");
+    for (int i = 1; i <= 3; i++) {
+      Employee employee = new Employee();
+      employee.setEmpId(i);
+      employee.setEmpName("worker " + i);
+      employee.setSalary(i * 10000.0);
+      employee.setType(EmployeeType.values()[i - 1]);
+      company.getEmployees().add(employee);
+    }
+    return company;
+  }
+
+  /**
+   * check that the two companies have the same content and structure
+   * 
+   * @param company
+   * @param company2
+   */
+  public void checkCompany(Company company, Company company2) {
+    assertNotNull(company2);
+    assertEquals(company.getCompanyId(), company2.getCompanyId());
+    assertEquals(company.getCompanyName(), company2.getCompanyName());
+    for (int i = 0; i < company.getEmployees().size(); i++) {
+      Employee employee = company.getEmployees().get(i);
+      Employee otherEmployee = company2.getEmployees().get(i);
+      assertEquals(employee.getEmpId(), otherEmployee.getEmpId());
+      assertEquals(employee.getEmpName(), otherEmployee.getEmpName());
+      assertEquals(employee.getSalary(), otherEmployee.getSalary(), 1e-15);
+      assertEquals(employee.getType(), otherEmployee.getType());
+    }
+  }
+
+  public static final File EMPLOYEE_BINDING = new File(
+      "src/test/resources/test/Employee.xml");
+
+  @Test
+  public void testXmlBindings() throws Exception {
+    // example from
+    // http://www.eclipse.org/eclipselink/documentation/2.6/moxy/runtime003.htm
+    JaxbFactory<Company> jaxbFactory = new JaxbFactory<Company>(Company.class);
+    jaxbFactory.setBinding("example", EMPLOYEE_BINDING);
+    Company company = getCompany();
+    String xml = jaxbFactory.asXML(company);
+    if (debug)
+      System.out.println(xml);
+    Company company2 = jaxbFactory.fromXML(xml);
+    checkCompany(company, company2);
+  }
+
+  @Test
+  @Ignore
+  public void testXmlBindingsWithModifiedNodeNames() throws Exception {
+    JaxbFactory<Company> jaxbFactory = new JaxbFactory<Company>(Company.class);
+    jaxbFactory.setBinding("example", EMPLOYEE_BINDING);
+    Company company = getCompany();
+    String xml = jaxbFactory.asXML(company);
+    xml = xml.replace("company", "corporacion");
+    xml = xml.replace("employee", "empleado");
+    if (debug)
+      System.out.println(xml);
+    Company company3 = jaxbFactory.fromXML(xml);
+    checkCompany(company, company3);
+  }
+
 }
