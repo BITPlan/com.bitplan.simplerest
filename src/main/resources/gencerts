@@ -1,0 +1,103 @@
+#!/bin/bash
+# WF 2013-09-29
+# http://people.apache.org/~gmazza/restexamples/https-clientserver-grizzly
+#We needed set up few things to get this example working:
+#
+#    generate client and server keys
+#    generate client and server certificates
+#    import certificates to corresponding truststores
+#
+#Client certificate is needed too because we're going to use 
+#server-side certificate authentication as well (yes, after this HTTP Basic authentication 
+#seems to be kind of redundant but there are some usecases where you might want to use them both).
+#Generate client key and store it into keystore:
+
+#
+# global variables
+#
+
+# store password
+storepass="changeit"
+
+# Organizational unit settings
+OU="OU=HQ Schiefbahn, O=BITPlan GmbH, L=Willich, ST=Germany, C=DE"
+# Common names
+CNClient="Client"
+CNServer="localhost"
+
+#
+# generate a key
+#
+#	example:
+# 	keytool -genkey -keystore ./keystore_client -alias clientKey -dname "CN=Client, OU=Jersey, O=Sun Microsystem, L=Prague, ST=Czech Republic, C=CZ"
+genkey() {
+  local l_keystore=$1
+  local l_alias=$2
+  local l_CN=$3
+	if [ ! -f $l_keystore ]
+	then
+		keytool \
+		-genkey \
+		-keystore ./$l_keystore \
+		-alias $l_alias \
+		-dname "CN=$l_CN, $OU" \
+		-storepass "$storepass" \
+		-keypass "$storepass"
+	fi  
+}
+
+
+#
+# export the given certificate
+# 
+# example:
+#		keytool -export -alias clientKey -rfc -keystore ./keystore_client > ./client.cert
+#
+exportcert() {
+  local l_keystore=$1
+  local l_alias=$2
+  local l_file=$3
+  if [ ! -f $l_file ]
+  then
+		keytool \
+			-exportcert \
+			-alias $l_alias \
+			-rfc \
+			-storepass "$storepass" \
+			-keystore ./$l_keystore > ./$l_file
+	fi
+}
+
+#
+# import the given certificate
+# 
+# example:
+#   keytool -import -alias clientCert -file ./client.cert -keystore ./truststore_server
+importcert() {
+  local l_keystore=$1
+  local l_alias=$2
+  local l_file=$3
+  if [ ! -f $l_keystore ]
+  then
+		keytool \
+			-importcert \
+			-noprompt \
+			-alias $l_alias \
+			-file ./$l_file \
+			-storepass "$storepass" \
+			-keystore ./$l_keystore
+	fi
+}
+
+# Generate client certificate (this will generate self-signed certificate; 
+# if you have certification authority and want generate certificate request, use keytool -certreq):
+genkey keystore_client.jks clientKey $CNClient
+# export client key
+exportcert keystore_client.jks clientKey client.cert
+#Import client certificate to servers truststore:
+importcert truststore_server.jks clientCert client.cert
+#These steps are similar for server side:
+genkey keystore_server.jks serverKey $CNServer
+exportcert keystore_server.jks serverKey server.cert
+importcert truststore_client.jks serverCert server.cert
+

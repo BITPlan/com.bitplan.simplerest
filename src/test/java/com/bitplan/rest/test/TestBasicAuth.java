@@ -6,17 +6,12 @@
  */
 package com.bitplan.rest.test;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
-import com.bitplan.hello.rest.HelloServer;
 import com.bitplan.hello.rest.SecuredHelloServer;
 import com.bitplan.rest.RestServer;
 import com.bitplan.rest.User;
-import com.bitplan.rest.UserManager;
 import com.bitplan.rest.users.UserImpl;
-import com.bitplan.rest.users.UserManagerImpl;
 
 /**
  * test basic authentication
@@ -25,7 +20,6 @@ import com.bitplan.rest.users.UserManagerImpl;
  */
 public class TestBasicAuth extends TestHelloServer {
   
- 
   
   @Override
   public RestServer createServer() throws Exception {
@@ -35,6 +29,7 @@ public class TestBasicAuth extends TestHelloServer {
   
   @Test
   public void testBasicAuth() throws Exception {
+    debug=true;
     User user=new UserImpl();
     user.setId("scott");
     user.setPassword("tiger");

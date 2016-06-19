@@ -43,6 +43,7 @@ public class SecuredHelloServer extends HelloServer {
    */
   public SecuredHelloServer() throws Exception {
     super();
+    this.getSettings().setSecure(true);
     this.getSettings().setUserManager(getUserManager());
   }
 

@@ -275,7 +275,8 @@ public class RestServerImpl implements Runnable, UncaughtExceptionHandler,
     return result;
   }
 
-  public static String TRUSTSTORE_PASSWORD = "needs to be set";
+  // FIXME
+  public static String TRUSTSTORE_PASSWORD = "changeit";
 
   /**
    * get the given Store

@@ -33,6 +33,7 @@ import javax.ws.rs.core.Response;
 import org.junit.Assert;
 
 import com.bitplan.rest.RestServer;
+import com.bitplan.rest.SSLClientHelper;
 import com.bitplan.rest.User;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -230,7 +231,11 @@ public abstract class TestRestServer {
      * System.out.println(uri.toASCIIString());
      */
     // path=path.replace("Ä","%C3%B6");
-    client = Client.create();
+    if (rs.getSettings().isSecure()) {
+      client=SSLClientHelper.createClient();
+    } else {
+      client = Client.create();
+    }
     if (this.user!=null) {
       client.addFilter(new HTTPBasicAuthFilter(user.getId(),user.getPassword()));
     }
