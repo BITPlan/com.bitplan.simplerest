@@ -338,6 +338,11 @@ public class RestServerSettingsImpl implements RestServerSettings,
    */
   Map<String, String> classPathHandlers = new HashMap<String, String>();
 
+  /**
+   * access to user authentication information
+   */
+  private UserManager userManager;
+
   @Override
   public void addClassPathHandler(String directoryRoot, String classpathPath)
       throws Exception {
@@ -366,6 +371,16 @@ public class RestServerSettingsImpl implements RestServerSettings,
   public String asXML() throws JAXBException {
     String result=getFactory().asXML(this);
     return result;
+  }
+
+  @Override
+  public void setUserManager(UserManager userManager) {
+     this.userManager=userManager;
+  }
+
+  @Override
+  public UserManager getUserManager() {
+    return userManager;
   }
 
 }

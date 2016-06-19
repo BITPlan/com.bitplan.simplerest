@@ -2,6 +2,9 @@ package com.bitplan.rest.users;
 
 import javax.xml.bind.annotation.XmlRegistry;
 
+import com.bitplan.rest.User;
+import com.bitplan.rest.UserManager;
+
 /**
  * see
  * http://blog.bdoughan.com/2010/07/moxy-jaxb-map-interfaces-to-xml.html?

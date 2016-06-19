@@ -12,7 +12,8 @@ package com.bitplan.rest.users;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bitplan.jaxb.JaxbFactory;
-import com.bitplan.rest.Crypt;
+import com.bitplan.rest.User;
+import com.bitplan.rest.UserManager;
 
 @XmlRootElement(name = "User")
 public class UserImpl implements User {
@@ -23,6 +24,8 @@ public class UserImpl implements User {
   String email;
   String password;
   String comment;
+  String role;
+  boolean encrypted = false;
 
   /**
    * @return the id
@@ -140,10 +143,20 @@ public class UserImpl implements User {
   }
 
   /**
-   * no args constructor
+   * @return the role
    */
-  public UserImpl() {} // make JaxB happy;
-  
+  public String getRole() {
+    return role;
+  }
+
+  /**
+   * @param role
+   *          the role to set
+   */
+  public void setRole(String role) {
+    this.role = role;
+  }
+
   /**
    * create me from the given parameters
    * 
@@ -152,17 +165,25 @@ public class UserImpl implements User {
    * @param firstname
    * @param email
    * @param password
-   * @param comment 
+   * @param role
+   * @param comment
    */
-  public UserImpl(String id, String name, String firstname, String email,
-      String password, String comment) {
+  public UserImpl(UserManager um, String id, String name, String firstname,
+      String email, String password, String role, String comment) {
     this.id = id;
     this.name = name;
     this.firstname = firstname;
     this.email = email;
-    this.password = password;
-    this.comment=comment;
+    try {
+      this.password = um.getCrypt().encrypt(password);
+    } catch (Throwable th) {
+      throw new RuntimeException(th);
+    }
+    this.role = role;
+    this.comment = comment;
   }
+
+  public UserImpl() {} // makes JaxB happy
 
   /**
    * get the JAXBFactory for this class
@@ -180,24 +201,6 @@ public class UserImpl implements User {
   public String asXML() throws Exception {
     String xml = getJaxbFactory().asXML(this);
     return xml;
-  }
-
-  @Override
-  public void encrypt(Crypt crypt) {
-    try {
-      this.password = crypt.encrypt(password);
-    } catch (Throwable th) {
-      throw new RuntimeException(th);
-    }
-  }
-
-  @Override
-  public void deCrypt(Crypt crypt) {
-    try {
-      this.password = crypt.decrypt(password);
-    } catch (Throwable th) {
-      throw new RuntimeException(th);
-    }
   }
 
 }

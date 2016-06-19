@@ -16,7 +16,6 @@ import static org.junit.Assert.assertTrue;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -34,9 +33,11 @@ import javax.ws.rs.core.Response;
 import org.junit.Assert;
 
 import com.bitplan.rest.RestServer;
+import com.bitplan.rest.User;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataMultiPart;
@@ -67,6 +68,10 @@ public abstract class TestRestServer {
 
   String[] contentTypes = { "text/xml", "text/html", "text/plain",
       "application/json", "application/xml" };
+
+  private User user;
+
+  private Client client;
 
   /**
    * start the server scanning for the next available port
@@ -101,6 +106,14 @@ public abstract class TestRestServer {
     }
   }
 
+  /**
+   * set the user for basic authentication
+   * @param user
+   */
+  public void setUser(User user) {
+    this.user=user;
+  }
+  
   /**
    * get the base URL of the given RESTFul server
    * 
@@ -157,10 +170,10 @@ public abstract class TestRestServer {
    * @param url
    * @param uploadFile
    * @return the result
-   * @throws IOException
+   * @throws Exception 
    */
-  public String upload(String url, File uploadFile) throws IOException {
-    WebResource resource = Client.create().resource(url);
+  public String upload(String url, File uploadFile) throws Exception {
+    WebResource resource = getResource(url);
     FormDataMultiPart form = new FormDataMultiPart();
     form.field("fileName", uploadFile.getName());
     FormDataBodyPart fdp = new FormDataBodyPart("content", new FileInputStream(
@@ -217,8 +230,11 @@ public abstract class TestRestServer {
      * System.out.println(uri.toASCIIString());
      */
     // path=path.replace("Ä","%C3%B6");
-
-    WebResource wrs = Client.create().resource(url);
+    client = Client.create();
+    if (this.user!=null) {
+      client.addFilter(new HTTPBasicAuthFilter(user.getId(),user.getPassword()));
+    }
+    WebResource wrs = client.resource(url);
     return wrs;
   }
 

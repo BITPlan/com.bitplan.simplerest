@@ -28,15 +28,14 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.commons.io.FileUtils;
 import org.eclipse.persistence.jaxb.JAXBContextFactory;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.bitplan.rest.User;
+import com.bitplan.rest.UserManager;
 import com.bitplan.rest.users.ObjectFactory;
-import com.bitplan.rest.users.User;
 import com.bitplan.rest.users.UserImpl;
-import com.bitplan.rest.users.UserManager;
 import com.bitplan.rest.users.UserManagerImpl;
 
 import example.Company;
@@ -167,10 +166,10 @@ public class TestJaxbFactory {
    */
   public UserManager getUserManager() {
     UserManager um = new UserManagerImpl();
-    um.add(new UserImpl("jd001", "John", "Doe", "john@doe.org", "badpassword",
-        "John is our admin"));
-    um.add(new UserImpl("bs001", "Bill", "Smith", "bill@smith.com",
-        "simplesecret", "Bill is our secretary"));
+    um.add(new UserImpl(um,"jd001", "John", "Doe", "john@doe.org", "badpassword",
+        "admin","John is our admin"));
+    um.add(new UserImpl(um,"bs001", "Bill", "Smith", "bill@smith.com",
+        "simplesecret","secretary","Bill is our secretary"));
     return um;
   }
 
@@ -211,6 +210,7 @@ public class TestJaxbFactory {
   @Test
   public void testUnmarshalViaObjectFactory() throws Exception {
     String xml = getUserManagerXml();
+    System.out.println(xml);
     Map<String, Object> properties = new HashMap<String, Object>();
     Class[] classes = { ObjectFactory.class };
     javax.xml.bind.JAXBContext jaxbContext = JAXBContextFactory.createContext(
@@ -245,8 +245,6 @@ public class TestJaxbFactory {
     UserManager um1 = getUserManager();
     for (User user : um1.getUsers()) {
       User otherUser = um.getById(user.getId());
-      otherUser.deCrypt(um.getCrypt());
-      user.deCrypt(um1.getCrypt());
       assertEquals(user.getPassword(), otherUser.getPassword());
       String xml1 = user.asXML();
       String xml2 = otherUser.asXML();

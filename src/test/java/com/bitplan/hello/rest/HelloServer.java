@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2014-2016 BITPlan GmbH
+ *
+ * Pater-Delp-Str. 1
+ * D-47877 Willich-Schiefbahn
+ *
+ * http://www.bitplan.com
+ * 
+ */
 package com.bitplan.hello.rest;
 
 import com.bitplan.rest.RestServerImpl;
@@ -19,8 +28,6 @@ public class HelloServer extends RestServerImpl {
     String packages="com.bitplan.hello.resources;";
     settings.setContextPath("/hello");
     settings.addClassPathHandler("/", "/static/");
-  // >>>{code}{SmartCRMConstructor}{SmartCRM}
-  // <<<{code}{SmartCRMConstructor}{SmartCRM}
     settings.setPackages(packages);
    }
   

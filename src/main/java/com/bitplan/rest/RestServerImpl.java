@@ -19,7 +19,9 @@ import java.security.cert.X509Certificate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.io.FileUtils;
 import org.glassfish.grizzly.Connection;
@@ -43,6 +45,7 @@ import org.glassfish.grizzly.utils.Charsets;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 
+import com.bitplan.rest.basicauth.BasicAuthSecurityProvider;
 import com.google.inject.AbstractModule;
 import com.sun.jersey.api.container.ContainerFactory;
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
@@ -59,7 +62,8 @@ import com.sun.jersey.spi.container.servlet.ServletContainer;
  * @author wf
  * 
  */
-public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestServer {
+public class RestServerImpl implements Runnable, UncaughtExceptionHandler,
+    RestServer {
 
   protected Logger LOGGER = Logger.getLogger("com.bitplan.rest");
   // TODO add Guice Support
@@ -81,10 +85,10 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
   protected boolean useServlet = false;
   private WebappContext context;
   private Thread serverThread;
-  
+
   // any exception that might have happened
   private Throwable exception;
-  
+
   // are we running?
   private boolean running;
   private DateTime startTime;
@@ -158,16 +162,17 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
 
   /**
    * stop this server
+   * 
    * @see com.bitplan.rest.RestServer#stop()
    */
   @Override
   public void stop() {
-    if (httpServer!=null) {
+    if (httpServer != null) {
       httpServer.shutdown();
-      httpServer=null;
-      running=false;
-      stopTime=DateTime.now();
-      Seconds secs = Seconds.secondsBetween(startTime,stopTime);
+      httpServer = null;
+      running = false;
+      stopTime = DateTime.now();
+      Seconds secs = Seconds.secondsBetween(startTime, stopTime);
       System.out.println("finished after " + secs.getSeconds() + " secs");
       // if someone is waiting for us let him continue ..
       informStarter();
@@ -447,6 +452,7 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
     httpServer.getServerConfiguration().addHttpHandler(handler, path);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public synchronized void createServer() throws Exception {
     if (settings == null)
@@ -456,12 +462,23 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
     String url = getUrl();
     // http://jersey.java.net/nonav/documentation/latest/user-guide.html#d4e52
 
+    // which packages do ew need to configure?
     String packages = settings.getPackages();
     context = null;
     try {
-      if (packages != null) {
+      if (packages!=null) {
+        // do we want basic authentication with a user manager?
+        if (settings.getUserManager()!=null) {
+          // add the package with the BasicAuthSecurityProvider
+          packages+="com.bitplan.rest.basicauth;"+packages;
+        }
         String pa[] = packages.split(";");
         ResourceConfig rc = new PackagesResourceConfig(pa);
+        // more config for provider
+        UserManager userManager = settings.getUserManager();
+        if (userManager!=null) {
+          rc.getContainerRequestFilters().add(new BasicAuthSecurityProvider(userManager));
+        }
         // http://stackoverflow.com/questions/3677064/jax-rs-jersey-howto-force-a-response-contenttype-overwrite-content-negotiatio
         rc.getMediaTypeMappings().put("json", MediaType.APPLICATION_JSON_TYPE);
         rc.getMediaTypeMappings().put("xml", MediaType.APPLICATION_XML_TYPE);
@@ -533,8 +550,9 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
               LOGGER.info(msg);
             req.setHeader("remote_addr", remote_addr);
             // showDebug(request);
+            Principal principal=null;
             if (settings.isSecure()) {
-              Principal principal = RestServerImpl.this
+              principal = RestServerImpl.this
                   .checkSSLClientCertificate(request);
               if (principal == null) {
                 // FIXME - we'd like to get a proper status here!
@@ -543,19 +561,21 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
                       "no principal with needClientAuth=true");
                   request.setRequestURI("invalidaccess");
                 }
-              } else {
-                // http://stackoverflow.com/questions/909185/jersey-security-and-session-management
-                // LOGGER.info("remote user: "+request.getRemoteUser());
-
-                // this would have been simple but does not work see
-                // http://stackoverflow.com/questions/20105005/unsupportedoperationexception-getuserprincipal
-                request.setUserPrincipal(principal);
-
-                // work-around
-                PrincipalCache.add(principal);
-                String principal_id = PrincipalCache.getId(principal);
-                req.setHeader("principal_id", principal_id);
               }
+            } 
+            // did we get a principal for this request?
+            if (principal != null) {
+              // http://stackoverflow.com/questions/909185/jersey-security-and-session-management
+              // LOGGER.info("remote user: "+request.getRemoteUser());
+
+              // this would have been simple but does not work see
+              // http://stackoverflow.com/questions/20105005/unsupportedoperationexception-getuserprincipal
+              request.setUserPrincipal(principal);
+
+              // work-around
+              PrincipalCache.add(principal);
+              String principal_id = PrincipalCache.getId(principal);
+              req.setHeader("principal_id", principal_id);
             }
             // debug(req);
 
@@ -587,7 +607,27 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
   }
 
   /**
-   * if there is some thread waiting for us to start 
+   * handle basic authentication request
+   * @param userManager - the information about users
+   * @param filter
+   * @param connection
+   * @param request
+   * @param req
+   * @return - a valid principal that is a User from the UserManager that has given the right basic auth credentials
+   */
+  @SuppressWarnings("rawtypes")
+  protected Principal handleBasicAuth(UserManager userManager,
+      HttpServerFilter filter, Connection connection, Request request,
+      HttpRequestPacket req) {
+    String auth = req.getHeader("authorization");
+    if (auth==null) {
+      throw new WebApplicationException(Status.UNAUTHORIZED);
+    }
+    return null;
+  }
+
+  /**
+   * if there is some thread waiting for us to start
    * inform it that it may continue
    */
   public void informStarter() {
@@ -597,7 +637,7 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
       }
     }
   }
-  
+
   /*
    * (non-Javadoc)
    * 
@@ -618,11 +658,11 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
      * createWebappContext(""); context.deploy(srv); }
      */
     LOGGER.log(Level.INFO, "starting server for URL: " + getUrl());
-    running=true;
+    running = true;
     informStarter();
-    int sleep=0;
+    int sleep = 0;
     // timeOut is in Secs - we go by 1/20th of sec = 50 millisecs
-    while (running && (sleep< settings.getTimeOut()*20)) {
+    while (running && (sleep < settings.getTimeOut() * 20)) {
       // System.out.println(sleep+":"+running);
       // sleep 50 millisecs
       Thread.sleep(50);
@@ -670,7 +710,8 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
   }
 
   /**
-   * @param exception the exception to set
+   * @param exception
+   *          the exception to set
    */
   public void setException(Throwable exception) {
     this.exception = exception;
@@ -700,18 +741,18 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
     } catch (Exception e) {
       if (settings.isDebug())
         e.printStackTrace();
-      exception=e;
+      exception = e;
       stop();
     }
   }
-  
+
   @Override
   public void uncaughtException(Thread t, Throwable e) {
     stop();
-    exception=e;
+    exception = e;
     throw new RuntimeException(e);
   }
-  
+
   /*
    * (non-Javadoc)
    * 
@@ -721,8 +762,8 @@ public class RestServerImpl implements Runnable,UncaughtExceptionHandler,RestSer
   @Override
   public RestServer startServer(String[] args) {
     settings.parseArguments(args);
-    startTime=DateTime.now();
-    serverThread=new Thread(this);
+    startTime = DateTime.now();
+    serverThread = new Thread(this);
     serverThread.setUncaughtExceptionHandler(this);
     serverThread.start();
     return this;

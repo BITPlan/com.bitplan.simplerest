@@ -22,6 +22,8 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.bitplan.jaxb.JaxbFactory;
 import com.bitplan.rest.Crypt;
 import com.bitplan.rest.CryptImpl;
+import com.bitplan.rest.User;
+import com.bitplan.rest.UserManager;
 
 @XmlRootElement(name="UserManager")
 public class UserManagerImpl implements UserManager {
@@ -69,8 +71,8 @@ public class UserManagerImpl implements UserManager {
 
   @Override
   public void add(User user) {
-    user.encrypt(getCrypt());
     this.users.add(user);
+    this.userById.put(user.getId(), user);
   }
   
   /**
