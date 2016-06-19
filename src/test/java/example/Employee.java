@@ -4,7 +4,7 @@ public class Employee {
   int empId;
   String empName;
   double salary;
-  String type;
+  EmployeeType type;
   
   /**
    * @return the empId
@@ -45,13 +45,14 @@ public class Employee {
   /**
    * @return the type
    */
-  public String getType() {
+  public EmployeeType getType() {
     return type;
   }
   /**
    * @param type the type to set
    */
-  public void setType(String type) {
+  public void setType(EmployeeType type) {
     this.type = type;
   }
+ 
 }

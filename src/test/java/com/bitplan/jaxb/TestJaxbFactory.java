@@ -41,6 +41,7 @@ import com.bitplan.rest.users.UserManagerImpl;
 
 import example.Company;
 import example.Employee;
+import example.EmployeeType;
 
 /**
  * test the JaxBFactory
@@ -195,12 +196,11 @@ public class TestJaxbFactory {
   }
 
   @Test
-  @Ignore
   public void testXmlBindings() throws Exception {
     // example from http://www.eclipse.org/eclipselink/documentation/2.6/moxy/runtime003.htm
     File xmlBinding=new File("src/test/resources/test/Employee.xml");
     JaxbFactory<Company> jaxbFactory=new JaxbFactory<Company>(Company.class);
-    jaxbFactory.setBinding("com.bitplan.jaxb",xmlBinding);
+    jaxbFactory.setBinding("example",xmlBinding);
     Company company=new Company();
     company.setCompanyId("doeinc");
     company.setCompanyName("Doe & Partner Inc.");
@@ -209,15 +209,27 @@ public class TestJaxbFactory {
       employee.setEmpId(i);
       employee.setEmpName("employee "+i);
       employee.setSalary(i*10000.0);
-      employee.setType("rank "+i);
+      employee.setType(EmployeeType.values()[i-1]);
       company.getEmployees().add(employee);
     }
     String xml=jaxbFactory.asXML(company);
     System.out.println(xml);
+    Company company2=jaxbFactory.fromXML(xml);
+    assertNotNull(company2);
+    assertEquals(company.getCompanyId(),company2.getCompanyId());
+    assertEquals(company.getCompanyName(),company2.getCompanyName());
+    for (int i=0;i<company.getEmployees().size();i++) {
+      Employee employee=company.getEmployees().get(i);
+      Employee otherEmployee=company2.getEmployees().get(i);
+      assertEquals(employee.getEmpId(),otherEmployee.getEmpId());
+      assertEquals(employee.getEmpName(),otherEmployee.getEmpName());
+      assertEquals(employee.getSalary(),otherEmployee.getSalary(),1e-15);
+      assertEquals(employee.getType(),otherEmployee.getType());
+    }
   }
   
   @Test
-  //@Ignore
+  @Ignore
   public void testUnMarshalViaMetaXML() throws Exception {
     String xml = getUserManagerXml();
     String metaxml = "<?xml version=\"1.0\"?>\n"

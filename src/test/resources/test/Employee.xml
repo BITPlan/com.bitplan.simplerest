@@ -30,7 +30,7 @@
 	</java-types>
 
 	<xml-registries>
-		<xml-registry name="com.bitplan.jaxb.example.ObjectFactory">
+		<xml-registry name="example.ObjectFactory">
 			<xml-element-decl java-method="createEmpleado" name="empleado"
 				type="example.Employee" />
 			<xml-element-decl java-method="createCorporacion"
@@ -40,12 +40,9 @@
 
 	<xml-enums>
 		<xml-enum java-enum="EmployeeType" value="java.lang.String">
-			<xml-enum-value java-enum-value="CONTRACT">CONTRACT
-			</xml-enum-value>
-			<xml-enum-value java-enum-value="PART_TIME">PART_TIME
-			</xml-enum-value>
-			<xml-enum-value java-enum-value="FULL_TIME">FULL_TIME
-			</xml-enum-value>
+			<xml-enum-value java-enum-value="CONTRACT">CONTRACT</xml-enum-value>
+			<xml-enum-value java-enum-value="PART_TIME">PART_TIME</xml-enum-value>
+			<xml-enum-value java-enum-value="FULL_TIME">FULL_TIME</xml-enum-value>
 		</xml-enum>
 	</xml-enums>
 </xml-bindings>
