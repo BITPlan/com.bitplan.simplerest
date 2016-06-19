@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-bindings xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/oxm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	package-name="example" xml-accessor-type="PUBLIC_MEMBER"
+	xml-accessor-order="ALPHABETICAL" xml-mapping-metadata-complete="false"
+	xml-name-transformer="example.NameGenerator" supported-versions="2.4">
+
+	<xml-schema element-form-default="QUALIFIED">
+		<xml-ns prefix="ns1" namespace-uri="http://www.example.org/type" />
+	</xml-schema>
+	<java-types>
+		<java-type name="Employee">
+			<xml-type namespace="http://www.example.org/type" />
+			<java-attributes>
+				<xml-attribute java-attribute="empId" xml-path="@id" />
+				<xml-element java-attribute="empName" name="name" />
+				<xml-element java-attribute="salary" />
+				<xml-element java-attribute="type" type="example.EmployeeType" />
+			</java-attributes>
+		</java-type>
+		<java-type name="Company">
+			<xml-root-element name="company" />
+			<java-attributes>
+  			<xml-attribute java-attribute="companyId" xml-path="@id" />
+	  		<xml-element java-attribute="companyName" name="name" />
+				<xml-element java-attribute="employees" name="employee"
+					type="example.Employee" container-type="java.util.ArrayList" />
+			</java-attributes>
+		</java-type>
+	</java-types>
+
+	<xml-registries>
+		<xml-registry name="com.bitplan.jaxb.example.ObjectFactory">
+			<xml-element-decl java-method="createEmpleado" name="empleado"
+				type="example.Employee" />
+			<xml-element-decl java-method="createCorporacion"
+				name="corporacion" type="example.Company" />
+		</xml-registry>
+	</xml-registries>
+
+	<xml-enums>
+		<xml-enum java-enum="EmployeeType" value="java.lang.String">
+			<xml-enum-value java-enum-value="CONTRACT">CONTRACT
+			</xml-enum-value>
+			<xml-enum-value java-enum-value="PART_TIME">PART_TIME
+			</xml-enum-value>
+			<xml-enum-value java-enum-value="FULL_TIME">FULL_TIME
+			</xml-enum-value>
+		</xml-enum>
+	</xml-enums>
+</xml-bindings>

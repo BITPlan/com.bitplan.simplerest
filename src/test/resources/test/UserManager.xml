@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<xml-bindings xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/oxm"
+	package-name="com.bitplan.rest.users">
+	<xml-schema namespace="http://www.example.com/user"
+		element-form-default="QUALIFIED" />
+	<java-types>
+		<java-type name="UserManagerImpl">
+			<xml-root-element name="UserManager" />
+			<java-attributes>
+				<xml-element java-attribute="users">
+					<xml-element-wrapper name="users" />
+				</xml-element>
+			</java-attributes>
+		</java-type>
+		<java-type name="UserImpl">
+			<xml-root-element name="User" />
+			<xml-type prop-order="id name firstname email password comment " />
+			<java-attributes>
+				<xml-element java-attribute="name" name="name" />
+				<xml-element java-attribute="firstName" name="firstName" />
+				<xml-element java-attribute="email" name="email" />
+				<xml-element java-attribute="password" name="password" />
+				<xml-element java-attribute="comment" name="comment" />
+			</java-attributes>
+		</java-type>
+	</java-types>
+</xml-bindings>

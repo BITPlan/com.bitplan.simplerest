@@ -9,6 +9,7 @@
  */
 package com.bitplan.jaxb;
 
+import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -22,20 +23,34 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.ValidationEvent;
 import javax.xml.bind.ValidationEventHandler;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.persistence.jaxb.JAXBContextFactory;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 
 /**
- * gerneric JaxbFactory
+ * generic JaxbFactory
+ * 
+ * using the Java Architecture for XML Binding JAXB
+ * to convert Java objects XML and JSON documents and back
+ * 
+ * https://en.wikipedia.org/wiki/Java_Architecture_for_XML_Binding
  * 
  * @author wf
  *
- * @param <T>
+ * @param <T> - the type to be marshalled and unmarshalled
  */
 public class JaxbFactory<T> implements JaxbFactoryApi<T> {
+  // since Java generics are implemented using type erasure
+  // http://stackoverflow.com/questions/339699/java-generics-type-erasure-when-and-what-happens
+  // we need to no the runtime type of the class to be handled by this factory
   final Class<? extends T> classOfT;
+  
+  // a JAXBContext can handle the marshalling and unmarshalling of a set of classes
+  // this is a specific JAXBContext for T with the type classOfT
   private JAXBContext context;
+  
+  // a set of "neighbour" classes may also be specified
   @SuppressWarnings("rawtypes")
   private Class[] otherClasses=new Class[0];
 
@@ -49,6 +64,7 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
     return classOfT;
   }
 
+  // create a logger to be use for info and debug messages (if any)
   protected static java.util.logging.Logger LOGGER = java.util.logging.Logger
       .getLogger("com.bitplan.jaxb");
 
@@ -63,7 +79,7 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
   }
   
   /**
-   * construct me with neighbour classes
+   * construct me with the given neighbour classes pOtherClasses
    * @param pClassOfT
    * @param pOtherClasses
    */
@@ -76,16 +92,27 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
   /**
    * create a JAXBContext for the given contextPath and XML MetaData 
    * @param contextPath
-   * @param xml
-   * @return
+   * @param bindingXml
+   * @return a JAXBContext
    * @throws Exception
    */
-  public static JAXBContext createJAXBContext(String contextPath,String xml) throws Exception {
-    StringReader sr=new StringReader(xml);
+  public static JAXBContext createJAXBContext(String contextPath,String bindingXml) throws Exception {
+    StringReader sr=new StringReader(bindingXml);
     Map<String, Object> properties = new HashMap<String, Object>();
     properties.put(JAXBContextProperties.OXM_METADATA_SOURCE, sr);
     JAXBContext lcontext = JAXBContextFactory.createContext(contextPath, JaxbFactory.class.getClassLoader(), properties);
     return lcontext;
+  }
+  
+  /**
+   * set the context based on the given contextPath and xmlBinding File
+   * @param contextPath
+   * @param xmlBinding
+   * @throws Exception
+   */
+  public void setBinding(String contextPath,File xmlBinding) throws Exception {
+    String bindingXml=FileUtils.readFileToString(xmlBinding);
+    context=createJAXBContext(contextPath,bindingXml);
   }
   
   /**
@@ -127,6 +154,13 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
     return u;
   }
 
+  /**
+   * unmarshal the given string s using the unmarshaller u
+   * @param u
+   * @param s
+   * @return - the Object of Type T 
+   * @throws Exception
+   */
   @SuppressWarnings("unchecked")
   public T fromString(Unmarshaller u, String s) throws Exception {
     // unmarshal the string to a Java object of type <T> (classOfT has the
@@ -249,4 +283,5 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
     String result = getString(marshaller, instance);
     return result;
   }
+
 }

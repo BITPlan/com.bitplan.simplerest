@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.persistence.jaxb.JAXBContextFactory;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -36,6 +38,9 @@ import com.bitplan.rest.users.User;
 import com.bitplan.rest.users.UserImpl;
 import com.bitplan.rest.users.UserManager;
 import com.bitplan.rest.users.UserManagerImpl;
+
+import example.Company;
+import example.Employee;
 
 /**
  * test the JaxBFactory
@@ -191,6 +196,28 @@ public class TestJaxbFactory {
 
   @Test
   @Ignore
+  public void testXmlBindings() throws Exception {
+    // example from http://www.eclipse.org/eclipselink/documentation/2.6/moxy/runtime003.htm
+    File xmlBinding=new File("src/test/resources/test/Employee.xml");
+    JaxbFactory<Company> jaxbFactory=new JaxbFactory<Company>(Company.class);
+    jaxbFactory.setBinding("com.bitplan.jaxb",xmlBinding);
+    Company company=new Company();
+    company.setCompanyId("doeinc");
+    company.setCompanyName("Doe & Partner Inc.");
+    for (int i=1;i<=3;i++) {
+      Employee employee=new Employee();
+      employee.setEmpId(i);
+      employee.setEmpName("employee "+i);
+      employee.setSalary(i*10000.0);
+      employee.setType("rank "+i);
+      company.getEmployees().add(employee);
+    }
+    String xml=jaxbFactory.asXML(company);
+    System.out.println(xml);
+  }
+  
+  @Test
+  //@Ignore
   public void testUnMarshalViaMetaXML() throws Exception {
     String xml = getUserManagerXml();
     String metaxml = "<?xml version=\"1.0\"?>\n"
@@ -220,6 +247,8 @@ public class TestJaxbFactory {
         + "                <xml-element java-attribute=\"comment\" name=\"comment\"/>\n"
         + "            </java-attributes>\n" + "        </java-type>\n"
         + "    </java-types>\n" + "</xml-bindings>";
+    metaxml=FileUtils.readFileToString(new File("src/test/resources/test/UserManager.xml"));
+    System.out.println(metaxml);
     javax.xml.bind.JAXBContext jaxbContext = JaxbFactory.createJAXBContext(
         "com.bitplan.rest.users", metaxml);
     UserManager um4 = unmarshalFromContext(jaxbContext, xml);
