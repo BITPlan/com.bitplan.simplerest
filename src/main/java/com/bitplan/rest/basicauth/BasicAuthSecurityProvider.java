@@ -23,13 +23,16 @@
  * Modifications:
  * If applicable, add the following below the License Header, with the fields
  * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [2013] [BITPlan GmbH]"
+ * "Portions Copyright [2013-2016] [BITPlan GmbH]"
  *
  * Contributor(s):
  * BITPlan GmbH elects to include this software in this distribution under the CDDL license." 
  */
 package com.bitplan.rest.basicauth;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.security.Principal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -94,8 +97,8 @@ public class BasicAuthSecurityProvider implements ContainerRequestFilter {
       User user;
       try {
         user = authenticate(request);
-      } catch (Exception e) {
-        throw new RuntimeException(e);
+      } catch (WebApplicationException wae) {
+        throw wae;
       }
       request.setSecurityContext(new Authorizer(user));
     }
@@ -136,7 +139,8 @@ public class BasicAuthSecurityProvider implements ContainerRequestFilter {
    * @param request
    * @return
    */
-  private User authenticate(ContainerRequest request) throws Exception {
+  private User authenticate(ContainerRequest request)
+      throws WebApplicationException {
     // Extract authentication credentials
     String authentication = request
         .getHeaderValue(ContainerRequest.AUTHORIZATION);
@@ -170,13 +174,18 @@ public class BasicAuthSecurityProvider implements ContainerRequestFilter {
     User user = userManager.getById(username);
     boolean valid = false;
     if (user != null) {
-      String encryptedPassword=userManager.getCrypt().encrypt(password);
-      if (encryptedPassword.equals(user.getPassword())) {
-        LOGGER.log(
-            Level.INFO,
-            "USER " + user.getId() + "(" + user.getFirstname() + " "
-                + user.getName() + ") AUTHENTICATED");
-        valid = true;
+      String encryptedPassword;
+      try {
+        encryptedPassword = userManager.getCrypt().encrypt(password);
+        if (encryptedPassword.equals(user.getPassword())) {
+          LOGGER.log(
+              Level.INFO,
+              "USER " + user.getId() + "(" + user.getFirstname() + " "
+                  + user.getName() + ") AUTHENTICATED");
+          valid = true;
+        }
+      } catch (Exception e) {
+        // TODO Auto-generated catch block
       }
     }
     if (!valid) {
