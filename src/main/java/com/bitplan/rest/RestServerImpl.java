@@ -532,8 +532,7 @@ public class RestServerImpl implements Runnable, UncaughtExceptionHandler,
     }
 
     if (httpServer == null) {
-      System.err.println("Couldn't create server - exiting with error code 1");
-      System.exit(1);
+      throw new Exception("Couldn't create http server");
     }
 
     // remote address handling
