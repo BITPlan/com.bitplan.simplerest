@@ -28,7 +28,7 @@
 		<!-- http://grizzly.java.net/ -->
 		<grizzly.version>2.3.25</grizzly.version>
 		<!-- Rythm Template Engine -->
-		<rythm.version>1.1.6-SNAPSHOT</rythm.version>
+		<rythm.version>1.1.7-SNAPSHOT</rythm.version>
 		<!-- JUnit unit testing framework -->
 		<junit4.version>4.11</junit4.version>
 		<!-- http://stackoverflow.com/questions/3017695/how-to-configure-encoding-in-maven -->
