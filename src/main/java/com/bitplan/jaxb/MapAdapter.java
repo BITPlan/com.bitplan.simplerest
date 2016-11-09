@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  * @author wf
  *
  */
-public class MapAdapter<T> extends XmlAdapter<List<T>, Map<String, T>> {
+public class MapAdapter<T> extends XmlAdapter<String, Map<String, T>> {
   
   @Override
   public String marshal(Map<String, T> map) throws Exception {
