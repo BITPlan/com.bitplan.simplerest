@@ -15,6 +15,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.StringReader;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -24,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -31,7 +34,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.eclipse.persistence.jaxb.JAXBContextFactory;
 import org.junit.Ignore;
@@ -56,7 +59,7 @@ import example.EmployeeType;
 public class TestJaxbFactory {
   protected Logger LOGGER = Logger.getLogger("com.bitplan.jaxb");
 
-  protected boolean debug = true;
+  protected boolean debug = false;
   boolean moxy = true;
 
   @XmlRootElement
@@ -83,14 +86,18 @@ public class TestJaxbFactory {
   public static class CustomerWithMap {
     String name;
     String firstname;
-
-    @XmlElementWrapper(name = "orderlist")
-    @XmlElement(name = "Order")
+    @XmlElementWrapper(name = "orders")
+    @XmlElement(name = "order")
     List<Order> orders = new ArrayList<Order>();
 
-    @XmlJavaTypeAdapter(MapAdapter.class)
-    @XmlMapType(type = Order.class, wrap = "ordermap")
+    @XmlTransient
     private Map<String, Order> ordermap = new LinkedHashMap<String, Order>();
+
+    public void reinit() {
+      for (Order order : orders) {
+        ordermap.put(order.orderId, order);
+      }
+    }
   }
 
   @Test
@@ -375,48 +382,111 @@ public class TestJaxbFactory {
     customer.firstname = "John";
     customer.name = "Doe";
     addOrders(customer.orders, count);
-    for (Order order : customer.orders) {
-      customer.ordermap.put(order.orderId, order);
-    }
+    customer.reinit();
     return customer;
   }
 
   @Test
-  public void testMapWrap() throws Exception {
-    int sizes[] = { 0,1,3 };
-    for (int size : sizes) {
-      CustomerWithMap customer = getCustomerWithMap(size);
-      MapWrap<Order> mapWrap = new MapWrap<Order>(customer.ordermap);
-      mapWrap.setItemClass(Order.class);
-      String xml = mapWrap.asXML();
-      if (debug) {
-        LOGGER.log(Level.INFO, xml);
-      }
-      Map<String, Order> map = mapWrap.fromXML(xml);
-      assertNotNull(map);
-      if (size > 0) {
-        Order o1 = map.get("Id1");
-        assertNotNull(o1);
-        assertEquals("Item 1", o1.item);
-      }
-    }
-  }
-
-  @Test
   public void testMap() throws Exception {
+    CustomerWithMap customer = getCustomerWithMap(2);
     JaxbFactory<CustomerWithMap> jaxbFactory = new JaxbFactory<CustomerWithMap>(
         CustomerWithMap.class);
-    CustomerWithMap customer = getCustomerWithMap(2);
+    jaxbFactory.setMarshalListener(new MarshalListener());
     String xml = jaxbFactory.asXML(customer);
     if (debug) {
       LOGGER.log(Level.INFO, xml);
     }
+    jaxbFactory.setUnmarshalListener(new UnmarshalListener());
     CustomerWithMap customer2 = jaxbFactory.fromXML(xml);
     assertNotNull(customer2);
     assertEquals(2, customer2.orders.size());
+    customer2.reinit();
     assertNotNull(customer2.ordermap);
-    Order o1 = customer2.ordermap.get("1");
+    Order o1 = customer2.ordermap.get("Id1");
     assertNotNull(o1);
+    assertEquals("Item 1", o1.item);
   }
 
+  /**
+   * get the XMLId key field for the given class
+   * 
+   * @param clazz
+   * @return - the keyField
+   */
+  @SuppressWarnings("rawtypes")
+  public Field getKeyField(Class clazz) {
+    for (Field field : clazz.getDeclaredFields()) {
+      for (Annotation a : field.getAnnotations()) {
+        if (a.annotationType() == XmlID.class) {
+          return field;
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * a MapMarshalListener
+   * 
+   * @author wf
+   *
+   */
+  public class MarshalListener extends Marshaller.Listener {
+    @SuppressWarnings("rawtypes")
+    Map<Class, Field> keyFields = new HashMap<Class, Field>();
+
+    @Override
+    public void afterMarshal(Object source) {
+      if (debug) {
+        LOGGER.log(Level.INFO, "after marshal: "
+            + source.getClass().getSimpleName());
+      }
+    }
+
+    @Override
+    public void beforeMarshal(Object source) {
+      if (debug) {
+        LOGGER.log(Level.INFO, "before marshal: "
+            + source.getClass().getSimpleName());
+      }
+      Field keyField = getKeyField(source.getClass());
+      if (keyField != null) {
+        keyFields.put(source.getClass(), keyField);
+        if (debug) {
+          LOGGER.log(Level.INFO, source.getClass().getSimpleName()
+              + " has key " + keyField.getName());
+        }
+      }
+    }
+  }
+
+  /**
+   * listener for Unmarshal events
+   * 
+   * @author wf
+   *
+   */
+  public class UnmarshalListener extends Unmarshaller.Listener {
+    public void log(String title, Object target, Object parent) {
+      if (debug) {
+        String targetName="null";
+        String parentName="null";
+        if (target!=null) targetName=target.getClass().getSimpleName();
+        if (parent!=null) parentName=parent.getClass().getSimpleName();
+        LOGGER.log(Level.INFO, title+": "
+            + targetName + "->"
+            + parentName);
+      }
+    }
+
+    @Override
+    public void afterUnmarshal(Object target, Object parent) {
+      log("after unmarshal", target, parent);
+    }
+
+    @Override
+    public void beforeUnmarshal(Object target, Object parent) {
+      log("before unmarshal: ", target, parent);
+    }
+  }
 }
