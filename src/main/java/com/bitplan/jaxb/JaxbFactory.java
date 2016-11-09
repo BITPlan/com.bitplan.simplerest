@@ -5,7 +5,7 @@
  * D-47877 Willich-Schiefbahn
  *
  * http://www.bitplan.com
- *  * 
+ *  
  */
 package com.bitplan.jaxb;
 
@@ -57,6 +57,38 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
   private Class[] otherClasses = new Class[0];
 
   public boolean novalidate=false;
+  public boolean fragment=false;
+  
+  private Marshaller.Listener marshalListener=null;
+  private Unmarshaller.Listener unmarshalListener=null;
+
+  /**
+   * @return the listener
+   */
+  public Marshaller.Listener getMarshalListener() {
+    return marshalListener;
+  }
+  
+  /**
+   * @param marshalListener the marshalListener to set
+   */
+  public void setMarshalListener(Marshaller.Listener marshalListener) {
+    this.marshalListener = marshalListener;
+  }
+
+  /**
+   * @return the unmarshalListener
+   */
+  public Unmarshaller.Listener getUnmarshalListener() {
+    return unmarshalListener;
+  }
+
+  /**
+   * @param unmarshalListener the unmarshalListener to set
+   */
+  public void setUnmarshalListener(Unmarshaller.Listener unmarshalListener) {
+    this.unmarshalListener = unmarshalListener;
+  }
 
   /**
    * allow access to the type that would otherwise not be available due to Java
@@ -79,6 +111,9 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
    * @param pClassOfT
    */
   public JaxbFactory(Class<? extends T> pClassOfT) {
+    if (pClassOfT==null) {
+      throw new IllegalArgumentException("JaxbFactory can not be instantiated with a null class");
+    }
     classOfT = pClassOfT;
   }
 
@@ -155,6 +190,9 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
   public Unmarshaller getUnmarshaller() throws JAXBException {
     JAXBContext lcontext = getJAXBContext();
     Unmarshaller u = lcontext.createUnmarshaller();
+    if (unmarshalListener!=null) {
+      u.setListener(unmarshalListener);
+    }
     if (novalidate) {
       u.setEventHandler(new ValidationEventHandler() {
         @Override
@@ -249,6 +287,9 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
   public Marshaller getMarshaller(T instance) throws JAXBException {
     JAXBContext lcontext = getJAXBContext();
     Marshaller marshaller = lcontext.createMarshaller();
+    if (this.marshalListener!=null) {
+      marshaller.setListener(marshalListener);
+    }
     marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
     return marshaller;
   }
@@ -297,6 +338,9 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
   public String asXML(T instance) throws JAXBException {
     Marshaller marshaller = getMarshaller(instance);
     marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/xml");
+    if (fragment) {
+      marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+    }
     String result = getString(marshaller, instance);
     return result;
   }

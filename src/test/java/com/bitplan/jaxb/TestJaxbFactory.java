@@ -17,8 +17,11 @@ import java.io.File;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -26,7 +29,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.persistence.jaxb.JAXBContextFactory;
 import org.junit.Ignore;
@@ -49,7 +54,9 @@ import example.EmployeeType;
  *
  */
 public class TestJaxbFactory {
-  boolean debug = false;
+  protected Logger LOGGER = Logger.getLogger("com.bitplan.jaxb");
+
+  protected boolean debug = true;
   boolean moxy = true;
 
   @XmlRootElement
@@ -65,9 +72,25 @@ public class TestJaxbFactory {
   @XmlRootElement
   @XmlAccessorType(XmlAccessType.FIELD)
   public static class Order {
+    @XmlID
     String orderId;
     String item;
     int count;
+  }
+
+  @XmlRootElement(name = "customer")
+  @XmlAccessorType(XmlAccessType.FIELD)
+  public static class CustomerWithMap {
+    String name;
+    String firstname;
+
+    @XmlElementWrapper(name = "orderlist")
+    @XmlElement(name = "Order")
+    List<Order> orders = new ArrayList<Order>();
+
+    @XmlJavaTypeAdapter(MapAdapter.class)
+    @XmlMapType(type = Order.class, wrap = "ordermap")
+    private Map<String, Order> ordermap = new LinkedHashMap<String, Order>();
   }
 
   @Test
@@ -77,14 +100,31 @@ public class TestJaxbFactory {
     // String jaxbContext = JAXBContext.newInstance(Customer.class)
     String jaxbContextType = customerFactory.getJAXBContext().getClass()
         .getName();
-    if (debug)
-      System.out.println(jaxbContextType);
+    if (debug) {
+      LOGGER.log(Level.INFO, jaxbContextType);
+    }
     // Oracle/Sun default:
     String expected = "com.sun.xml.bind.v2.runtime.JAXBContextImpl";
     if (moxy)
       expected = "org.eclipse.persistence.jaxb.JAXBContext"; // jersey-moxy
     assertEquals("Expecting configured JaxB implementation", expected,
         jaxbContextType);
+  }
+
+  /**
+   * add the given number of orders to the given list of orders
+   * 
+   * @param orders
+   * @param count
+   */
+  public void addOrders(List<Order> orders, int count) {
+    for (int i = 1; i <= count; i++) {
+      Order order = new Order();
+      order.item = "Item " + i;
+      order.count = i;
+      order.orderId = "Id" + i;
+      orders.add(order);
+    }
   }
 
   @Test
@@ -95,16 +135,11 @@ public class TestJaxbFactory {
     Customer customer = new Customer();
     customer.name = "Doe";
     customer.firstname = "John";
-    for (int i = 1; i <= 3; i++) {
-      Order order = new Order();
-      order.item = "Item " + i;
-      order.count = i;
-      order.orderId = "Id" + i;
-      customer.orders.add(order);
-    }
+    addOrders(customer.orders, 3);
     String xml = customerFactory.asXML(customer);
-    if (debug)
-      System.out.println("'" + xml + "'");
+    if (debug) {
+      LOGGER.log(Level.INFO, "'" + xml + "'");
+    }
     assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
         + "<customer>\n" + "   <name>Doe</name>\n"
         + "   <firstname>John</firstname>\n" + "   <orders>\n"
@@ -122,8 +157,9 @@ public class TestJaxbFactory {
     assertEquals("Doe", customer2.name);
     assertEquals("John", customer2.firstname);
     String json = customerFactory.asJson(customer);
-    if (debug)
-      System.out.println(json);
+    if (debug) {
+      LOGGER.log(Level.INFO, json);
+    }
     assertEquals("{\n" + "   \"customer\" : {\n"
         + "      \"name\" : \"Doe\",\n" + "      \"firstname\" : \"John\",\n"
         + "      \"orders\" : {\n" + "         \"order\" : [ {\n"
@@ -166,10 +202,10 @@ public class TestJaxbFactory {
    */
   public UserManager getUserManager() {
     UserManager um = new UserManagerImpl();
-    um.add(new UserImpl(um,"jd001", "John", "Doe", "john@doe.org", "badpassword",
-        "admin","John is our admin"));
-    um.add(new UserImpl(um,"bs001", "Bill", "Smith", "bill@smith.com",
-        "simplesecret","secretary","Bill is our secretary"));
+    um.add(new UserImpl(um, "jd001", "John", "Doe", "john@doe.org",
+        "badpassword", "admin", "John is our admin"));
+    um.add(new UserImpl(um, "bs001", "Bill", "Smith", "bill@smith.com",
+        "simplesecret", "secretary", "Bill is our secretary"));
     return um;
   }
 
@@ -182,8 +218,9 @@ public class TestJaxbFactory {
   public String getUserManagerXml() throws Exception {
     UserManager um = getUserManager();
     String xml = um.asXML();
-    if (debug)
-      System.out.println(xml);
+    if (debug) {
+      LOGGER.log(Level.INFO, xml);
+    }
     return xml;
   }
 
@@ -210,7 +247,9 @@ public class TestJaxbFactory {
   @Test
   public void testUnmarshalViaObjectFactory() throws Exception {
     String xml = getUserManagerXml();
-    System.out.println(xml);
+    if (debug) {
+      LOGGER.log(Level.INFO, xml);
+    }
     Map<String, Object> properties = new HashMap<String, Object>();
     Class[] classes = { ObjectFactory.class };
     javax.xml.bind.JAXBContext jaxbContext = JAXBContextFactory.createContext(
@@ -239,7 +278,7 @@ public class TestJaxbFactory {
     assertEquals(2, um.getUsers().size());
     if (debug) {
       for (User user : um.getUsers()) {
-        System.out.println(user.getId());
+        LOGGER.log(Level.INFO, user.getId());
       }
     }
     UserManager um1 = getUserManager();
@@ -303,8 +342,9 @@ public class TestJaxbFactory {
     jaxbFactory.setBinding("example", EMPLOYEE_BINDING);
     Company company = getCompany();
     String xml = jaxbFactory.asXML(company);
-    if (debug)
-      System.out.println(xml);
+    if (debug) {
+      LOGGER.log(Level.INFO, xml);
+    }
     Company company2 = jaxbFactory.fromXML(xml);
     checkCompany(company, company2);
   }
@@ -318,10 +358,65 @@ public class TestJaxbFactory {
     String xml = jaxbFactory.asXML(company);
     xml = xml.replace("company", "corporacion");
     xml = xml.replace("employee", "empleado");
-    if (debug)
-      System.out.println(xml);
+    if (debug) {
+      LOGGER.log(Level.INFO, xml);
+    }
     Company company3 = jaxbFactory.fromXML(xml);
     checkCompany(company, company3);
+  }
+
+  /**
+   * get an example Customer with Map
+   * 
+   * @return
+   */
+  public CustomerWithMap getCustomerWithMap(int count) {
+    CustomerWithMap customer = new CustomerWithMap();
+    customer.firstname = "John";
+    customer.name = "Doe";
+    addOrders(customer.orders, count);
+    for (Order order : customer.orders) {
+      customer.ordermap.put(order.orderId, order);
+    }
+    return customer;
+  }
+
+  @Test
+  public void testMapWrap() throws Exception {
+    int sizes[] = { 0,1,3 };
+    for (int size : sizes) {
+      CustomerWithMap customer = getCustomerWithMap(size);
+      MapWrap<Order> mapWrap = new MapWrap<Order>(customer.ordermap);
+      mapWrap.setItemClass(Order.class);
+      String xml = mapWrap.asXML();
+      if (debug) {
+        LOGGER.log(Level.INFO, xml);
+      }
+      Map<String, Order> map = mapWrap.fromXML(xml);
+      assertNotNull(map);
+      if (size > 0) {
+        Order o1 = map.get("Id1");
+        assertNotNull(o1);
+        assertEquals("Item 1", o1.item);
+      }
+    }
+  }
+
+  @Test
+  public void testMap() throws Exception {
+    JaxbFactory<CustomerWithMap> jaxbFactory = new JaxbFactory<CustomerWithMap>(
+        CustomerWithMap.class);
+    CustomerWithMap customer = getCustomerWithMap(2);
+    String xml = jaxbFactory.asXML(customer);
+    if (debug) {
+      LOGGER.log(Level.INFO, xml);
+    }
+    CustomerWithMap customer2 = jaxbFactory.fromXML(xml);
+    assertNotNull(customer2);
+    assertEquals(2, customer2.orders.size());
+    assertNotNull(customer2.ordermap);
+    Order o1 = customer2.ordermap.get("1");
+    assertNotNull(o1);
   }
 
 }

@@ -13,7 +13,6 @@ import org.junit.Before;
 
 import com.bitplan.hello.rest.HelloServer;
 import com.bitplan.rest.RestServer;
-import com.bitplan.rest.User;
 
 /**
  * test the appbuilder rest server
