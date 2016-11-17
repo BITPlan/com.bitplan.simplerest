@@ -22,7 +22,7 @@ http://stackoverflow.com/q/37775309/1497139
 ### Distribution
 Available at Maven Central see 
 
-http://search.maven.org/#artifactdetails|com.bitplan.rest|com.bitplan.simplerest|0.0.2|jar
+http://search.maven.org/#artifactdetails|com.bitplan.rest|com.bitplan.simplerest|0.0.4|jar
 
 Maven dependency:
 
@@ -30,7 +30,7 @@ Maven dependency:
 <dependency>
 	<groupId>com.bitplan.rest</groupId>
 	<artifactId>com.bitplan.simplerest</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.4</version>
 </dependency>
 ```
 
@@ -38,3 +38,4 @@ Maven dependency:
 * 0.0.1: 2016-06-18 First release via GitHub / Maven central
 * 0.0.2: 2016-06-19 adds basic auth support
 * 0.0.3: 2016-11-09 Tests Map wrapper
+* 0.0.4: 2016-11-17 upgrades to Jersey 1.19.3

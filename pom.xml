@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.bitplan.rest</groupId>
 	<artifactId>com.bitplan.simplerest</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.4</version>
 	<name>Simple Jersey RestFul Framework</name>
 	<description>Needed Base Utilities and Functions for Jersey 1.x RESTFul applications</description>
 	<properties>
@@ -20,7 +20,7 @@
 		<eclipselink.version>2.6.4</eclipselink.version>
 		<!-- jersey version -->
 		<!-- <jersey.version>2.22.2</jersey.version> -->
-		<jersey.version>1.19.1</jersey.version>
+		<jersey.version>1.19.3</jersey.version>
 		<!-- Guice dependency injection framework -->
 		<guice.version>3.0</guice.version>
 		<!-- args4j http://mvnrepository.com/artifact/args4j/args4j/2.33 -->
