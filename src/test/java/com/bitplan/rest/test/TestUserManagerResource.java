@@ -30,31 +30,27 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.bitplan.rest.Crypt;
-import com.bitplan.rest.CryptImpl;
+import com.bitplan.rest.UserManager;
+import com.bitplan.rest.users.UserImpl;
+import com.bitplan.rest.users.UserManagerImpl;
 
 /**
- * test encryption
+ * simple test for Rythm Template based resource
  * 
  * @author wf
  *
  */
-public class TestCrypt {
-  boolean debug = false;
+public class TestUserManagerResource extends TestHelloServer {
 
   @Test
-  public void testCrypt() throws Exception {
-    Crypt pcf = new CryptImpl("XkMhYb57ljt4pR3rA14w3w7V1NWdojRa", "p4qzVBSR");
-    String originalPassword = "secretPassword";
-    if (debug)
-      System.out.println("Original password: " + originalPassword);
-    String encryptedPassword = pcf.encrypt(originalPassword);
-    if (debug)
-      System.out.println("Encrypted password: " + encryptedPassword);
-    String decryptedPassword = pcf.decrypt(encryptedPassword);
-    if (debug)
-      System.out.println("Decrypted password: " + decryptedPassword);
-    assertEquals(originalPassword, decryptedPassword);
+  public void testUserManageResource() throws Exception {
+    UserManager um=UserManagerImpl.getInstance();
+    um.getUsers().clear();
+    um.add(new UserImpl(um,"scott","Scott","Bruce","bruce.scott@tiger.com","tiger","CEO","since 2016-01"));
+    um.add(new UserImpl(um,"scott","Doe","John","john@doe.com","mightmouse","Janitor","since 2017-01"));
+    assertEquals(2,um.getUsers().size());
+    // debug=true;
+    super.check("/hello/users", "Scott");
   }
 
 }

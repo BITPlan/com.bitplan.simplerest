@@ -22,35 +22,34 @@ package com.bitplan.hello.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Request;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-@Path("/hello")
+import com.bitplan.rest.resources.TemplateResource;
+import com.bitplan.rest.users.UserManagerImpl;
+
+@Path("/users")
 /**
- * Simple Hello Resource
+ * UserManager
  * @author wf
  *
  */
-public class HelloResource {
+public class UserManagerResource extends TemplateResource {
   @Context
   UriInfo uriInfo;
 
   @Context
   Request request;
 
-  @GET
-  public String getHello() {
-    return "Hello";
-  }
   
   @GET
   @Produces("text/html")
-  @Path("echo/{value}")
-  public String getEcho(@PathParam("value") String value) {
-    System.out.println(request.getMethod()+":"+uriInfo.getPath());
-    return value;
+  public Response getUsers() {
+    rootMap.put("userManager", UserManagerImpl.getInstance());
+    Response response = super.templateResponse("users.rythm");
+    return response;
   }
 }

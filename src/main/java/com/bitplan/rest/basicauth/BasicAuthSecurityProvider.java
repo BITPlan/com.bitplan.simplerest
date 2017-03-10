@@ -1,38 +1,25 @@
-/*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+/**
+ * Copyright (c) 2016-2017 BITPlan GmbH
  *
- * Copyright (c) 2013 Oracle and/or its affiliates. All rights reserved.
+ * http://www.bitplan.com
  *
- * The contents of this file are subject to the terms of either the GNU
- * General Public License Version 2 only ("GPL") or the Common Development
- * and Distribution License("CDDL") (collectively, the "License"). You
- * may not use this file except in compliance with the License. You can
- * obtain a copy of the License at
- * http://glassfish.java.net/public/CDDL+GPL_1_1.html
- * or packager/legal/LICENSE.txt. See the License for the specific
- * language governing permissions and limitations under the License.
+ * This file is part of the Opensource project at:
+ * https://github.com/BITPlan/com.bitplan.simplerest
  *
- * When distributing the software, include this License Header Notice in each
- * file and include the License file at packager/legal/LICENSE.txt.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * GPL Classpath Exception:
- * Oracle designates this particular file as subject to the "Classpath"
- * exception as provided by Oracle in the GPL Version 2 section of the License
- * file that accompanied this code.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Modifications:
- * If applicable, add the following below the License Header, with the fields
- * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [2013-2016] [BITPlan GmbH]"
- *
- * Contributor(s):
- * BITPlan GmbH elects to include this software in this distribution under the CDDL license." 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.bitplan.rest.basicauth;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
 import java.security.Principal;
 import java.util.logging.Level;
 import java.util.logging.Logger;

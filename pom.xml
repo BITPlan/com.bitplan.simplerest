@@ -1,5 +1,5 @@
 <!--
-	Copyright (c) 2016 BITPlan GmbH
+	Copyright (c) 2016-2017 BITPlan GmbH
 
 	Project details and license at:
 	https://github.com/BITPlan/com.bitplan.simplerest
@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.bitplan.rest</groupId>
 	<artifactId>com.bitplan.simplerest</artifactId>
-	<version>0.0.4</version>
+	<version>0.0.5</version>
 	<name>Simple Jersey RestFul Framework</name>
 	<description>Needed Base Utilities and Functions for Jersey 1.x RESTFul applications</description>
 	<properties>
@@ -250,6 +250,13 @@
 			<artifactId>joda-time</artifactId>
 			<version>2.9.4</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.rythmengine/rythm-engine -->
+		<dependency>
+			<groupId>org.rythmengine</groupId>
+			<artifactId>rythm-engine</artifactId>
+			<version>1.1.7</version>
+		</dependency>
+
 		<!-- Jersey
 			<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
@@ -284,6 +291,18 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<!-- http://code.mycila.com/license-maven-plugin/ -->
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<version>1.9.0</version>
+				<configuration>
+					<header>src/etc/header.txt</header>
+					<includes>
+						<include>src/**/*.java</include>
+					</includes>
+				</configuration>
 			</plugin>
 			<plugin>
 				<!--
