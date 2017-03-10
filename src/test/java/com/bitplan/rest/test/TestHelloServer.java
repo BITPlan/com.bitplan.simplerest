@@ -26,7 +26,7 @@ import com.bitplan.hello.rest.HelloServer;
 import com.bitplan.rest.RestServer;
 
 /**
- * test the appbuilder rest server
+ * test the Hello rest server
  * @author wf
  *
  */
