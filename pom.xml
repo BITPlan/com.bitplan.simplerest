@@ -28,7 +28,7 @@
 		<!-- http://grizzly.java.net/ -->
 		<grizzly.version>2.3.25</grizzly.version>
 		<!-- Rythm Template Engine -->
-		<rythm.version>1.1.7-SNAPSHOT</rythm.version>
+		<rythm.version>1.1.7</rythm.version>
 		<!-- JUnit unit testing framework -->
 		<junit4.version>4.11</junit4.version>
 		<!-- http://stackoverflow.com/questions/3017695/how-to-configure-encoding-in-maven -->
@@ -239,6 +239,7 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.rythmengine/rythm-engine -->	
 		<dependency>
 			<groupId>org.rythmengine</groupId>
 			<artifactId>rythm-engine</artifactId>
@@ -250,13 +251,6 @@
 			<artifactId>joda-time</artifactId>
 			<version>2.9.4</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.rythmengine/rythm-engine -->
-		<dependency>
-			<groupId>org.rythmengine</groupId>
-			<artifactId>rythm-engine</artifactId>
-			<version>1.1.7</version>
-		</dependency>
-
 		<!-- Jersey
 			<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
