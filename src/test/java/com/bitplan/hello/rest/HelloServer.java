@@ -21,6 +21,8 @@
 package com.bitplan.hello.rest;
 
 import com.bitplan.rest.RestServerImpl;
+import com.bitplan.rest.providers.JsonProvider;
+import com.bitplan.rest.users.UserManagerImpl;
 
 /**
  * Hello Server
@@ -36,9 +38,10 @@ public class HelloServer extends RestServerImpl {
   public HelloServer() throws Exception {
     settings.setHost("0.0.0.0");
     settings.setPort(8111);
-    String packages="com.bitplan.hello.resources;com.bitplan.rest.providers";
     settings.setContextPath("/hello");
     settings.addClassPathHandler("/", "/static/");
+    String packages="com.bitplan.hello.resources;com.bitplan.rest.providers";
+    JsonProvider.registerType(UserManagerImpl.class);
     settings.setPackages(packages);
    }
   

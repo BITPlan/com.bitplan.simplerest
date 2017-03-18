@@ -3,6 +3,8 @@ package com.bitplan.rest.providers;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import javax.xml.transform.stream.StreamSource;
 
@@ -29,12 +31,21 @@ public class JsonProvider implements
     @Context
     protected Providers providers;
    
+    public static List<Class<?>> registeredTypes=new ArrayList<Class<?>>();
+    /**
+     * register a type
+     * @param clazz
+     */
+    public static void registerType(Class<?> clazz) {
+      registeredTypes.add(clazz);
+    }
+    
     /**
      * check whether the genericType is readable
      */
     public boolean isReadable(Class<?> type, Type genericType,
         Annotation[] annotations, MediaType mediaType) {
-        boolean readable=UserManagerImpl.class == getDomainClass(genericType);
+        boolean readable=registeredTypes.contains(getDomainClass(genericType));
         return readable;
     }
    

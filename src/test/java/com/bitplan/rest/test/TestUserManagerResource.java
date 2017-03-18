@@ -60,7 +60,7 @@ public class TestUserManagerResource extends TestHelloServer {
 
   @Test
   public void testUserManageResource() throws Exception {
-    debug=true;
+    debug=false;
     String path="/hello/users";
     super.check(path, "Scott");
     String responseXml = getResponseString("application/xml; charset=UTF-8", path);
@@ -74,6 +74,9 @@ public class TestUserManagerResource extends TestHelloServer {
     if (debug) {
       LOGGER.log(Level.INFO,responseJson);
     }
+    assertTrue(responseJson.startsWith("{\"users\":{\"User\""));
+    responseJson=getResponseString("text/html; charset=UTF-8", path+".json");
+    assertTrue(responseJson.startsWith("{\"users\":{\"User\""));
   }
 
 }
