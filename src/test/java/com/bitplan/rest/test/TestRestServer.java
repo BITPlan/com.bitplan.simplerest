@@ -350,7 +350,7 @@ public abstract class TestRestServer {
    * @return
    * @throws Exception
    */
-  public ClientResponse getPostResponse(String contentType, String path,
+  public ClientResponse getPostResponse(String path,
       Map<String, String> pFormData, boolean debug) throws Exception {
     MultivaluedMap<String, String> lFormData = new MultivaluedMapImpl();
     for (String key : pFormData.keySet()) {
