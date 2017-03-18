@@ -239,9 +239,9 @@ public class DefaultTypeConverter extends ValueDisplayer
         return null;
       // TODO this is where all the magic happens...
       // support ISO yyyy-mm-dd
-      String formatsToTest[] = { "yyyy-MM-dd", "yyyy-MM-dd HH:mm",
-          "yyyy-MM-dd HH:mm:ss", "dd.MM.yyyy HH:mm", "dd.MM.yy HH:mm",
-          "dd.MM.yyyy", "dd.MM.yy", };
+      String formatsToTest[] = { 
+          "yyyy-MM-dd HH:mm:ss","yyyy-MM-dd HH:mm", "yyyy-MM-dd", "dd.MM.yyyy HH:mm", "dd.MM.yy HH:mm",
+          "dd.MM.yyyy", "dd.MM.yy" };
       for (String format : formatsToTest) {
         SimpleDateFormat formatter = new SimpleDateFormat(format);
         try {

@@ -41,7 +41,7 @@ import com.bitplan.datatypes.DefaultTypeConverter;
  */
 public class TypeConverterTest  {
   protected Logger LOGGER = Logger.getLogger("com.bitplan.rest.test");
-	protected boolean debug=true;
+	protected boolean debug=false;
 	
 	/**
 	 * get the class Name of the given object
