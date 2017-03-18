@@ -1,10 +1,5 @@
-<!--
-	Copyright (c) 2016-2017 BITPlan GmbH
-
-	Project details and license at:
-	https://github.com/BITPlan/com.bitplan.simplerest
-
--->
+<!-- Copyright (c) 2016-2017 BITPlan GmbH Project details and license at: 
+	https://github.com/BITPlan/com.bitplan.simplerest -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -93,21 +88,21 @@
 			<version>${eclipselink.version}</version>
 		</dependency>
 
-		<!-- <dependency>
-			Moxy media JSOn support - Jersey 2.0 only
-			<groupId>org.glassfish.jersey.media</groupId>
-			<artifactId>jersey-media-moxy</artifactId>
-			</dependency> -->
-		<!-- http://mvnrepository.com/artifact/com.sun.jersey/jersey-bundle
-			<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-bundle</artifactId>
-			<version>${jersey.version}</version>
-			</dependency> -->
+		<!-- <dependency> Moxy media JSOn support - Jersey 2.0 only <groupId>org.glassfish.jersey.media</groupId> 
+			<artifactId>jersey-media-moxy</artifactId> </dependency> -->
+		<!-- http://mvnrepository.com/artifact/com.sun.jersey/jersey-bundle <dependency> 
+			<groupId>com.sun.jersey</groupId> <artifactId>jersey-bundle</artifactId> 
+			<version>${jersey.version}</version> </dependency> -->
 		<!-- Jersey client -->
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-client</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.sun.jersey.contribs/jersey-moxy -->
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-moxy</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
 		<!-- Grizzly server -->
@@ -142,27 +137,13 @@
 			<version>3.0</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- bundle <dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-server</artifactId>
-			<version>${jersey.version}</version>
-			</dependency>
-			<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-core</artifactId>
-			<version>${jersey.version}</version>
-			</dependency>
-			<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-servlet</artifactId>
-			<version>${jersey.version}</version>
-			</dependency>
-			<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-client</artifactId>
-			<version>${jersey.version}</version>
-			</dependency>
-		-->
+		<!-- bundle <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-server</artifactId> 
+			<version>${jersey.version}</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId> 
+			<artifactId>jersey-core</artifactId> <version>${jersey.version}</version> 
+			</dependency> <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-servlet</artifactId> 
+			<version>${jersey.version}</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId> 
+			<artifactId>jersey-client</artifactId> <version>${jersey.version}</version> 
+			</dependency> -->
 		<!-- JSON support for jersey -->
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
@@ -239,7 +220,7 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.rythmengine/rythm-engine -->	
+		<!-- https://mvnrepository.com/artifact/org.rythmengine/rythm-engine -->
 		<dependency>
 			<groupId>org.rythmengine</groupId>
 			<artifactId>rythm-engine</artifactId>
@@ -251,14 +232,9 @@
 			<artifactId>joda-time</artifactId>
 			<version>2.9.4</version>
 		</dependency>
-		<!-- Jersey
-			<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-grizzly2-http</artifactId>
-			</dependency>
-			<dependency>
-			<groupId>org.glassfish.jersey.media</groupId>
-			<artifactId>jersey-media-moxy</artifactId>
+		<!-- Jersey <dependency> <groupId>org.glassfish.jersey.containers</groupId> 
+			<artifactId>jersey-container-grizzly2-http</artifactId> </dependency> <dependency> 
+			<groupId>org.glassfish.jersey.media</groupId> <artifactId>jersey-media-moxy</artifactId> 
 			</dependency> -->
 
 	</dependencies>
@@ -299,15 +275,9 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<!--
-					see
-					http://central.sonatype.org/pages/apache-maven.html
-
-					Javadoc and Sources Attachments
-					To get Javadoc and Source jar files generated, you have to configure
-					the
-					javadoc and source Maven plugins.
-				-->
+				<!-- see http://central.sonatype.org/pages/apache-maven.html Javadoc 
+					and Sources Attachments To get Javadoc and Source jar files generated, you 
+					have to configure the javadoc and source Maven plugins. -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<version>2.2.1</version>
@@ -333,11 +303,8 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--
-				GPG Signed Components
-				The Maven GPG plugin is used to sign the components with the following
-				configuration.
-			-->
+			<!-- GPG Signed Components The Maven GPG plugin is used to sign the components 
+				with the following configuration. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
@@ -387,18 +354,11 @@
 			<build>
 				<plugins>
 
-					<!--
-						according to :
-
-						http://central.sonatype.org/pages/apache-maven.html
-
-						Nexus Staging Maven Plugin for Deployment and Release
-
-						The Nexus Staging Maven Plugin is the recommended way to deploy your
-						components
-						to OSSRH and release them to the Central Repository.
-						To configure it simply add the plugin to your Maven pom.xml.
-					-->
+					<!-- according to : http://central.sonatype.org/pages/apache-maven.html 
+						Nexus Staging Maven Plugin for Deployment and Release The Nexus Staging Maven 
+						Plugin is the recommended way to deploy your components to OSSRH and release 
+						them to the Central Repository. To configure it simply add the plugin to 
+						your Maven pom.xml. -->
 					<plugin>
 						<groupId>org.sonatype.plugins</groupId>
 						<artifactId>nexus-staging-maven-plugin</artifactId>

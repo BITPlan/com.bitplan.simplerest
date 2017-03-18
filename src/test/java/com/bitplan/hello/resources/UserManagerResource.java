@@ -24,10 +24,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-
 import com.bitplan.rest.resources.TemplateResource;
 import com.bitplan.rest.users.UserManagerImpl;
 
@@ -51,5 +51,11 @@ public class UserManagerResource extends TemplateResource {
     rootMap.put("userManager", UserManagerImpl.getInstance());
     Response response = super.templateResponse("users.rythm");
     return response;
+  }
+  
+  @GET
+  @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+  public UserManagerImpl getUsersXml() {
+    return (UserManagerImpl) UserManagerImpl.getInstance();
   }
 }

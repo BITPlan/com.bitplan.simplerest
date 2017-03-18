@@ -36,7 +36,7 @@ public class HelloServer extends RestServerImpl {
   public HelloServer() throws Exception {
     settings.setHost("0.0.0.0");
     settings.setPort(8111);
-    String packages="com.bitplan.hello.resources;";
+    String packages="com.bitplan.hello.resources;com.bitplan.rest.providers";
     settings.setContextPath("/hello");
     settings.addClassPathHandler("/", "/static/");
     settings.setPackages(packages);

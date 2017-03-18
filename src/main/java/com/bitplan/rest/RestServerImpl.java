@@ -494,6 +494,7 @@ public class RestServerImpl implements Runnable, UncaughtExceptionHandler,
         // http://stackoverflow.com/questions/3677064/jax-rs-jersey-howto-force-a-response-contenttype-overwrite-content-negotiatio
         rc.getMediaTypeMappings().put("json", MediaType.APPLICATION_JSON_TYPE);
         rc.getMediaTypeMappings().put("xml", MediaType.APPLICATION_XML_TYPE);
+        rc.getMediaTypeMappings().put("txt", MediaType.TEXT_PLAIN_TYPE);
         // FIXME
         rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,
             Boolean.TRUE);

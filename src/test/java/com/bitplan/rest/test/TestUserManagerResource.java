@@ -28,6 +28,11 @@ package com.bitplan.rest.test;
 
 import static org.junit.Assert.*;
 
+import java.util.logging.Level;
+
+import javax.ws.rs.core.MediaType;
+
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.bitplan.rest.UserManager;
@@ -42,15 +47,33 @@ import com.bitplan.rest.users.UserManagerImpl;
  */
 public class TestUserManagerResource extends TestHelloServer {
 
+  @BeforeClass
+  public static void prepareUserManager() {
+    UserManager um = UserManagerImpl.getInstance();
+    um.getUsers().clear();
+    um.add(new UserImpl(um, "scott", "Scott", "Bruce", "bruce.scott@tiger.com",
+        "tiger", "CEO", "since 2016-01"));
+    um.add(new UserImpl(um, "scott", "Doe", "John", "john@doe.com",
+        "mightymouse", "Janitor", "since 2017-01"));
+    assertEquals(2, um.getUsers().size());
+  }
+
   @Test
   public void testUserManageResource() throws Exception {
-    UserManager um=UserManagerImpl.getInstance();
-    um.getUsers().clear();
-    um.add(new UserImpl(um,"scott","Scott","Bruce","bruce.scott@tiger.com","tiger","CEO","since 2016-01"));
-    um.add(new UserImpl(um,"scott","Doe","John","john@doe.com","mightmouse","Janitor","since 2017-01"));
-    assertEquals(2,um.getUsers().size());
-    // debug=true;
-    super.check("/hello/users", "Scott");
+    debug=true;
+    String path="/hello/users";
+    super.check(path, "Scott");
+    String responseXml = getResponseString("application/xml; charset=UTF-8", path);
+    if (debug) {
+      LOGGER.log(Level.INFO,responseXml);
+    }
+    assertTrue(responseXml.startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\""));
+    responseXml = getResponseString("text/html; charset=UTF-8", path+".xml");
+    assertTrue(responseXml.startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\""));
+    String responseJson = getResponseString(MediaType.APPLICATION_JSON+"; charset=UTF-8", path);
+    if (debug) {
+      LOGGER.log(Level.INFO,responseJson);
+    }
   }
 
 }
