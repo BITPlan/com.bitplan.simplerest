@@ -23,12 +23,10 @@ package com.bitplan.hello.resources;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-import com.bitplan.rest.resources.TemplateResource;
+
+import com.bitplan.rest.User;
+import com.bitplan.rest.resources.BaseManagerResource;
 import com.bitplan.rest.users.UserManagerImpl;
 
 @Path("/users")
@@ -37,13 +35,14 @@ import com.bitplan.rest.users.UserManagerImpl;
  * @author wf
  *
  */
-public class UserManagerResource extends TemplateResource {
-  @Context
-  UriInfo uriInfo;
-
-  @Context
-  Request request;
-
+public class UserManagerResource extends BaseManagerResource<UserManagerImpl,User> {
+  
+  /**
+   * constructor
+   */
+  public UserManagerResource() {
+    setManager(UserManagerImpl.getInstance());
+  }
   
   @GET
   @Produces("text/html")
@@ -52,10 +51,5 @@ public class UserManagerResource extends TemplateResource {
     Response response = super.templateResponse("users.rythm");
     return response;
   }
-  
-  @GET
-  @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-  public UserManagerImpl getUsersXml() {
-    return (UserManagerImpl) UserManagerImpl.getInstance();
-  }
+ 
 }

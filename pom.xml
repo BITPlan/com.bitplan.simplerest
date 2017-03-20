@@ -62,7 +62,7 @@
 		<dependency>
 			<groupId>com.bitplan.rest</groupId>
 			<artifactId>com.bitplan.simplerest-api</artifactId>
-			<version>0.0.3</version>
+			<version>0.0.7</version>
 		</dependency>
 		<!-- Google guice dependency injection tool -->
 		<dependency>

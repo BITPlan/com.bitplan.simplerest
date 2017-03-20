@@ -31,14 +31,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.bitplan.jaxb.JaxbFactory;
+import com.bitplan.jaxb.JaxbFactoryApi;
+import com.bitplan.jaxb.ManagerImpl;
 import com.bitplan.rest.Crypt;
 import com.bitplan.rest.CryptImpl;
 import com.bitplan.rest.User;
 import com.bitplan.rest.UserManager;
 
 @XmlRootElement(name="UserManager")
-public class UserManagerImpl implements UserManager {
-  static JaxbFactory<UserManager> jaxbFactory;
+public class UserManagerImpl extends ManagerImpl<UserManagerImpl,User> implements UserManager {
+  static JaxbFactory<UserManagerImpl> jaxbFactory;
   
   List<User> users=new ArrayList<User>();
   @XmlTransient
@@ -67,18 +69,18 @@ public class UserManagerImpl implements UserManager {
    * get the JAXBFactory for this class
    * @return
    */
-  public static JaxbFactory<UserManager> getJaxbFactory() {
+  public static JaxbFactory<UserManagerImpl> getJaxbFactory() {
     if (jaxbFactory==null) {
-      jaxbFactory=new JaxbFactory<UserManager>(UserManager.class,ObjectFactory.class);
+      jaxbFactory=new JaxbFactory<UserManagerImpl>(UserManagerImpl.class,ObjectFactory.class);
     }
     return jaxbFactory;
   }
   
   @Override
-  public String asXML() throws Exception {
-    String xml=getJaxbFactory().asXML(this);
-    return xml;
+  public JaxbFactoryApi<UserManagerImpl> getFactory() {
+    return getJaxbFactory();
   }
+ 
 
   @Override
   public void add(User user) {
@@ -126,17 +128,22 @@ public class UserManagerImpl implements UserManager {
     return um;
   }
   
-  private static UserManager instance=null;
+  private static UserManagerImpl instance=null;
   
   /**
    * get a UserManager Instance
    * @return
    */
-  public static UserManager getInstance() {
+  public static UserManagerImpl getInstance() {
     if (instance==null) {
       instance=new UserManagerImpl();
     }
     return instance;
+  }
+
+  @Override
+  public List<User> getElements() {
+    return this.getUsers();
   }
 
 }

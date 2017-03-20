@@ -74,9 +74,9 @@ public class TestUserManagerResource extends TestHelloServer {
     if (debug) {
       LOGGER.log(Level.INFO,responseJson);
     }
-    assertTrue(responseJson.startsWith("{\"users\":{\"User\""));
+    assertTrue("Json",responseJson.contains("\"users\":{\"User\""));
     responseJson=getResponseString("text/html; charset=UTF-8", path+".json");
-    assertTrue(responseJson.startsWith("{\"users\":{\"User\""));
+    assertTrue("Json",responseJson.contains("\"users\":{\"User\""));
   }
 
 }
