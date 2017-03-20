@@ -24,7 +24,12 @@ public abstract class BaseManagerResource<MT extends Manager<MT,T>, T> extends B
   
   @SuppressWarnings("rawtypes")
   static BaseManagerResource instance;
-
+  String managerTemplate;
+  public void setTemplates(String managerTemplate, String template) {
+	  this.template=template;
+	  this.managerTemplate=managerTemplate;
+  }
+  
   /**
    * get the Manager
    * 
