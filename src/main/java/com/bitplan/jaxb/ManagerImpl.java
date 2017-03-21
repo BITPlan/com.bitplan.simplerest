@@ -31,15 +31,16 @@ import com.bitplan.persistence.Manager;
 
 /**
  * a Manager implementation based on JaxB xmlStorage
+ * 
  * @author wf
  *
  * @param <MT>
  * @param <T>
  */
-public abstract class ManagerImpl<MT,T> implements Manager<MT,T> {
+public abstract class ManagerImpl<MT, T> implements Manager<MT, T> {
   transient String xmlPath;
   transient File xmlFile;
-  
+
   /**
    * save me to an xmlFile
    * 
@@ -47,27 +48,39 @@ public abstract class ManagerImpl<MT,T> implements Manager<MT,T> {
    * @throws Exception
    */
   public void saveAsXML(File xmlFile) throws Exception {
+    sort();
     String xml = asXML();
     FileUtils.writeStringToFile(xmlFile, xml, "UTF-8");
   }
-  
+
+  /**
+   * sort and save me
+   */
   public void save() throws Exception {
-     saveAsXML(xmlFile);
+    saveAsXML(xmlFile);
   }
-  
+
+  /**
+   * override this function to sort
+   */
+  public void sort() {
+
+  }
+
   @XmlTransient
   public String getXmlPath() {
     return xmlPath;
   }
+
   public void setXmlPath(String path) {
-    xmlPath=path;
-    xmlFile=new File(path);
+    xmlPath = path;
+    xmlFile = new File(path);
   }
-  
+
   public void setXmlFile(File xmlFile) {
-    this.xmlFile=xmlFile;
+    this.xmlFile = xmlFile;
   }
-  
+
   public File getXmlFile() {
     return xmlFile;
   }
@@ -83,5 +96,5 @@ public abstract class ManagerImpl<MT,T> implements Manager<MT,T> {
   public String asXML() throws JAXBException {
     return getFactory().asXML((MT) this);
   }
-  
+
 }
