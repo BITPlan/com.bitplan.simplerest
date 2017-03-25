@@ -94,7 +94,7 @@ public class TypeConverterTest  {
 	@Test
 	public void testTypeConverter() throws Exception {
 		DefaultTypeConverter tc = new DefaultTypeConverter();
-		check("String null" ,tc.getString (DefaultTypeConverter.NULL_VALUE   ),null);	
+		check("String null" ,tc.getString (DefaultTypeConverter.NULL_VALUE   ),"".equals(DefaultTypeConverter.NULL_VALUE) ? "":null);	
 		check("String some" ,tc.getString ("some"),"some");
 	  check("Boolean true",tc.getBoolean("true"),new Boolean(true));
 	  check("Boolean false",tc.getBoolean("FALSE"),new Boolean(false));

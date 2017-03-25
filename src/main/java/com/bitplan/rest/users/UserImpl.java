@@ -20,8 +20,14 @@
  */
 package com.bitplan.rest.users;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.bitplan.datatypes.DefaultTypeConverter;
+import com.bitplan.datatypes.TypeConverter;
 import com.bitplan.jaxb.JaxbFactory;
 import com.bitplan.rest.User;
 import com.bitplan.rest.UserManager;
@@ -37,6 +43,7 @@ public class UserImpl implements User {
   String comment;
   String role;
   boolean encrypted = false;
+  transient TypeConverter tc = new DefaultTypeConverter();
 
   /**
    * @return the id
@@ -168,6 +175,18 @@ public class UserImpl implements User {
     this.role = role;
   }
 
+  @Override
+  public void setTypeConverter(TypeConverter typeConverter) {
+    tc = typeConverter;
+
+  }
+
+  @Override
+  @XmlTransient
+  public TypeConverter getTypeConverter() {
+    return tc;
+  }
+
   /**
    * create me from the given parameters
    * 
@@ -194,7 +213,8 @@ public class UserImpl implements User {
     this.comment = comment;
   }
 
-  public UserImpl() {} // makes JaxB happy
+  public UserImpl() {
+  } // makes JaxB happy
 
   /**
    * get the JAXBFactory for this class
@@ -212,6 +232,51 @@ public class UserImpl implements User {
   public String asXML() throws Exception {
     String xml = getJaxbFactory().asXML(this);
     return xml;
+  }
+
+  @Override
+  public void fromMap(Map<String, String> map) {
+    if (map.containsKey("id"))
+      this.setId(tc.getString(map.get("id")));
+    else
+      this.setId(null);
+    if (map.containsKey("name"))
+      this.setName(tc.getString(map.get("name")));
+    else
+      this.setName(null);
+    if (map.containsKey("firstname"))
+      this.setFirstname(tc.getString(map.get("firstname")));
+    else
+      this.setFirstname(null);
+    if (map.containsKey("email"))
+      this.setEmail(tc.getString(map.get("email")));
+    else
+      this.setEmail(null);
+    if (map.containsKey("password"))
+      this.setPassword(tc.getString(map.get("password")));
+    else
+      this.setPassword(null);
+    if (map.containsKey("comment"))
+      this.setComment(tc.getString(map.get("comment")));
+    else
+      this.setComment(null);
+    if (map.containsKey("role"))
+      this.setRole(tc.getString(map.get("role")));
+    else
+      this.setRole(null);
+  }
+
+  @Override
+  public Map<String, String> asMap() {
+    Map<String, String> result = new HashMap<String, String>();
+    result.put("id", tc.fromNullValue(this.getId()));
+    result.put("name", tc.fromNullValue(this.getName()));
+    result.put("firstname", tc.fromNullValue(this.getFirstname()));
+    result.put("email", tc.fromNullValue(this.getEmail()));
+    result.put("password", tc.fromNullValue(this.getPassword()));
+    result.put("comment", tc.fromNullValue(this.getComment()));
+    result.put("role", tc.fromNullValue(this.getRole()));
+    return result;
   }
 
 }

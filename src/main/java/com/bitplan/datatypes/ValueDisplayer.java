@@ -30,8 +30,8 @@ import java.util.Date;
  */
 public class ValueDisplayer implements ValueDisplay {
   
-  // a null value is represented with a dash
-  protected static String nullValueRepresentation="-";
+  // a null value is represented with an empty String
+  protected static String nullValueRepresentation="";
 
   /**
    * format the given Timestamp
@@ -81,7 +81,9 @@ public class ValueDisplayer implements ValueDisplay {
   @Override
   public String fromNullValue(String value) {
     if (value!=null && value.equals(nullValueRepresentation)) {
-      value=null;
+      // if the nullValueRepresentation is "" we'll keep the string as is otherwise we'll null it
+      if (!"".equals(value))
+        value=null;
     }
     return value;
   }

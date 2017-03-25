@@ -42,7 +42,7 @@ import com.bitplan.rest.UserManager;
 public class UserManagerImpl extends ManagerImpl<UserManagerImpl,User> implements UserManager {
   static JaxbFactory<UserManagerImpl> jaxbFactory;
   
-  List<User> users=new ArrayList<User>();
+  transient List<User> users=new ArrayList<User>();
   @XmlTransient
   Map<String,User> userById=new HashMap<String,User>();
 
@@ -142,6 +142,7 @@ public class UserManagerImpl extends ManagerImpl<UserManagerImpl,User> implement
   }
 
   @Override
+  @XmlTransient
   public List<User> getElements() {
     return this.getUsers();
   }

@@ -81,6 +81,7 @@ public abstract class ManagerImpl<MT, T> implements Manager<MT, T> {
     this.xmlFile = xmlFile;
   }
 
+  @XmlTransient
   public File getXmlFile() {
     return xmlFile;
   }
