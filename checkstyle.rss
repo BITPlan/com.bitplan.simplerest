@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<rss version="0.91">
+  <channel>
+    <title>Simple Jersey RestFul Framework - Checkstyle report</title>
+    <link>https://github.com/BITPlan/com.bitplan.simplerest</link>
+    <description>Simple Jersey RestFul Framework - Checkstyle report</description>
+    <language>en-us</language>
+    <copyright>&#169;2017</copyright>
+    <item>
+      <title>File: 19,
+             Errors: 1381,
+             Warnings: 0,
+             Infos: 0
+      </title>
+            <link>https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html</link>
+      <description>
+        <p>Click <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html">here</a> for the full Checkstyle report.</p>
+
+        <table summary="Files" boder="1">
+          <thead>
+            <tr>
+              <th>Files</th>
+              <th style="width:30px;"><abbr title="Info">I</abbr></th>
+              <th style="width:30px;"><abbr title="Warning">W</abbr></th>
+              <th style="width:30px;"><abbr title="Error">E</abbr></th>
+            </tr>
+          </thead>
+          <tbody>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.rest.users.UserImpl.java">com/bitplan/rest/users/UserImpl.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  101
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.jaxb.package-info.java">com/bitplan/jaxb/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.rest.RestServerImpl.java">com/bitplan/rest/RestServerImpl.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  206
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.datatypes.ValueDisplayer.java">com/bitplan/datatypes/ValueDisplayer.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  35
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.rest.PrincipalCache.java">com/bitplan/rest/PrincipalCache.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  25
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.rest.resources.BaseResource.java">com/bitplan/rest/resources/BaseResource.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  37
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.jaxb.JaxbFactory.java">com/bitplan/jaxb/JaxbFactory.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  126
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.jaxb.ManagerImpl.java">com/bitplan/jaxb/ManagerImpl.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  30
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.rest.basicauth.BasicAuthSecurityProvider.java">com/bitplan/rest/basicauth/BasicAuthSecurityProvider.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  68
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.rest.CryptImpl.java">com/bitplan/rest/CryptImpl.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  32
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.rest.users.ObjectFactory.java">com/bitplan/rest/users/ObjectFactory.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  14
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.rest.RestServerSettingsImpl.java">com/bitplan/rest/RestServerSettingsImpl.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  141
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.datatypes.DefaultTypeConverter.java">com/bitplan/datatypes/DefaultTypeConverter.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  99
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.rest.providers.JsonProvider.java">com/bitplan/rest/providers/JsonProvider.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  119
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.rest.resources.BaseManagerResource.java">com/bitplan/rest/resources/BaseManagerResource.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  62
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.rest.SSLClientHelper.java">com/bitplan/rest/SSLClientHelper.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  157
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.rest.users.jaxb.properties">com/bitplan/rest/users/jaxb.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.rest.users.UserManagerImpl.java">com/bitplan/rest/users/UserManagerImpl.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  74
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/BITPlan/com.bitplan.simplerest/checkstyle.html#com.bitplan.rest.resources.TemplateResource.java">com/bitplan/rest/resources/TemplateResource.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  51
+                </td>
+              </tr>
+                      </tbody>
+        </table>
+        
+      </description>
+    </item>
+  </channel>
+</rss>
+

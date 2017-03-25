@@ -1,0 +1,7 @@
+com.bitplan.datatypes
+com.bitplan.jaxb
+com.bitplan.rest
+com.bitplan.rest.basicauth
+com.bitplan.rest.providers
+com.bitplan.rest.resources
+com.bitplan.rest.users
