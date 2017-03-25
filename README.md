@@ -10,6 +10,8 @@ http://stackoverflow.com/q/37775309/1497139
 ### Project
 [![Build Status](https://travis-ci.org/BITPlan/com.bitplan.simplerest.svg?branch=master)](https://travis-ci.org/BITPlan/com.bitplan.simplerest)
 
+[Project pages] (https://bitplan.github.io/com.bitplan.simplerest/)
+
 * Open Source hosted at https://github.com/BITPlan/com.bitplan.simplerest
 * License based on license of libraries used (see [pom.xml](https://github.com/BITPlan/com.bitplan.simplerest/blob/master/pom.xml))
 * Maven based Java project including JUnit 4 tests.
