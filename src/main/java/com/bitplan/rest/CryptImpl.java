@@ -89,6 +89,12 @@ public class CryptImpl implements Crypt {
 		return new String(pbeCipher.doFinal(base64Decode(property)), "UTF-8");
 	}
 
+	/**
+	 * decode the given property
+	 * @param property
+	 * @return the decode version
+	 * @throws IOException
+	 */
 	private static byte[] base64Decode(String property) throws IOException {
 		// NB: This class is internal, and you probably should use another impl
 		return new BASE64Decoder().decodeBuffer(property);
