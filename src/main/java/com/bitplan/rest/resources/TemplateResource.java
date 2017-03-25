@@ -23,6 +23,8 @@ package com.bitplan.rest.resources;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
@@ -39,6 +41,8 @@ import org.rythmengine.conf.RythmConfigurationKey;
  *
  */
 public class TemplateResource {
+  protected Logger LOGGER = Logger.getLogger("com.bitplan.rest.resources");
+  
   protected boolean debug=true;
   @Context
   protected javax.ws.rs.core.HttpHeaders httpHeaders;
@@ -91,9 +95,27 @@ public class TemplateResource {
     Response result = Response.status(Response.Status.OK).entity(text).build();
     return result;
   }
+  
+  /**
+   * create a standard Map from a MultivaluedMap
+   * 
+   * @param form - the form
+   * @return the map
+   */
+  public Map<String, String> asMap(MultivaluedMap<String, String> form) {
+    Map<String,String> map = new HashMap<String, String>();
+    // take all inputs
+    for (String key:form.keySet()) {
+      String value=form.getFirst(key);
+      if (debug)
+        LOGGER.log(Level.INFO,key+"="+value);
+      map.put(key,value);
+    }
+    return map;
+  }
 
   /**
-   * put all form parameters into template map
+   * convert form to Map
    * @param form
    */
   public void formToMap(MultivaluedMap<String, String> form) {
@@ -101,9 +123,9 @@ public class TemplateResource {
     for (String key:form.keySet()) {
       String value=form.getFirst(key);
       if (debug)
-        System.out.println(key+"="+value);
+        LOGGER.log(Level.INFO,key+"="+value);
       rootMap.put(key,value);
     }
-    
   }
+      
 }

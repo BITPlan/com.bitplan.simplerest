@@ -33,6 +33,7 @@ import com.bitplan.persistence.Manager;
  *
  */
 public class BaseResource<MT extends Manager<MT,T>,T> extends TemplateResource {
+  
   @Context
   UriInfo uriInfo;
 

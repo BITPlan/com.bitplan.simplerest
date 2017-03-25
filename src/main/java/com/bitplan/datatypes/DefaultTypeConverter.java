@@ -28,15 +28,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * the Default Type Converter
+ * This is the Default Type Converter.
  * 
  * @author wf
  * 
  */
 public class DefaultTypeConverter extends ValueDisplayer
     implements TypeConverter {
-  protected static Logger LOGGER = Logger.getLogger("com.bitplan.datatypes");
+  /**
+   * the default LOGGER
+   */
+  protected static final Logger LOGGER = Logger.getLogger("com.bitplan.datatypes");
 
+  /**
+   * the representation of the value null
+   */
   public static String NULL_VALUE = nullValueRepresentation;
   // pseudo null values as long as there is no NULL support for Types FIXME
   public static Short SHORT_NULL_VALUE = 0;
@@ -59,7 +65,10 @@ public class DefaultTypeConverter extends ValueDisplayer
   public static int UNICODE_TRUE_VALUE = UNICODE_TRUE.charAt(0);
   public static int UNICODE_FALSE_VALUE = UNICODE_FALSE.charAt(0);
 
-  boolean debug = true;
+  /**
+   * flag for debugging
+   */
+  boolean debug = false;
 
   /**
    * handle the given exception
