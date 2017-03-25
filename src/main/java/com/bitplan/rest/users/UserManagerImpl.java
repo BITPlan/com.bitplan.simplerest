@@ -67,7 +67,7 @@ public class UserManagerImpl extends ManagerImpl<UserManagerImpl,User> implement
   
   /**
    * get the JAXBFactory for this class
-   * @return
+   * @return the factory
    */
   public static JaxbFactory<UserManagerImpl> getJaxbFactory() {
     if (jaxbFactory==null) {
@@ -90,7 +90,7 @@ public class UserManagerImpl extends ManagerImpl<UserManagerImpl,User> implement
   
   /**
    * get a user by the given id
-   * @param id
+   * @param id - the user id to lookup by
    * @return the user
    */
   public User getById(String id) {
@@ -117,8 +117,8 @@ public class UserManagerImpl extends ManagerImpl<UserManagerImpl,User> implement
   }
 
   /**
-   * create a user manager form the given xml file
-   * @param xml
+   * create a user manager form the given xml string
+   * @param xml - the xml string
    * @return the user manager
    * @throws Exception
    */
@@ -132,7 +132,7 @@ public class UserManagerImpl extends ManagerImpl<UserManagerImpl,User> implement
   
   /**
    * get a UserManager Instance
-   * @return
+   * @return the instance
    */
   public static UserManagerImpl getInstance() {
     if (instance==null) {

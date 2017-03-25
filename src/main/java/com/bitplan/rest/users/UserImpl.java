@@ -190,13 +190,14 @@ public class UserImpl implements User {
   /**
    * create me from the given parameters
    * 
-   * @param id
-   * @param name
-   * @param firstname
-   * @param email
-   * @param password
-   * @param role
-   * @param comment
+   * @param um - the Usermanager to use
+   * @param id - the id of the user
+   * @param name - the last name of the user e.g. Scott
+   * @param firstname - e.g. Bruce
+   * @param email - e.g. bruce.scott@tiger.com
+   * @param password - encrypted or unencrypted password depending no settings
+   * @param role - the role of the user e.g. CEO
+   * @param comment - any comment
    */
   public UserImpl(UserManager um, String id, String name, String firstname,
       String email, String password, String role, String comment) {
@@ -219,7 +220,7 @@ public class UserImpl implements User {
   /**
    * get the JAXBFactory for this class
    * 
-   * @return
+   * @return the factory
    */
   public static JaxbFactory<User> getJaxbFactory() {
     if (jaxbFactory == null) {
