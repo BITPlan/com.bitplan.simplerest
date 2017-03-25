@@ -15,9 +15,11 @@ http://stackoverflow.com/q/37775309/1497139
 * Maven based Java project including JUnit 4 tests.
 
 ### How to build
-* git clone https://github.com/BITPlan/com.bitplan.simplerest
-* cd com.bitplan.simplerest
-* mvn install
+```
+git clone https://github.com/BITPlan/com.bitplan.simplerest
+cd com.bitplan.simplerest
+mvn install
+```
 
 ### Distribution
 Available at Maven Central see 
