@@ -22,6 +22,7 @@ package com.bitplan.rest.resources;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -113,15 +114,45 @@ public class TemplateResource {
     }
     return map;
   }
-
+  
   /**
-   * convert form to Map
+   * implode the given string list to a single string separating the parts with the given separator
+   * @param slist
+   * @param separator
+   * @return the imploded string
+   */
+  public static String implode(List<String> slist, String separator) {
+    StringBuilder builder=new StringBuilder();
+    boolean first=true;
+    for( String s : slist) {
+      if (first)
+        first=false;
+      else
+        builder.append( separator);
+      builder.append( s);
+      
+    }
+    return builder.toString();
+  }
+  
+  /**
+   * add the given formValues to the rootmap using the default separator character ";"
    * @param form
    */
   public void formToMap(MultivaluedMap<String, String> form) {
+    formToMap(form,";");
+  }
+    
+  /**
+   * convert form to Map
+   * @param form
+   * @param the separator character to use
+   */
+  public void formToMap(MultivaluedMap<String, String> form, String separator) {
     // take all inputs
     for (String key:form.keySet()) {
-      String value=form.getFirst(key);
+      List<String> values = form.get(key);
+      String value=implode(values,separator);
       if (debug)
         LOGGER.log(Level.INFO,key+"="+value);
       rootMap.put(key,value);

@@ -26,7 +26,7 @@ mvn install
 ### Distribution
 Available at Maven Central see 
 
-http://search.maven.org/#artifactdetails|com.bitplan.rest|com.bitplan.simplerest|0.0.8|jar
+http://search.maven.org/#artifactdetails|com.bitplan.rest|com.bitplan.simplerest|0.0.9|jar
 
 Maven dependency:
 
@@ -34,11 +34,11 @@ Maven dependency:
 <dependency>
 	<groupId>com.bitplan.rest</groupId>
 	<artifactId>com.bitplan.simplerest</artifactId>
-	<version>0.0.8</version>
+	<version>0.0.9</version>
 </dependency>
 ```
 ## Tests
-There are 19 JUnit test for version 0.0.8
+There are 20 JUnit test for version 0.0.9
 
 ## Version history
 * 0.0.1: 2016-06-18 First release via GitHub / Maven central
@@ -49,3 +49,4 @@ There are 19 JUnit test for version 0.0.8
 * 0.0.6: 2017-03-18 adds support for TypeConverter
 * 0.0.7: 2017-03-19 adds support for moxy Json Provider
 * 0.0.8: 2017-03-25 adds support for Postable Interface
+* 0.0.9: 2017-03-28 adds implode functionality for multi select handling

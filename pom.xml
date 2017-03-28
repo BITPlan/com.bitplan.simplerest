@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.bitplan.rest</groupId>
 	<artifactId>com.bitplan.simplerest</artifactId>
-	<version>0.0.8</version>
+	<version>0.0.9</version>
 	<name>Simple Jersey RestFul Framework</name>
 	<description>Needed Base Utilities and Functions for Jersey 1.x RESTFul applications</description>
 	<properties>

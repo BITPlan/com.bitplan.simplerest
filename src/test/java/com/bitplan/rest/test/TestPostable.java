@@ -22,6 +22,8 @@ package com.bitplan.rest.test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +32,7 @@ import org.junit.Test;
 
 import com.bitplan.rest.User;
 import com.bitplan.rest.UserManager;
+import com.bitplan.rest.resources.TemplateResource;
 import com.bitplan.rest.users.UserImpl;
 
 /**
@@ -89,6 +92,15 @@ public class TestPostable {
     assertEquals("CEO",newUser.getRole());
     assertEquals("since 2016-01",newUser.getComment());
     assertEquals("bruce.scott@tiger.com",newUser.getEmail());
+  }
+  
+  @Test
+  public void testImplode() {
+    List<String> slist=new ArrayList<String>();
+    slist.add("s1");
+    slist.add("s2");
+    String imploded=TemplateResource.implode(slist, "-");
+    assertEquals("s1-s2",imploded);
   }
 
 }
