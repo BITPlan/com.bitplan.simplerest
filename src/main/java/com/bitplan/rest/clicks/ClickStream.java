@@ -38,6 +38,7 @@ import com.sun.jersey.spi.container.ContainerRequest;
 public class ClickStream implements JsonAble {
   
   String referrer;
+  String url;
   String ip;
   String userAgent;
   String acceptLanguage;
@@ -61,6 +62,7 @@ public class ClickStream implements JsonAble {
   public ClickStream(ContainerRequest request,MultivaluedMap<String, String> headers, PageHit initialHit) {
     // is this part of an existing ClickStream?
     referrer = request.getHeaderValue("referer"); // Yes, with the legendary misspelling.
+    this.url=request.getAbsolutePath().toString();
     this.ip=headers.getFirst("remote_addr");
     this.userAgent=headers.getFirst("user-agent");
     this.acceptLanguage=headers.getFirst("accept-language");

@@ -55,7 +55,7 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
   int MAX_SESSION_TIME=1800; // 30 minutes
 
   // what amount to wait until to flush the log again
-  final int FLUSH_PERIOD = 1;
+  final int FLUSH_PERIOD = 60;
 
   Date lastFlush = new Date();
   Date lastLogRotate = new Date();
