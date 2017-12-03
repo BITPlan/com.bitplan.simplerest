@@ -20,20 +20,34 @@
  */
 package com.bitplan.rest.providers;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.Reader;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.ext.ContextResolver;
+import javax.ws.rs.ext.MessageBodyReader;
+import javax.ws.rs.ext.MessageBodyWriter;
+import javax.ws.rs.ext.Provider;
+import javax.ws.rs.ext.Providers;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
-
-import com.bitplan.rest.users.UserManagerImpl;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import javax.ws.rs.ext.*;
-import javax.xml.bind.*;
    
 /**
  * see http://blog.bdoughan.com/2012/03/moxy-as-your-jax-rs-json-provider.html

@@ -26,7 +26,7 @@ mvn install
 ### Distribution
 Available at Maven Central see 
 
-http://search.maven.org/#artifactdetails|com.bitplan.rest|com.bitplan.simplerest|0.0.9|jar
+http://search.maven.org/#artifactdetails|com.bitplan.rest|com.bitplan.simplerest|0.0.10|jar
 
 Maven dependency:
 
@@ -34,11 +34,11 @@ Maven dependency:
 <dependency>
 	<groupId>com.bitplan.rest</groupId>
 	<artifactId>com.bitplan.simplerest</artifactId>
-	<version>0.0.9</version>
+	<version>0.0.10</version>
 </dependency>
 ```
 ## Tests
-There are 20 JUnit test for version 0.0.9
+There are 21 JUnit test for version 0.0.10
 
 ## Version history
 * 0.0.1: 2016-06-18 First release via GitHub / Maven central
