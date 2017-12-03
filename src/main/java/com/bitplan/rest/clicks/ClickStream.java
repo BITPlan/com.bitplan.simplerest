@@ -59,11 +59,11 @@ public class ClickStream implements JsonAble {
    * @param headers 
    * @param initialHit
    */
-  public ClickStream(ContainerRequest request,MultivaluedMap<String, String> headers, PageHit initialHit) {
+  public ClickStream(ContainerRequest request,MultivaluedMap<String, String> headers, PageHit initialHit, String ip) {
     // is this part of an existing ClickStream?
     referrer = request.getHeaderValue("referer"); // Yes, with the legendary misspelling.
     this.url=request.getAbsolutePath().toString();
-    this.ip=headers.getFirst("remote_addr");
+    this.ip=ip;
     this.userAgent=headers.getFirst("user-agent");
     this.acceptLanguage=headers.getFirst("accept-language");
     this.timeStamp=new Date();

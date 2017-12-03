@@ -115,7 +115,7 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
     if (clickStream != null) {
       clickStream.addPageHit(pageHit);
     } else {
-      clickStream = new ClickStream(request, headers, pageHit);
+      clickStream = new ClickStream(request, headers, pageHit,ip);
       clickStreamsByIp.put(ip, clickStream);
       getClickStreams().add(clickStream);
     }
