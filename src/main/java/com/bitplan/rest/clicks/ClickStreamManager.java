@@ -103,6 +103,12 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
     MultivaluedMap<String, String> headers = req.getRequestHeaders();
     PageHit pageHit = new PageHit(request, headers);
     String ip = headers.getFirst("remote_addr");
+    // is this a localhost ip?
+    if ("0:0:0:0:0:0:0:1".equals(ip) || "127.0.0.1".equals(ip)) {
+      // try getting the X-Forward-For address
+      // https://stackoverflow.com/questions/760283/apache-proxypass-how-to-preserve-original-ip-address
+      ip=headers.getFirst("X-Forwarded-For");
+    }
     if (debug)
       showDebug(request,req,headers);
     ClickStream clickStream = clickStreamsByIp.get(ip);
