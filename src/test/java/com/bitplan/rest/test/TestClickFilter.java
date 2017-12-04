@@ -21,11 +21,15 @@
 package com.bitplan.rest.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
 
 import org.junit.Test;
 
 import com.bitplan.hello.rest.ClickServer;
 import com.bitplan.rest.RestServer;
+import com.bitplan.rest.clicks.ClickStream;
 import com.bitplan.rest.clicks.ClickStreamManager;
 
 /**
@@ -43,9 +47,19 @@ public class TestClickFilter extends TestHelloServer {
   
   @Test
   public void testClickFilter() throws Exception {
-    //debug=true;
-    super.check("/hello/hello", "Hello");
+    // debug=true;
     ClickStreamManager csm=ClickStreamManager.getInstance();
+    csm.setDebug(debug);
+    int hits=10;
+    for (int i=1;i<=10;i++) {
+      super.check("/hello/hello", "Hello");
+    }
+    
     assertEquals(1,csm.getClickStreams().size());
+    ClickStream clickStream=csm.getClickStreams().get(0);
+    assertEquals(hits,clickStream.getPageHits().size());
+    csm.logRotate();
+    File jsonFile=csm.getJsonFile();
+    assertTrue(jsonFile.exists());
   }
 }

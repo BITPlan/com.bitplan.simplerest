@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,8 @@ import com.bitplan.json.JsonManagerImpl;
 import com.sun.jersey.api.core.HttpRequestContext;
 import com.sun.jersey.spi.container.ContainerRequest;
 
+import nl.basjes.parse.useragent.UserAgentAnalyzer;
+
 /**
  * manager for click streams
  * 
@@ -45,7 +48,7 @@ import com.sun.jersey.spi.container.ContainerRequest;
  */
 public class ClickStreamManager extends JsonManagerImpl<ClickStream>
     implements JsonAble {
-  boolean debug=false;
+  private boolean debug=false;
   // limits - the default is 10000 click streams per day
   // the maximum number of click stream per logging time period
   int MAX_CLICKSTREAMS = 10000;
@@ -61,7 +64,17 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
   Date lastLogRotate = new Date();
   transient HashMap<String, ClickStream> clickStreamsByIp = new MaxSizeHashMap<String, ClickStream>(
       MAX_CLICKSTREAMS);
+  transient UserAgentAnalyzer userAgentAnalyzer; 
+  
   private List<ClickStream> clickStreams = new ArrayList<ClickStream>();
+
+  public boolean isDebug() {
+    return debug;
+  }
+
+  public void setDebug(boolean debug) {
+    this.debug = debug;
+  }
 
   public List<ClickStream> getClickStreams() {
     return clickStreams;
@@ -78,6 +91,11 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
    */
   private ClickStreamManager(Class<ClickStream> clazz) {
     super(clazz);
+    userAgentAnalyzer= UserAgentAnalyzer
+        .newBuilder()
+        .hideMatcherLoadStats()
+        .withCache(25000)
+        .build();
   }
   
   /**
@@ -109,13 +127,13 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
       // https://stackoverflow.com/questions/760283/apache-proxypass-how-to-preserve-original-ip-address
       ip=headers.getFirst("X-Forwarded-For");
     }
-    if (debug)
+    if (isDebug())
       showDebug(request,req,headers);
     ClickStream clickStream = clickStreamsByIp.get(ip);
     if (clickStream != null) {
       clickStream.addPageHit(pageHit);
     } else {
-      clickStream = new ClickStream(request, headers, pageHit,ip);
+      clickStream = new ClickStream(userAgentAnalyzer,request, headers, pageHit,ip);
       clickStreamsByIp.put(ip, clickStream);
       getClickStreams().add(clickStream);
     }
@@ -153,7 +171,11 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
     // start a new json file
     lastLogRotate=new Date();
     // remove old entries
-    for (ClickStream clickStream:this.getClickStreams()) {
+    // avoid concurrent modification exeception 
+    // see https://stackoverflow.com/a/18448699/1497139
+    Iterator<ClickStream> clickStreamIterator=this.getClickStreams().iterator();
+    while (clickStreamIterator.hasNext()){
+      ClickStream clickStream=clickStreamIterator.next();
       if (this.durationSecs(clickStream.timeStamp,lastLogRotate)>=MAX_SESSION_TIME) {
         this.getClickStreams().remove(clickStream);
         this.clickStreamsByIp.remove(clickStream.ip);
@@ -194,10 +216,16 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
 
   }
 
+  /**
+   * show the debug information
+   * @param request
+   * @param req
+   * @param headers
+   */
   public void showDebug(ContainerRequest request,
       HttpRequestContext req, MultivaluedMap<String, String> headers) {
 
-    if (debug) {
+    if (isDebug()) {
       System.out.println(req.getPath(false));
       System.out.println(req.getAbsolutePath());
       for (String key : headers.keySet()) {

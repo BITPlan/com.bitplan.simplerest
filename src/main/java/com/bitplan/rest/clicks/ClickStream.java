@@ -30,6 +30,9 @@ import javax.ws.rs.core.MultivaluedMap;
 import com.bitplan.json.JsonAble;
 import com.sun.jersey.spi.container.ContainerRequest;
 
+import nl.basjes.parse.useragent.UserAgent;
+import nl.basjes.parse.useragent.UserAgentAnalyzer;
+
 /**
  * 
  * @author wf
@@ -40,31 +43,42 @@ public class ClickStream implements JsonAble {
   String referrer;
   String url;
   String ip;
-  String userAgent;
+  String userAgentHeader;
   String acceptLanguage;
   Date timeStamp;
-  List<PageHit> pageHits=new ArrayList<PageHit>();
+  private List<PageHit> pageHits=new ArrayList<PageHit>();
+  private UserAgent userAgent;
   
+  public List<PageHit> getPageHits() {
+    return pageHits;
+  }
+
+  public void setPageHits(List<PageHit> pageHits) {
+    this.pageHits = pageHits;
+  }
+
   /**
    * add the given page hit
    * @param pageHit
    */
   public void addPageHit(PageHit pageHit) {
-    pageHits.add(pageHit);
+    getPageHits().add(pageHit);
   }
   
   /**
    * create a new ClickStream
+   * @param userAgentAnalyzer 
    * @param request
    * @param headers 
    * @param initialHit
    */
-  public ClickStream(ContainerRequest request,MultivaluedMap<String, String> headers, PageHit initialHit, String ip) {
+  public ClickStream(UserAgentAnalyzer userAgentAnalyzer, ContainerRequest request,MultivaluedMap<String, String> headers, PageHit initialHit, String ip) {
     // is this part of an existing ClickStream?
     referrer = request.getHeaderValue("referer"); // Yes, with the legendary misspelling.
     this.url=request.getAbsolutePath().toString();
     this.ip=ip;
-    this.userAgent=headers.getFirst("user-agent");
+    this.userAgentHeader=headers.getFirst("user-agent");
+    userAgent = userAgentAnalyzer.parse(userAgentHeader);
     this.acceptLanguage=headers.getFirst("accept-language");
     this.timeStamp=new Date();
     addPageHit(initialHit);
