@@ -20,6 +20,8 @@
  */
 package com.bitplan.rest.clicks;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +45,7 @@ public class ClickStream implements JsonAble {
   String referrer;
   private String url;
   private String ip;
+  private String domain;
   String userAgentHeader;
   String acceptLanguage;
   Date timeStamp;
@@ -63,6 +66,14 @@ public class ClickStream implements JsonAble {
 
   public void setUrl(String url) {
     this.url = url;
+  }
+
+  public String getDomain() {
+    return domain;
+  }
+
+  public void setDomain(String domain) {
+    this.domain = domain;
   }
 
   public List<PageHit> getPageHits() {
@@ -101,6 +112,13 @@ public class ClickStream implements JsonAble {
     referrer = request.getHeaderValue("referer"); // Yes, with the legendary misspelling.
     this.setUrl(request.getAbsolutePath().toString());
     this.setIp(ip);
+    setDomain(ip);
+    try {
+      InetAddress ia = InetAddress.getByName(ip);
+      setDomain(ia.getCanonicalHostName());
+    } catch (UnknownHostException e) {
+      // ignore
+    }
     this.userAgentHeader=headers.getFirst("user-agent");
     setUserAgent(userAgentAnalyzer.parse(userAgentHeader));
     this.acceptLanguage=headers.getFirst("accept-language");
