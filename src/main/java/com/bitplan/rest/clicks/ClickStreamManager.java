@@ -178,7 +178,7 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
       ClickStream clickStream=clickStreamIterator.next();
       if (this.durationSecs(clickStream.timeStamp,lastLogRotate)>=MAX_SESSION_TIME) {
         this.getClickStreams().remove(clickStream);
-        this.clickStreamsByIp.remove(clickStream.ip);
+        this.clickStreamsByIp.remove(clickStream.getIp());
       }
     }
     // initial save

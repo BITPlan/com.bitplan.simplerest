@@ -41,16 +41,40 @@ import nl.basjes.parse.useragent.UserAgentAnalyzer;
 public class ClickStream implements JsonAble {
   
   String referrer;
-  String url;
-  String ip;
+  private String url;
+  private String ip;
   String userAgentHeader;
   String acceptLanguage;
   Date timeStamp;
   private List<PageHit> pageHits=new ArrayList<PageHit>();
   private UserAgent userAgent;
   
+  public String getIp() {
+    return ip;
+  }
+
+  public void setIp(String ip) {
+    this.ip = ip;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
   public List<PageHit> getPageHits() {
     return pageHits;
+  }
+
+  public UserAgent getUserAgent() {
+    return userAgent;
+  }
+
+  public void setUserAgent(UserAgent userAgent) {
+    this.userAgent = userAgent;
   }
 
   public void setPageHits(List<PageHit> pageHits) {
@@ -75,10 +99,10 @@ public class ClickStream implements JsonAble {
   public ClickStream(UserAgentAnalyzer userAgentAnalyzer, ContainerRequest request,MultivaluedMap<String, String> headers, PageHit initialHit, String ip) {
     // is this part of an existing ClickStream?
     referrer = request.getHeaderValue("referer"); // Yes, with the legendary misspelling.
-    this.url=request.getAbsolutePath().toString();
-    this.ip=ip;
+    this.setUrl(request.getAbsolutePath().toString());
+    this.setIp(ip);
     this.userAgentHeader=headers.getFirst("user-agent");
-    userAgent = userAgentAnalyzer.parse(userAgentHeader);
+    setUserAgent(userAgentAnalyzer.parse(userAgentHeader));
     this.acceptLanguage=headers.getFirst("accept-language");
     this.timeStamp=new Date();
     addPageHit(initialHit);
