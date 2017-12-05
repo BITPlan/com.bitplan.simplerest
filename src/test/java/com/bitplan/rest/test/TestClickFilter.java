@@ -54,8 +54,6 @@ public class TestClickFilter extends TestHelloServer {
     for (int i=1;i<=10;i++) {
       super.check("/hello/hello", "Hello");
     }
-    // let's wait a bit e.g. for DNS call
-    Thread.sleep(5000);
     assertEquals(1,csm.getClickStreams().size());
     ClickStream clickStream=csm.getClickStreams().get(0);
     assertEquals(hits,clickStream.getPageHits().size());

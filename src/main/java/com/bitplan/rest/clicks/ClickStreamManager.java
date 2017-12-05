@@ -48,24 +48,27 @@ import nl.basjes.parse.useragent.UserAgentAnalyzer;
  */
 public class ClickStreamManager extends JsonManagerImpl<ClickStream>
     implements JsonAble {
-  private boolean debug=false;
+  private boolean debug = false;
   // limits - the default is 10000 click streams per day
   // the maximum number of click stream per logging time period
   int MAX_CLICKSTREAMS = 10000;
   // the length of a logging time period in seconds
   int LOGGING_TIME_PERIOD = 86400;
   // maximum amount of time for a click stream session
-  int MAX_SESSION_TIME=1800; // 30 minutes
+  int MAX_SESSION_TIME = 1800; // 30 minutes
 
   // what amount to wait until to flush the log again
   final int FLUSH_PERIOD = 60;
 
+  Date startTime = new Date();
   Date lastFlush = new Date();
   Date lastLogRotate = new Date();
+  String fileName;
+
   transient HashMap<String, ClickStream> clickStreamsByIp = new MaxSizeHashMap<String, ClickStream>(
       MAX_CLICKSTREAMS);
-  transient UserAgentAnalyzer userAgentAnalyzer; 
-  
+  transient UserAgentAnalyzer userAgentAnalyzer;
+
   private List<ClickStream> clickStreams = new ArrayList<ClickStream>();
 
   public boolean isDebug() {
@@ -91,15 +94,13 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
    */
   private ClickStreamManager(Class<ClickStream> clazz) {
     super(clazz);
-    userAgentAnalyzer= UserAgentAnalyzer
-        .newBuilder()
-        .hideMatcherLoadStats()
-        .withCache(25000)
-        .build();
+    userAgentAnalyzer = UserAgentAnalyzer.newBuilder().hideMatcherLoadStats()
+        .withCache(25000).build();
   }
-  
+
   /**
    * get the amount of seconds between the given two dates
+   * 
    * @param from
    * @param to
    * @return - the amount of seconds
@@ -125,25 +126,26 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
     if ("0:0:0:0:0:0:0:1".equals(ip) || "127.0.0.1".equals(ip)) {
       // try getting the X-Forward-For address
       // https://stackoverflow.com/questions/760283/apache-proxypass-how-to-preserve-original-ip-address
-      ip=headers.getFirst("X-Forwarded-For");
+      ip = headers.getFirst("X-Forwarded-For");
     }
     if (isDebug())
-      showDebug(request,req,headers);
+      showDebug(request, req, headers);
     ClickStream clickStream = clickStreamsByIp.get(ip);
     if (clickStream != null) {
       clickStream.addPageHit(pageHit);
     } else {
-      clickStream = new ClickStream(userAgentAnalyzer,request, headers, pageHit,ip);
+      clickStream = new ClickStream(userAgentAnalyzer, request, headers,
+          pageHit, ip);
       clickStreamsByIp.put(ip, clickStream);
       getClickStreams().add(clickStream);
     }
     // do we need to flush the log?
     Date now = new Date();
-    if (durationSecs(lastFlush,now) >= FLUSH_PERIOD) {
+    if (durationSecs(lastFlush, now) >= FLUSH_PERIOD) {
       flush();
     }
     // the Logging period is over
-    if (durationSecs(lastLogRotate,now) >= LOGGING_TIME_PERIOD) {
+    if (durationSecs(lastLogRotate, now) >= LOGGING_TIME_PERIOD) {
       logRotate();
     }
     return clickStream;
@@ -156,27 +158,30 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
    */
   public void flush() {
     try {
+      this.fileName = this.getJsonFile().getName();
       save();
     } catch (IOException e) {
-      // ignore 
+      // ignore
       // FIXME - shouldn't we log this incident?
     }
     lastFlush = new Date();
   }
-  
+
   /**
    * let's rotate the log file
    */
   public void logRotate() {
     // start a new json file
-    lastLogRotate=new Date();
+    lastLogRotate = new Date();
     // remove old entries
-    // avoid concurrent modification exeception 
+    // avoid concurrent modification exeception
     // see https://stackoverflow.com/a/18448699/1497139
-    Iterator<ClickStream> clickStreamIterator=this.getClickStreams().iterator();
-    while (clickStreamIterator.hasNext()){
-      ClickStream clickStream=clickStreamIterator.next();
-      if (this.durationSecs(clickStream.timeStamp,lastLogRotate)>=MAX_SESSION_TIME) {
+    Iterator<ClickStream> clickStreamIterator = this.getClickStreams()
+        .iterator();
+    while (clickStreamIterator.hasNext()) {
+      ClickStream clickStream = clickStreamIterator.next();
+      if (this.durationSecs(clickStream.timeStamp,
+          lastLogRotate) >= MAX_SESSION_TIME) {
         this.getClickStreams().remove(clickStream);
         this.clickStreamsByIp.remove(clickStream.getIp());
       }
@@ -184,31 +189,34 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
     // initial save
     flush();
   }
-  
+
   @Override
   public File getJsonFile() {
     String home = System.getProperty("user.home");
-    File configDirectory=new File(home+"/.clickstream/");
+    File configDirectory = new File(home + "/.clickstream/");
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd_HHmm");
-    String jsonFileName ="clickstream"+df.format(lastLogRotate)+".json";
+    String jsonFileName = "clickstream" + df.format(lastLogRotate) + ".json";
     File jsonFile = new File(configDirectory, jsonFileName);
     return jsonFile;
   }
-  
+
   /**
    * get a singleton
    * 
    * @return
    */
   public static ClickStreamManager getInstance() {
-    if (instance == null)
-      instance = new ClickStreamManager(ClickStream.class);
+    if (instance == null) {
+      synchronized (ClickStreamManager.class) {
+        instance = new ClickStreamManager(ClickStream.class);
+      }
+    }
     return instance;
   }
 
   @Override
   public void reinit() {
-    
+
   }
 
   @Override
@@ -218,12 +226,13 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
 
   /**
    * show the debug information
+   * 
    * @param request
    * @param req
    * @param headers
    */
-  public void showDebug(ContainerRequest request,
-      HttpRequestContext req, MultivaluedMap<String, String> headers) {
+  public void showDebug(ContainerRequest request, HttpRequestContext req,
+      MultivaluedMap<String, String> headers) {
 
     if (isDebug()) {
       System.out.println(req.getPath(false));
