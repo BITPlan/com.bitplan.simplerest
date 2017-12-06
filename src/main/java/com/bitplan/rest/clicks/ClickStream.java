@@ -41,7 +41,7 @@ import nl.basjes.parse.useragent.UserAgentAnalyzer;
  *
  */
 public class ClickStream implements JsonAble {
-  
+
   String referrer;
   private String url;
   private String ip;
@@ -49,9 +49,9 @@ public class ClickStream implements JsonAble {
   String userAgentHeader;
   String acceptLanguage;
   Date timeStamp;
-  private List<PageHit> pageHits=new ArrayList<PageHit>();
+  private List<PageHit> pageHits = new ArrayList<PageHit>();
   private UserAgent userAgent;
-  
+
   public String getIp() {
     return ip;
   }
@@ -94,46 +94,61 @@ public class ClickStream implements JsonAble {
 
   /**
    * add the given page hit
+   * 
    * @param pageHit
    */
   public void addPageHit(PageHit pageHit) {
     getPageHits().add(pageHit);
   }
-  
+
   /**
    * create a new ClickStream
-   * @param userAgentAnalyzer 
+   * 
+   * @param userAgentAnalyzer
    * @param request
-   * @param headers 
+   * @param headers
    * @param initialHit
    */
-  public ClickStream(UserAgentAnalyzer userAgentAnalyzer, ContainerRequest request,MultivaluedMap<String, String> headers, PageHit initialHit, String ip) {
+  public ClickStream(UserAgentAnalyzer userAgentAnalyzer,
+      ContainerRequest request, MultivaluedMap<String, String> headers,
+      PageHit initialHit, String ip) {
     // is this part of an existing ClickStream?
-    referrer = request.getHeaderValue("referer"); // Yes, with the legendary misspelling.
+    referrer = request.getHeaderValue("referer"); // Yes, with the legendary
+                                                  // misspelling.
     this.setUrl(request.getAbsolutePath().toString());
     this.setIp(ip);
-    setDomain(ip);
-    try {
-      InetAddress ia = InetAddress.getByName(ip);
-      setDomain(ia.getCanonicalHostName());
-    } catch (UnknownHostException e) {
-      // ignore
-    }
-    this.userAgentHeader=headers.getFirst("user-agent");
-    setUserAgent(userAgentAnalyzer.parse(userAgentHeader));
-    this.acceptLanguage=headers.getFirst("accept-language");
-    this.timeStamp=new Date();
+    checkDomain();
+    this.userAgentHeader = headers.getFirst("user-agent");
+    checkUserAgent(userAgentAnalyzer);
+    this.acceptLanguage = headers.getFirst("accept-language");
+    this.timeStamp = new Date();
     addPageHit(initialHit);
+  }
+
+  public void checkUserAgent(UserAgentAnalyzer userAgentAnalyzer) {
+    setUserAgent(userAgentAnalyzer.parse(userAgentHeader));
+  }
+
+  public void checkDomain() {
+    if (domain == null) {
+      setDomain(ip);
+      try {
+        InetAddress ia = InetAddress.getByName(ip);
+        setDomain(ia.getCanonicalHostName());
+      } catch (UnknownHostException e) {
+        // ignore
+      }
+    }
   }
 
   @Override
   public void reinit() {
-    
+
   }
 
   @Override
   public void fromMap(Map<String, Object> map) {
-    
+
   }
 
 }

@@ -35,6 +35,22 @@ public class PageHit {
   String path;
   Date timeStamp;
 
+  public String getPath() {
+    return path;
+  }
+
+  public void setPath(String path) {
+    this.path = path;
+  }
+
+  public Date getTimeStamp() {
+    return timeStamp;
+  }
+
+  public void setTimeStamp(Date timeStamp) {
+    this.timeStamp = timeStamp;
+  }
+
   /**
    * create a page hit for the given request and headers
    * 

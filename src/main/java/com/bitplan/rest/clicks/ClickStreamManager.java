@@ -63,11 +63,12 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
   Date startTime = new Date();
   Date lastFlush = new Date();
   Date lastLogRotate = new Date();
-  String fileName;
+  private String fileName;
 
   transient HashMap<String, ClickStream> clickStreamsByIp = new MaxSizeHashMap<String, ClickStream>(
       MAX_CLICKSTREAMS);
-  transient UserAgentAnalyzer userAgentAnalyzer;
+  public static final UserAgentAnalyzer userAgentAnalyzer=UserAgentAnalyzer.newBuilder().hideMatcherLoadStats()
+      .withCache(25000).build();
 
   private List<ClickStream> clickStreams = new ArrayList<ClickStream>();
 
@@ -77,6 +78,14 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
 
   public void setDebug(boolean debug) {
     this.debug = debug;
+  }
+
+  public String getFileName() {
+    return fileName;
+  }
+
+  public void setFileName(String fileName) {
+    this.fileName = fileName;
   }
 
   public List<ClickStream> getClickStreams() {
@@ -94,8 +103,7 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
    */
   private ClickStreamManager(Class<ClickStream> clazz) {
     super(clazz);
-    userAgentAnalyzer = UserAgentAnalyzer.newBuilder().hideMatcherLoadStats()
-        .withCache(25000).build();
+    
   }
 
   /**
@@ -158,7 +166,7 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
    */
   public void flush() {
     try {
-      this.fileName = this.getJsonFile().getName();
+      this.setFileName(this.getJsonFile().getName());
       save();
     } catch (IOException e) {
       // ignore
@@ -216,7 +224,12 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
 
   @Override
   public void reinit() {
-
+    if (clickStreamsByIp == null)
+      clickStreamsByIp = new MaxSizeHashMap<String, ClickStream>(
+          MAX_CLICKSTREAMS);
+    for (ClickStream clickStream : this.clickStreams) {
+      this.clickStreamsByIp.put(clickStream.getIp(), clickStream);
+    }
   }
 
   @Override
@@ -242,6 +255,17 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
       }
     }
     // https://wiki.selfhtml.org/wiki/HTTP/Header/User-Agent
+  }
+
+  /**
+   * get the clickstream for the givne ip
+   * 
+   * @param ip
+   * @return - the clickstream
+   */
+  public ClickStream getClickStream(String ip) {
+    ClickStream result = this.clickStreamsByIp.get(ip);
+    return result;
   }
 
 }
