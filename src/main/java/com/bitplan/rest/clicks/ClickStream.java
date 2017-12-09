@@ -88,6 +88,30 @@ public class ClickStream implements JsonAble {
     this.userAgent = userAgent;
   }
 
+  public String getReferrer() {
+    return referrer;
+  }
+
+  public void setReferrer(String referrer) {
+    this.referrer = referrer;
+  }
+
+  public String getAcceptLanguage() {
+    return acceptLanguage;
+  }
+
+  public void setAcceptLanguage(String acceptLanguage) {
+    this.acceptLanguage = acceptLanguage;
+  }
+
+  public Date getTimeStamp() {
+    return timeStamp;
+  }
+
+  public void setTimeStamp(Date timeStamp) {
+    this.timeStamp = timeStamp;
+  }
+
   public void setPageHits(List<PageHit> pageHits) {
     this.pageHits = pageHits;
   }

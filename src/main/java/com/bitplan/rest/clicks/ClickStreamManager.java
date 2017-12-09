@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -48,6 +50,8 @@ import nl.basjes.parse.useragent.UserAgentAnalyzer;
  */
 public class ClickStreamManager extends JsonManagerImpl<ClickStream>
     implements JsonAble {
+  protected Logger LOGGER = Logger.getLogger("com.bitplan.rest.clicks");
+  
   private boolean debug = false;
   // limits - the default is 10000 click streams per day
   // the maximum number of click stream per logging time period
@@ -186,14 +190,19 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
     // see https://stackoverflow.com/a/18448699/1497139
     Iterator<ClickStream> clickStreamIterator = this.getClickStreams()
         .iterator();
+    int removeCount=0;
+    int before=this.getClickStreams().size();
     while (clickStreamIterator.hasNext()) {
       ClickStream clickStream = clickStreamIterator.next();
       if (this.durationSecs(clickStream.timeStamp,
           lastLogRotate) >= MAX_SESSION_TIME) {
         this.getClickStreams().remove(clickStream);
         this.clickStreamsByIp.remove(clickStream.getIp());
+        removeCount++;
       }
     }
+    int after=this.getClickStreams().size();
+    LOGGER.log(Level.INFO,String.format("removed %5d - %5d = %5d clickStreams", before,removeCount,after));
     // initial save
     flush();
   }
