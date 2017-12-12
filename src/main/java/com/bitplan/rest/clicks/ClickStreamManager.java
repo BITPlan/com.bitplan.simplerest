@@ -50,7 +50,7 @@ import nl.basjes.parse.useragent.UserAgentAnalyzer;
  */
 public class ClickStreamManager extends JsonManagerImpl<ClickStream>
     implements JsonAble {
-  protected Logger LOGGER = Logger.getLogger("com.bitplan.rest.clicks");
+  protected transient Logger LOGGER = Logger.getLogger("com.bitplan.rest.clicks");
   
   private boolean debug = false;
   // limits - the default is 10000 click streams per day
