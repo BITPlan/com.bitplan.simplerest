@@ -61,8 +61,8 @@ public class TemplateResource {
   
   /**
    * set the template Root
-   * @see http://rythmengine.org/doc/configuration.md#home_template_dir
-   * @param path
+   * @see <a href="http://rythmengine.org/doc/configuration.md#home_template_dir">Rythmengine documentation</a>
+   * @param path - the path to the template root
    */
   public void setTemplateRoot(String path) {
     templateRoot=new File(path);
@@ -145,8 +145,8 @@ public class TemplateResource {
     
   /**
    * convert form to Map
-   * @param form
-   * @param the separator character to use
+   * @param form - the form
+   * @param separator - the separator character to use
    */
   public void formToMap(MultivaluedMap<String, String> form, String separator) {
     // take all inputs

@@ -89,7 +89,7 @@ public class DefaultTypeConverter extends ValueDisplayer
    * check null or empty
    * 
    * @param value
-   * @return
+   * @return reconverted empty and string NULL_VALUES to null
    */
   public String checkNullOrEmpty(String value) {
     if (value == null)

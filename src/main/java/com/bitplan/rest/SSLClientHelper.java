@@ -260,7 +260,7 @@ public class SSLClientHelper {
 	 * @param truststorePassword
 	 * @param truststorePath
 	 * 
-	 * @return
+	 * @return a Client Configuration
 	 * @throws Exception
 	 */
 	public static ClientConfig configureClient(String truststorePath,
@@ -324,7 +324,7 @@ public class SSLClientHelper {
 	/**
 	 * create a SSL client based on the default client configuration
 	 * 
-	 * @return
+	 * @return a default client
 	 * @throws Exception
 	 */
 	public static Client createClient() throws Exception {
@@ -338,7 +338,7 @@ public class SSLClientHelper {
 	 * @param truststorePassword
 	 * @param keystorePath
 	 * @param keystorePassword
-	 * @return
+	 * @return the Client
 	 * @throws Exception
 	 */
 	public static Client createClient(String truststorePath,

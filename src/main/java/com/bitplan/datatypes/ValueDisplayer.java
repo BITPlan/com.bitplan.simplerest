@@ -37,7 +37,7 @@ public class ValueDisplayer implements ValueDisplay {
    * format the given Timestamp
    * 
    * @param ts
-   * @return
+   * @return the timeStamp as an ISO date/time value
    */
   public String formatTimeStamp(Date ts) {
     String result = nullValueRepresentation;
@@ -51,7 +51,7 @@ public class ValueDisplayer implements ValueDisplay {
   /**
    * nullValue representation replaces the value with a null value representation if it is null
    * @param value
-   * @return
+   * @return the null value Representation of the value
    */
   public String nullValue(Object value) {
     // compare to http://www.1keydata.com/sql/sql-nvl.html

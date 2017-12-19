@@ -188,19 +188,19 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
     // remove old entries
     // avoid concurrent modification exeception
     // see https://stackoverflow.com/a/18448699/1497139
-    Iterator<ClickStream> clickStreamIterator = this.getClickStreams()
-        .iterator();
     int removeCount=0;
     int before=this.getClickStreams().size();
-    while (clickStreamIterator.hasNext()) {
-      ClickStream clickStream = clickStreamIterator.next();
+    List<ClickStream> toRemove=new ArrayList<ClickStream>();
+    for (ClickStream clickStream:this.getClickStreams()) {
       if (this.durationSecs(clickStream.timeStamp,
-          lastLogRotate) >= MAX_SESSION_TIME) {
-        this.getClickStreams().remove(clickStream);
+          lastLogRotate) >= MAX_SESSION_TIME) {     
         this.clickStreamsByIp.remove(clickStream.getIp());
+        toRemove.add(clickStream);
         removeCount++;
       }
     }
+    this.getClickStreams().removeAll(toRemove);
+    
     int after=this.getClickStreams().size();
     LOGGER.log(Level.INFO,String.format("removed %5d - %5d = %5d clickStreams", before,removeCount,after));
     // initial save
@@ -220,7 +220,7 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
   /**
    * get a singleton
    * 
-   * @return
+   * @return the singleton instance
    */
   public static ClickStreamManager getInstance() {
     if (instance == null) {
