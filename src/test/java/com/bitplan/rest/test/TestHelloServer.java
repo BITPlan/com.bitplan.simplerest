@@ -20,6 +20,7 @@
  */
 package com.bitplan.rest.test;
 
+import org.junit.After;
 import org.junit.Before;
 
 import com.bitplan.hello.rest.HelloServer;
@@ -34,6 +35,11 @@ public class TestHelloServer extends TestRestServer {
 	@Before
 	public void initServer() throws Exception {
 		startServer();
+	}
+	
+	@After
+	public void stopTheServer() throws Exception {
+	  super.stopServer();
 	}
 
 	@Override

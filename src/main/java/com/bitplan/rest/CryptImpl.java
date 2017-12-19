@@ -23,6 +23,7 @@ package com.bitplan.rest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -30,15 +31,11 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
 /**
  * encryption helper
  * @author wf
  *
  */
-@SuppressWarnings("restriction")
 public class CryptImpl implements Crypt {
 
 	private char[] cypher;
@@ -70,11 +67,6 @@ public class CryptImpl implements Crypt {
 		return base64Encode(pbeCipher.doFinal(property.getBytes("UTF-8")));
 	}
 
-	private static String base64Encode(byte[] bytes) {
-		// NB: This class is internal, and you probably should use another impl
-		return new BASE64Encoder().encode(bytes);
-	}
-
 	/* (non-Javadoc)
    * @see com.bitplan.rest.Crypt#decrypt(java.lang.String)
    */
@@ -90,14 +82,29 @@ public class CryptImpl implements Crypt {
 	}
 
 	/**
-	 * decode the given property
-	 * @param property
-	 * @return the decode version
+	 * encode the given bytes
+	 * @param bytesToEncode - the bytes to encode
+	 * @return the encoded bytes
+	 */
+	private static String base64Encode(byte[] bytesToEncode) {
+    // NB: This class is internal, and you probably should use another implementation
+	  // see https://stackoverflow.com/a/32227181/1497139
+	  // String encryptedValue = new BASE64Encoder().encode(bytesToEncode);
+	  String encryptedValue = new String(Base64.getEncoder().encode(bytesToEncode));
+    return encryptedValue;
+  }
+	
+	/**
+	 * decode the given encryptedDataString
+	 * @param encryptedDataString - the encrypted string
+	 * @return the decoded byte array
 	 * @throws IOException
 	 */
-	private static byte[] base64Decode(String property) throws IOException {
-		// NB: This class is internal, and you probably should use another impl
-		return new BASE64Decoder().decodeBuffer(property);
+	private static byte[] base64Decode(String encryptedDataString) throws IOException {
+		// NB: This class is internal, and you probably should use another implementation
+	  //  byte[] decodedValue= new BASE64Decoder().decodeBuffer(encryptedDataString);
+	  byte[] decodedValue = Base64.getDecoder().decode(encryptedDataString);
+		return decodedValue;
 	}
 
 }
