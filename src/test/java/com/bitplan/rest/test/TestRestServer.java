@@ -339,6 +339,19 @@ public abstract class TestRestServer {
         .post(ClientResponse.class, data);
     return response;
   }
+  
+  /**
+   * get a post RESPONSE
+   * @param path
+   * @param pFormData
+   * @param debug
+   * @return
+   * @throws Exception
+   */
+  public ClientResponse getPostResponse(String path,
+      Map<String, String> pFormData, boolean debug) throws Exception {
+    return this.getPostResponse("text/html",path,pFormData,debug);
+  }
 
   /**
    * get a Post response
@@ -350,7 +363,7 @@ public abstract class TestRestServer {
    * @return
    * @throws Exception
    */
-  public ClientResponse getPostResponse(String path,
+  public ClientResponse getPostResponse(String contentType,String path,
       Map<String, String> pFormData, boolean debug) throws Exception {
     MultivaluedMap<String, String> lFormData = new MultivaluedMapImpl();
     for (String key : pFormData.keySet()) {
@@ -358,7 +371,7 @@ public abstract class TestRestServer {
     }
     WebResource wrs = getResource(path);
     ClientResponse response = wrs.type(
-        MediaType.APPLICATION_FORM_URLENCODED_TYPE).post(ClientResponse.class,
+        MediaType.APPLICATION_FORM_URLENCODED_TYPE).accept(contentType).post(ClientResponse.class,
         lFormData);
     // do not force response string - further calls to getResponseString will
     // fail
