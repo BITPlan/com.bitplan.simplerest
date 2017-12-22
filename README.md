@@ -26,7 +26,7 @@ mvn install
 ### Distribution
 Available at Maven Central see 
 
-http://search.maven.org/#artifactdetails|com.bitplan.rest|com.bitplan.simplerest|0.0.10|jar
+http://search.maven.org/#artifactdetails|com.bitplan.rest|com.bitplan.simplerest|0.0.11|jar
 
 Maven dependency:
 
@@ -34,11 +34,11 @@ Maven dependency:
 <dependency>
 	<groupId>com.bitplan.rest</groupId>
 	<artifactId>com.bitplan.simplerest</artifactId>
-	<version>0.0.10</version>
+	<version>0.0.11</version>
 </dependency>
 ```
 ## Tests
-There are 21 JUnit test for version 0.0.10
+There are 21 JUnit test for version 0.0.11
 
 ## Version history
 *  0.0.1: 2016-06-18 First release via GitHub / Maven central
@@ -51,3 +51,4 @@ There are 21 JUnit test for version 0.0.10
 *  0.0.8: 2017-03-25 adds support for Postable Interface
 *  0.0.9: 2017-03-28 adds implode functionality for multi select handling
 * 0.0.10: 2017-12-19 adds Clickstream tracking
+* 0.0.11: 2017-12-22 updates most dependencies 
