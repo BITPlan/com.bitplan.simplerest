@@ -9,6 +9,7 @@ http://stackoverflow.com/q/37775309/1497139
 
 ### Project
 [![Build Status](https://travis-ci.org/BITPlan/com.bitplan.simplerest.svg?branch=master)](https://travis-ci.org/BITPlan/com.bitplan.simplerest)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.bitplan.rest/com.bitplan.simplerest/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.bitplan.rest/com.bitplan.simplerest)
 
 [Project pages] (https://bitplan.github.io/com.bitplan.simplerest/)
 
@@ -25,8 +26,7 @@ mvn install
 
 ### Distribution
 Available at Maven Central see 
-
-http://search.maven.org/#artifactdetails|com.bitplan.rest|com.bitplan.simplerest|0.0.11|jar
+https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22com.bitplan.simplerest%22
 
 Maven dependency:
 
