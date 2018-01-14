@@ -11,7 +11,7 @@ http://stackoverflow.com/q/37775309/1497139
 [![Build Status](https://travis-ci.org/BITPlan/com.bitplan.simplerest.svg?branch=master)](https://travis-ci.org/BITPlan/com.bitplan.simplerest)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.bitplan.rest/com.bitplan.simplerest/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.bitplan.rest/com.bitplan.simplerest)
 
-[Project pages] (https://bitplan.github.io/com.bitplan.simplerest/)
+[Project pages](https://bitplan.github.io/com.bitplan.simplerest/)
 
 * Open Source hosted at https://github.com/BITPlan/com.bitplan.simplerest
 * License based on license of libraries used (see [pom.xml](https://github.com/BITPlan/com.bitplan.simplerest/blob/master/pom.xml))
