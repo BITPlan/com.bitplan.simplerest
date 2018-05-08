@@ -23,7 +23,7 @@
 		<!-- http://grizzly.java.net/ -->
 		<grizzly.version>2.3.25</grizzly.version>
 		<!-- Rythm Template Engine -->
-		<rythm.version>1.1.7</rythm.version>
+		<rythm.version>1.2.2</rythm.version>
 		<!-- JUnit unit testing framework -->
 		<junit4.version>4.12</junit4.version>
 		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-site-plugin -->
