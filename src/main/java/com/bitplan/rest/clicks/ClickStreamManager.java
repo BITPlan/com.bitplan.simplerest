@@ -267,7 +267,7 @@ public class ClickStreamManager extends JsonManagerImpl<ClickStream>
   }
 
   /**
-   * get the clickstream for the givne ip
+   * get the clickstream for the given ip
    * 
    * @param ip
    * @return - the clickstream
