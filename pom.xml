@@ -1,6 +1,7 @@
-<!-- Copyright (c) 2016-2017 BITPlan GmbH Project details and license at: 
+<!-- Copyright (c) 2016-2018 BITPlan GmbH Project details and license at: 
 	https://github.com/BITPlan/com.bitplan.simplerest -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.bitplan.rest</groupId>
@@ -27,13 +28,18 @@
 		<!-- JUnit unit testing framework -->
 		<junit4.version>4.12</junit4.version>
 		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-site-plugin -->
-		<maven-site-plugin.version>3.6</maven-site-plugin.version>
-
+		<maven-site-plugin.version>3.7.1</maven-site-plugin.version>
+		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-project-info-reports-plugin -->
+		<maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
+		<!-- https://github.com/github/maven-plugins -->
+		<site-maven-plugin.version>0.12</site-maven-plugin.version>
 		<!-- http://stackoverflow.com/questions/3017695/how-to-configure-encoding-in-maven -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<!-- github server corresponds to entry in ~/.m2/settings.xml -->
 		<github.global.server>github</github.global.server>
+		<!--  https://stackoverflow.com/a/35673586/1497139 -->
+		<dependency.locations.enabled>false</dependency.locations.enabled>
 	</properties>
 	<packaging>jar</packaging>
 	<url>https://github.com/BITPlan/com.bitplan.simplerest</url>
@@ -318,6 +324,17 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>${maven-site-plugin.version}</version>
+			</plugin>	
+			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-project-info-reports-plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>${maven-project-info-reports-plugin.version}</version>
+			</plugin>
 			<!-- GPG Signed Components The Maven GPG plugin is used to sign the components 
 				with the following configuration. -->
 			<plugin>
@@ -339,7 +356,7 @@
 			<plugin>
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
-				<version>0.10</version>
+				<version>${site-maven-plugin.version}</version>
 				<configuration>
 					<message>Creating site for ${project.version}</message>
 					<repositoryName>com.bitplan.simplerest</repositoryName>      <!-- github repo name -->
@@ -375,6 +392,8 @@
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-project-info-reports-plugin</artifactId>
+							<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-project-info-reports-plugin -->
+							<version>${maven-project-info-reports-plugin.version}</version>
 							<configuration>
 								<dependencyDetailsEnabled>true</dependencyDetailsEnabled>
 								<dependencyLocationsEnabled>true</dependencyLocationsEnabled>
