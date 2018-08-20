@@ -1,4 +1,6 @@
-com.bitplan.datatypes
-com.bitplan.jaxb
-com.bitplan.persistence
-com.bitplan.rest
+com.bitplan.appconfig
+com.bitplan.error
+com.bitplan.gui
+com.bitplan.i18n
+com.bitplan.json
+com.bitplan.states
