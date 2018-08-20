@@ -1,6 +1,9 @@
-com.bitplan.appconfig
-com.bitplan.error
-com.bitplan.gui
-com.bitplan.i18n
+com.bitplan.datatypes
+com.bitplan.jaxb
 com.bitplan.json
-com.bitplan.states
+com.bitplan.rest
+com.bitplan.rest.basicauth
+com.bitplan.rest.clicks
+com.bitplan.rest.providers
+com.bitplan.rest.resources
+com.bitplan.rest.users
