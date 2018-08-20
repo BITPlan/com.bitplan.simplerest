@@ -1,6 +1,9 @@
-
-com.bitplan.antlr
-com.bitplan.exp
-com.bitplan.expr
-com.bitplan.iri
-com.bitplan.swingutil
+com.bitplan.datatypes
+com.bitplan.jaxb
+com.bitplan.json
+com.bitplan.rest
+com.bitplan.rest.basicauth
+com.bitplan.rest.clicks
+com.bitplan.rest.providers
+com.bitplan.rest.resources
+com.bitplan.rest.users
