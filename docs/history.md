@@ -11,3 +11,4 @@
 * 0.0.10: 2017-12-19 adds Clickstream tracking
 * 0.0.11: 2017-12-22 updates most dependencies 
 * 0.0.12: 2018-08-21 upgrades Eclipse link to fix #9
+* 0.0.13: 2018-08-21 applies work-around to fix #9

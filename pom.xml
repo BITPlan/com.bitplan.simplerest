@@ -12,7 +12,7 @@
 	</parent>
 	<groupId>com.bitplan.rest</groupId>
 	<artifactId>com.bitplan.simplerest</artifactId>
-	<version>0.0.12</version>
+	<version>0.0.13</version>
 	<name>Simple Jersey RestFul Framework</name>
 	<description>Needed Base Utilities and Functions for Jersey 1.x RESTFul applications</description>
 	<properties>
@@ -62,7 +62,18 @@
 					<artifactId>commonj.sdo</artifactId>
 					<groupId>commonj.sdo</groupId>
 				</exclusion>
+				<!-- https://stackoverflow.com/questions/45870753/eclipselink-2-7-0-and-jpa-api-2-2-0-signature-mismatch -->
+				<exclusion>
+					<groupId>org.eclipse.persistence</groupId>
+					<artifactId>javax.persistence</artifactId>
+				</exclusion>
 			</exclusions>
+		</dependency>
+		<!-- See https://stackoverflow.com/q/45870753 -->
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>javax.persistence</artifactId>
+			<version>2.1.1</version>
 		</dependency>
 		<!-- http://mvnrepository.com/artifact/org.eclipse.persistence/org.eclipse.persistence.moxy -->
 		<dependency>
@@ -121,9 +132,7 @@
 			<scope>provided</scope>
 		</dependency>
 		<!-- javax.json.JsonException: Provider org.glassfish.json.JsonProviderImpl 
-			not found 
-			https://stackoverflow.com/questions/22812113/http-status-500-provider-org-glassfish-json-jsonproviderimpl-not-found
-	    -->
+			not found https://stackoverflow.com/questions/22812113/http-status-500-provider-org-glassfish-json-jsonproviderimpl-not-found -->
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>javax.json</artifactId>
