@@ -1,21 +1,28 @@
-# com.bitplan.simplerest
-Needed Base Utilities and Functions for Jersey 1.x RESTFul applications
+### com.bitplan.simplerest
+[Needed Base Utilities and Functions for Jersey 1.x RESTFul applications](http://www.bitplan.com/SimpleRest) 
 
-# API
-see https://github.com/BITPlan/com.bitplan.simplerest-api
+[![Travis (.org)](https://img.shields.io/travis/BITPlan/com.bitplan.simplerest.svg)](https://travis-ci.org/BITPlan/com.bitplan.simplerest)
+[![Maven Central](https://img.shields.io/maven-central/v/com.bitplan.rest/com.bitplan.simplerest.svg)](https://search.maven.org/artifact/com.bitplan.rest/com.bitplan.simplerest/0.0.11/jar)
+[![GitHub issues](https://img.shields.io/github/issues/BITPlan/com.bitplan.simplerest.svg)](https://github.com/BITPlan/com.bitplan.simplerest/issues)
+[![GitHub issues](https://img.shields.io/github/issues-closed/BITPlan/com.bitplan.simplerest.svg)](https://github.com/BITPlan/com.bitplan.simplerest/issues/?q=is%3Aissue+is%3Aclosed)
+[![GitHub](https://img.shields.io/github/license/BITPlan/com.bitplan.simplerest.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![BITPlan](http://wiki.bitplan.com/images/wiki/thumb/3/38/BITPlanLogoFontLessTransparent.png/198px-BITPlanLogoFontLessTransparent.png)](http://www.bitplan.com)
 
-# Issues
-http://stackoverflow.com/q/37775309/1497139
+### Project pages
+[com.bitplan.simplerest](https://BITPlan.github.io/com.bitplan.simplerest)
 
-### Project
-[![Build Status](https://travis-ci.org/BITPlan/com.bitplan.simplerest.svg?branch=master)](https://travis-ci.org/BITPlan/com.bitplan.simplerest)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.bitplan.rest/com.bitplan.simplerest/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.bitplan.rest/com.bitplan.simplerest)
+### Maven dependency
 
-[Project pages](https://bitplan.github.io/com.bitplan.simplerest/)
+Maven dependency
+```xml
+<dependency>
+  <groupId>com.bitplan.rest</groupId>
+  <artifactId>com.bitplan.simplerest</artifactId>
+  <version>0.0.11</version>
+</dependency>
+```
 
-* Open Source hosted at https://github.com/BITPlan/com.bitplan.simplerest
-* License based on license of libraries used (see [pom.xml](https://github.com/BITPlan/com.bitplan.simplerest/blob/master/pom.xml))
-* Maven based Java project including JUnit 4 tests.
+[Current release at repo1.maven.org](http://repo1.maven.org/maven2/com/bitplan/rest/com.bitplan.simplerest/0.0.11/)
 
 ### How to build
 ```
@@ -23,23 +30,6 @@ git clone https://github.com/BITPlan/com.bitplan.simplerest
 cd com.bitplan.simplerest
 mvn install
 ```
-
-### Distribution
-Available at Maven Central see 
-https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22com.bitplan.simplerest%22
-
-Maven dependency:
-
-```xml
-<dependency>
-	<groupId>com.bitplan.rest</groupId>
-	<artifactId>com.bitplan.simplerest</artifactId>
-	<version>0.0.11</version>
-</dependency>
-```
-## Tests
-There are 21 JUnit test for version 0.0.11
-
 ## Version history
 *  0.0.1: 2016-06-18 First release via GitHub / Maven central
 *  0.0.2: 2016-06-19 adds basic auth support
