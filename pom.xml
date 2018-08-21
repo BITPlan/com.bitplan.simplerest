@@ -120,6 +120,15 @@
 			<version>3.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- javax.json.JsonException: Provider org.glassfish.json.JsonProviderImpl 
+			not found 
+			https://stackoverflow.com/questions/22812113/http-status-500-provider-org-glassfish-json-jsonproviderimpl-not-found
+	    -->
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.json</artifactId>
+			<version>1.0.4</version>
+		</dependency>
 		<!-- bundle <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-server</artifactId> 
 			<version>${jersey.version}</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId> 
 			<artifactId>jersey-core</artifactId> <version>${jersey.version}</version> 
