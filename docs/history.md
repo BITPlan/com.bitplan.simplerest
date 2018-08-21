@@ -10,3 +10,4 @@
 *  0.0.9: 2017-03-28 adds implode functionality for multi select handling
 * 0.0.10: 2017-12-19 adds Clickstream tracking
 * 0.0.11: 2017-12-22 updates most dependencies 
+* 0.0.12: 2018-08-21 upgrades Eclipse link to fix #9
