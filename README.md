@@ -13,7 +13,6 @@
 * [com.bitplan.simplerest Project pages](https://BITPlan.github.io/com.bitplan.simplerest)
 * [Javadoc](https://BITPlan.github.io/com.bitplan.simplerest/apidocs/index.html)
 * [Test-Report](https://BITPlan.github.io/com.bitplan.simplerest/surefire-report.html)
-
 ### Maven dependency
 
 Maven dependency

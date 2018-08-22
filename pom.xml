@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.bitplan.pom</groupId>
 		<artifactId>com.bitplan.pom</artifactId>
-		<version>0.0.6</version>
+		<version>0.0.9</version>
 		<relativePath>../com.bitplan.pom/pom.xml</relativePath>
 	</parent>
 	<groupId>com.bitplan.rest</groupId>
@@ -29,14 +29,10 @@
 		<jersey.version>1.19.4</jersey.version>
 		<!-- Guice dependency injection framework -->
 		<guice.version>3.0</guice.version>
-		<!-- args4j http://mvnrepository.com/artifact/args4j/args4j/2.33 -->
-		<args4j.version>2.33</args4j.version>
 		<!-- http://grizzly.java.net/ -->
 		<grizzly.version>2.3.25</grizzly.version>
 		<!-- Rythm Template Engine -->
 		<rythm.version>1.2.2</rythm.version>
-		<!-- JUnit unit testing framework -->
-		<junit4.version>4.12</junit4.version>
 	</properties>
 	<packaging>jar</packaging>
 	<url>https://github.com/BITPlan/com.bitplan.simplerest</url>
