@@ -12,3 +12,4 @@
 * 0.0.11: 2017-12-22 updates most dependencies 
 * 0.0.12: 2018-08-21 upgrades Eclipse link to fix #9
 * 0.0.13: 2018-08-21 applies work-around to fix #9
+* 0.0.14: 2018-09-20 adds CORSFilter support to fix #10

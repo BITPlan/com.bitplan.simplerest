@@ -57,6 +57,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 
 import com.bitplan.rest.basicauth.BasicAuthSecurityProvider;
+import com.bitplan.rest.cors.CORSFilter;
 import com.google.inject.AbstractModule;
 import com.sun.jersey.api.container.ContainerFactory;
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
@@ -482,8 +483,10 @@ public class RestServerImpl implements Runnable, UncaughtExceptionHandler,
         // do we want basic authentication with a user manager?
         if (settings.getUserManager()!=null) {
           // add the package with the BasicAuthSecurityProvider
-          packages+="com.bitplan.rest.basicauth;"+packages;
+          packages+="com.bitplan.rest.basicauth;";
         }
+        // for CORS Filter
+        packages+="com.bitplan.rest.cors";
         String pa[] = packages.split(";");
         ResourceConfig rc = new PackagesResourceConfig(pa);
         // more config for provider
@@ -491,6 +494,7 @@ public class RestServerImpl implements Runnable, UncaughtExceptionHandler,
         if (userManager!=null) {
           rc.getContainerRequestFilters().add(new BasicAuthSecurityProvider(userManager));
         }
+        rc.getContainerRequestFilters().add(new CORSFilter());
         // http://stackoverflow.com/questions/3677064/jax-rs-jersey-howto-force-a-response-contenttype-overwrite-content-negotiatio
         rc.getMediaTypeMappings().put("json", MediaType.APPLICATION_JSON_TYPE);
         rc.getMediaTypeMappings().put("xml", MediaType.APPLICATION_XML_TYPE);
