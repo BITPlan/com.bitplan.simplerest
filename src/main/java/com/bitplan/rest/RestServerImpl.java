@@ -494,7 +494,7 @@ public class RestServerImpl implements Runnable, UncaughtExceptionHandler,
         if (userManager!=null) {
           rc.getContainerRequestFilters().add(new BasicAuthSecurityProvider(userManager));
         }
-        rc.getContainerRequestFilters().add(new CORSFilter());
+        rc.getContainerResponseFilters().add(new CORSFilter());
         // http://stackoverflow.com/questions/3677064/jax-rs-jersey-howto-force-a-response-contenttype-overwrite-content-negotiatio
         rc.getMediaTypeMappings().put("json", MediaType.APPLICATION_JSON_TYPE);
         rc.getMediaTypeMappings().put("xml", MediaType.APPLICATION_XML_TYPE);

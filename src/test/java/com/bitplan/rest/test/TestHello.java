@@ -29,12 +29,16 @@ package com.bitplan.rest.test;
 import static org.junit.Assert.*;
 
 import java.net.URI;
+import java.util.List;
+
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.bitplan.rest.RestServer;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 /**
@@ -48,6 +52,20 @@ public class TestHello extends TestHelloServer {
   @Test
   public void testHello() throws Exception {
     super.check("/hello/hello", "Hello");
+  }
+  
+  @Test
+  public void testCORSheader() throws Exception {
+    boolean debug=false;
+    ClientResponse response = super.getResponse("text/html", "/hello/hello", debug);
+    assertEquals(200,response.getStatus());
+    MultivaluedMap<String, String> headers = response.getHeaders();
+    /*
+    for (String key:headers.keySet()) {
+      System.out.println(String.format("%s=%s", key,headers.getFirst(key)));
+    }*/
+    assertEquals("*",headers.getFirst("Access-Control-Allow-Origin"));
+    assertEquals("GET, POST, PUT, DELETE, OPTIONS",headers.getFirst("Access-Control-Allow-Methods"));
   }
 
   @Ignore
