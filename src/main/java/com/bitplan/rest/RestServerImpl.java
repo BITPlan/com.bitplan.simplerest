@@ -483,10 +483,10 @@ public class RestServerImpl implements Runnable, UncaughtExceptionHandler,
         // do we want basic authentication with a user manager?
         if (settings.getUserManager()!=null) {
           // add the package with the BasicAuthSecurityProvider
-          packages+="com.bitplan.rest.basicauth;";
+          packages+=";com.bitplan.rest.basicauth";
         }
         // for CORS Filter
-        packages+="com.bitplan.rest.cors;";
+        packages+=";com.bitplan.rest.cors";
         String pa[] = packages.split(";");
         ResourceConfig rc = new PackagesResourceConfig(pa);
         // more config for provider
