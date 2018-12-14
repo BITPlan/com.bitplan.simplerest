@@ -487,6 +487,8 @@ public class RestServerImpl implements Runnable, UncaughtExceptionHandler,
         }
         // for CORS Filter
         packages+=";com.bitplan.rest.cors";
+        // for alibaba fast json
+        packages+=";com.alibaba.fastjson.support.jaxrs";
         String pa[] = packages.split(";");
         ResourceConfig rc = new PackagesResourceConfig(pa);
         // more config for provider
