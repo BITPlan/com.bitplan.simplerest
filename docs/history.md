@@ -9,8 +9,9 @@
 *  0.0.8: 2017-03-25 adds support for Postable Interface
 *  0.0.9: 2017-03-28 adds implode functionality for multi select handling
 * 0.0.10: 2017-12-19 adds Clickstream tracking
-* 0.0.11: 2017-12-22 updates most dependencies 
+* 0.0.11: 2017-12-22 updates most dependencies
 * 0.0.12: 2018-08-21 upgrades Eclipse link to fix #9
 * 0.0.13: 2018-08-21 applies work-around to fix #9
 * 0.0.14: 2018-09-20 adds CORSFilter support to fix #10 (failed attempt)
 * 0.0.15: 2018-09-20 adds CORSFilter support to fix #10 (with unit test)
+* 0.0.16: 2018-12-14 works around https://github.com/rythmengine/rythmengine/issues/383

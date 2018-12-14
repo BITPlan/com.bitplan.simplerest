@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2016-2018 BITPlan GmbH Project details and license at: 
+<!-- Copyright (c) 2016-2018 BITPlan GmbH Project details and license at:
 	https://github.com/BITPlan/com.bitplan.simplerest -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -12,7 +12,7 @@
 	</parent>
 	<groupId>com.bitplan.rest</groupId>
 	<artifactId>com.bitplan.simplerest</artifactId>
-	<version>0.0.15</version>
+	<version>0.0.16</version>
 	<name>Simple Jersey RestFul Framework</name>
 	<description>Needed Base Utilities and Functions for Jersey 1.x RESTFul applications</description>
 	<properties>
@@ -78,10 +78,10 @@
 			<version>${eclipselink.version}</version>
 		</dependency>
 
-		<!-- <dependency> Moxy media JSOn support - Jersey 2.0 only <groupId>org.glassfish.jersey.media</groupId> 
+		<!-- <dependency> Moxy media JSOn support - Jersey 2.0 only <groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-moxy</artifactId> </dependency> -->
-		<!-- http://mvnrepository.com/artifact/com.sun.jersey/jersey-bundle <dependency> 
-			<groupId>com.sun.jersey</groupId> <artifactId>jersey-bundle</artifactId> 
+		<!-- http://mvnrepository.com/artifact/com.sun.jersey/jersey-bundle <dependency>
+			<groupId>com.sun.jersey</groupId> <artifactId>jersey-bundle</artifactId>
 			<version>${jersey.version}</version> </dependency> -->
 		<!-- Jersey client -->
 		<dependency>
@@ -127,19 +127,19 @@
 			<version>3.0</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- javax.json.JsonException: Provider org.glassfish.json.JsonProviderImpl 
+		<!-- javax.json.JsonException: Provider org.glassfish.json.JsonProviderImpl
 			not found https://stackoverflow.com/questions/22812113/http-status-500-provider-org-glassfish-json-jsonproviderimpl-not-found -->
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>javax.json</artifactId>
 			<version>1.0.4</version>
 		</dependency>
-		<!-- bundle <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-server</artifactId> 
-			<version>${jersey.version}</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId> 
-			<artifactId>jersey-core</artifactId> <version>${jersey.version}</version> 
-			</dependency> <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-servlet</artifactId> 
-			<version>${jersey.version}</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId> 
-			<artifactId>jersey-client</artifactId> <version>${jersey.version}</version> 
+		<!-- bundle <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-server</artifactId>
+			<version>${jersey.version}</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-core</artifactId> <version>${jersey.version}</version>
+			</dependency> <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-servlet</artifactId>
+			<version>${jersey.version}</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId> <version>${jersey.version}</version>
 			</dependency> -->
 		<!-- JSON support for jersey -->
 		<dependency>
@@ -234,6 +234,18 @@
 			<groupId>org.rythmengine</groupId>
 			<artifactId>rythm-engine</artifactId>
 			<version>${rythm.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.alibaba</groupId>
+					<artifactId>fastjson</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.54</version>
 		</dependency>
 		<!-- http://mvnrepository.com/artifact/joda-time/joda-time -->
 		<dependency>
@@ -241,9 +253,9 @@
 			<artifactId>joda-time</artifactId>
 			<version>2.9.9</version>
 		</dependency>
-		<!-- Jersey <dependency> <groupId>org.glassfish.jersey.containers</groupId> 
-			<artifactId>jersey-container-grizzly2-http</artifactId> </dependency> <dependency> 
-			<groupId>org.glassfish.jersey.media</groupId> <artifactId>jersey-media-moxy</artifactId> 
+		<!-- Jersey <dependency> <groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-grizzly2-http</artifactId> </dependency> <dependency>
+			<groupId>org.glassfish.jersey.media</groupId> <artifactId>jersey-media-moxy</artifactId>
 			</dependency> -->
 
 	</dependencies>
