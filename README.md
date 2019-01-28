@@ -1,5 +1,5 @@
 ### com.bitplan.simplerest
-[Needed Base Utilities and Functions for Jersey 1.x RESTFul applications](http://www.bitplan.com/SimpleRest) 
+[Needed Base Utilities and Functions for Jersey 1.x RESTFul applications](http://www.bitplan.com/SimpleRest)
 
 [![Travis (.org)](https://img.shields.io/travis/BITPlan/com.bitplan.simplerest.svg)](https://travis-ci.org/BITPlan/com.bitplan.simplerest)
 [![Maven Central](https://img.shields.io/maven-central/v/com.bitplan.rest/com.bitplan.simplerest.svg)](https://search.maven.org/artifact/com.bitplan.rest/com.bitplan.simplerest/0.0.16/jar)
@@ -17,6 +17,7 @@
 
 Maven dependency
 ```xml
+<!-- Needed Base Utilities and Functions for Jersey 1.x RESTFul applications http://www.bitplan.com/SimpleRest -->
 <dependency>
   <groupId>com.bitplan.rest</groupId>
   <artifactId>com.bitplan.simplerest</artifactId>
