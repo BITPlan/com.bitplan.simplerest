@@ -1,8 +1,8 @@
 ### com.bitplan.simplerest
-[Needed Base Utilities and Functions for Jersey 1.x RESTFul applications](http://www.bitplan.com/SimpleRest)
+[Needed Base Utilities and Functions for Jersey 1.x RESTFul applications](http://www.bitplan.com/SimpleRest) 
 
 [![Travis (.org)](https://img.shields.io/travis/BITPlan/com.bitplan.simplerest.svg)](https://travis-ci.org/BITPlan/com.bitplan.simplerest)
-[![Maven Central](https://img.shields.io/maven-central/v/com.bitplan.rest/com.bitplan.simplerest.svg)](https://search.maven.org/artifact/com.bitplan.rest/com.bitplan.simplerest/0.0.16/jar)
+[![Maven Central](https://img.shields.io/maven-central/v/com.bitplan.rest/com.bitplan.simplerest.svg)](https://search.maven.org/artifact/com.bitplan.rest/com.bitplan.simplerest/0.0.17/jar)
 [![GitHub issues](https://img.shields.io/github/issues/BITPlan/com.bitplan.simplerest.svg)](https://github.com/BITPlan/com.bitplan.simplerest/issues)
 [![GitHub issues](https://img.shields.io/github/issues-closed/BITPlan/com.bitplan.simplerest.svg)](https://github.com/BITPlan/com.bitplan.simplerest/issues/?q=is%3Aissue+is%3Aclosed)
 [![GitHub](https://img.shields.io/github/license/BITPlan/com.bitplan.simplerest.svg)](https://www.apache.org/licenses/LICENSE-2.0)
@@ -17,15 +17,14 @@
 
 Maven dependency
 ```xml
-<!-- Needed Base Utilities and Functions for Jersey 1.x RESTFul applications http://www.bitplan.com/SimpleRest -->
 <dependency>
   <groupId>com.bitplan.rest</groupId>
   <artifactId>com.bitplan.simplerest</artifactId>
-  <version>0.0.16</version>
+  <version>0.0.17</version>
 </dependency>
 ```
 
-[Current release at repo1.maven.org](http://repo1.maven.org/maven2/com/bitplan/rest/com.bitplan.simplerest/0.0.16/)
+[Current release at repo1.maven.org](http://repo1.maven.org/maven2/com/bitplan/rest/com.bitplan.simplerest/0.0.17/)
 
 ### How to build
 ```
@@ -50,3 +49,4 @@ mvn install
 * 0.0.14: 2018-09-20 adds CORSFilter support to fix #10 (failed attempt)
 * 0.0.15: 2018-09-20 adds CORSFilter support to fix #10 (with unit test)
 * 0.0.16: 2018-12-14 works around https://github.com/rythmengine/rythmengine/issues/383
+* 0.0.17: 2019-01-28 works around https://github.com/alibaba/fastjson/issues/2256 

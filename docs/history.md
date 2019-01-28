@@ -15,3 +15,4 @@
 * 0.0.14: 2018-09-20 adds CORSFilter support to fix #10 (failed attempt)
 * 0.0.15: 2018-09-20 adds CORSFilter support to fix #10 (with unit test)
 * 0.0.16: 2018-12-14 works around https://github.com/rythmengine/rythmengine/issues/383
+* 0.0.17: 2019-01-28 works around https://github.com/alibaba/fastjson/issues/2256 
