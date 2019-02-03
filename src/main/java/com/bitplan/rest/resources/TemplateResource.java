@@ -21,6 +21,7 @@
 package com.bitplan.rest.resources;
 
 import java.io.File;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,6 @@ public class TemplateResource {
 
   @Context
   protected UriInfo uri;
-
 
   protected Map<String, Object> rootMap = new HashMap<String, Object>();
 
@@ -158,5 +158,16 @@ public class TemplateResource {
       rootMap.put(key,value);
     }
   }
-      
+  
+  /**
+   * redirect to the given relative path
+   * @param path
+   * @return the redirect response
+   */
+  public Response redirect(String path) {
+    URI baseuri = uri.getBaseUri();
+    URI redirect=baseuri.resolve(baseuri.getPath()+path);
+    return Response.seeOther(redirect).build();
+  }
+
 }

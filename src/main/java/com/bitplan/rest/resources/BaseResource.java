@@ -33,9 +33,6 @@ import com.bitplan.persistence.Manager;
  *
  */
 public class BaseResource<MT extends Manager<MT,T>,T> extends TemplateResource {
-  
-  @Context
-  UriInfo uriInfo;
 
   @Context
   Request request;
@@ -44,12 +41,12 @@ public class BaseResource<MT extends Manager<MT,T>,T> extends TemplateResource {
   String elementName;
   MT manager;
 
-  public UriInfo getUriInfo() {
-    return uriInfo;
+  public UriInfo getUri() {
+    return uri;
   }
 
-  public void setUriInfo(UriInfo uriInfo) {
-    this.uriInfo = uriInfo;
+  public void setUri(UriInfo uriInfo) {
+    this.uri = uriInfo;
   }
 
   public Request getRequest() {

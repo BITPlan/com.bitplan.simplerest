@@ -17,3 +17,4 @@
 * 0.0.16: 2018-12-14 works around https://github.com/rythmengine/rythmengine/issues/383
 * 0.0.17: 2019-01-28 works around https://github.com/alibaba/fastjson/issues/2256
 * 0.0.18: 2019-02-03 adds getters and setters for urInfo and request
+* 0.0.19: 2019-02-03 adds redirect function to TemplateResource and fixes uri context
