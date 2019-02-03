@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018 BITPlan GmbH
+ * Copyright (c) 2016-2019 BITPlan GmbH
  *
  * http://www.bitplan.com
  *
@@ -43,6 +43,22 @@ public class BaseResource<MT extends Manager<MT,T>,T> extends TemplateResource {
   
   String elementName;
   MT manager;
+
+  public UriInfo getUriInfo() {
+    return uriInfo;
+  }
+
+  public void setUriInfo(UriInfo uriInfo) {
+    this.uriInfo = uriInfo;
+  }
+
+  public Request getRequest() {
+    return request;
+  }
+
+  public void setRequest(Request request) {
+    this.request = request;
+  }
 
   public MT getManager() {
     return manager;
