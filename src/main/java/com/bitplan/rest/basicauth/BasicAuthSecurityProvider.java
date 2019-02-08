@@ -172,7 +172,8 @@ public class BasicAuthSecurityProvider implements ContainerRequestFilter {
           valid = true;
         }
       } catch (Exception e) {
-        // TODO Auto-generated catch block
+        // This can't happen
+        LOGGER.log(Level.SEVERE,e.getMessage(),e);
       }
     }
     if (!valid) {

@@ -64,6 +64,7 @@ import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
+import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 //import com.google.inject.servlet.GuiceFilter;
 // import com.sun.jersey.guice.JerseyServletModule;
@@ -569,6 +570,9 @@ public class RestServerImpl implements Runnable, UncaughtExceptionHandler,
             if (settings.isDebug())
               LOGGER.info(msg);
             req.setHeader("remote_addr", remote_addr);
+            //String auth=request.getHeader(ContainerRequest.AUTHORIZATION);
+            //if (auth!=null)
+            // req.setHeader(ContainerRequest.AUTHORIZATION, auth);
             // showDebug(request);
             Principal principal=null;
             if (settings.isSecure()) {

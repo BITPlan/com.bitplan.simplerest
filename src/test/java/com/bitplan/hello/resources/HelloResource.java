@@ -20,6 +20,8 @@
  */
 package com.bitplan.hello.resources;
 
+import java.security.Principal;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -32,6 +34,7 @@ import javax.ws.rs.core.UriInfo;
 @Path("/hello")
 /**
  * Simple Hello Resource
+ * 
  * @author wf
  *
  */
@@ -41,20 +44,29 @@ public class HelloResource {
 
   @Context
   Request request;
-  
+
   @Context
   SecurityContext sc;
 
   public void log() {
-    System.out.println(request.getMethod()+":"+uriInfo.getPath()+":"+sc==null?"security?":"user="+sc.getUserPrincipal().getName());
+    System.out.println(request.getMethod() + ":" + uriInfo.getPath());
+    if (sc != null) {
+      // System.out.println("security context: " + sc.getClass().getName());
+      try {
+        Principal p = sc.getUserPrincipal();
+        System.out.println("user=" + p.getName());
+      } catch (java.lang.UnsupportedOperationException e) {
+        System.out.println("no Authorization active");
+      }
+    }
   }
-  
+
   @GET
   public String getHello() {
     log();
     return "Hello";
   }
-  
+
   @GET
   @Produces("text/html")
   @Path("echo/{value}")

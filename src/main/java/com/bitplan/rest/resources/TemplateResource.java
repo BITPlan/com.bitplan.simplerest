@@ -191,6 +191,7 @@ public class TemplateResource {
     if (auth != null && auth.size() > 0) {
       String basic=auth.get(0);
       otherBuilder.header(ContainerRequest.AUTHORIZATION, basic);
+      otherBuilder.header("X-BITPlan", "test");
     }
     Response other=otherBuilder.build();
     return other;
