@@ -26,6 +26,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Request;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 
 @Path("/hello")
@@ -40,9 +41,17 @@ public class HelloResource {
 
   @Context
   Request request;
+  
+  @Context
+  SecurityContext sc;
 
+  public void log() {
+    System.out.println(request.getMethod()+":"+uriInfo.getPath()+":"+sc==null?"security?":"user="+sc.getUserPrincipal().getName());
+  }
+  
   @GET
   public String getHello() {
+    log();
     return "Hello";
   }
   
@@ -50,7 +59,7 @@ public class HelloResource {
   @Produces("text/html")
   @Path("echo/{value}")
   public String getEcho(@PathParam("value") String value) {
-    System.out.println(request.getMethod()+":"+uriInfo.getPath());
+    log();
     return value;
   }
 }

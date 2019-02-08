@@ -21,7 +21,9 @@
 package com.bitplan.rest.resources;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +33,13 @@ import java.util.logging.Logger;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import org.rythmengine.RythmEngine;
 import org.rythmengine.conf.RythmConfigurationKey;
+
+import com.sun.jersey.spi.container.ContainerRequest;
 
 /**
  * Base Template Resource
@@ -44,8 +49,8 @@ import org.rythmengine.conf.RythmConfigurationKey;
  */
 public class TemplateResource {
   protected Logger LOGGER = Logger.getLogger("com.bitplan.rest.resources");
-  
-  protected boolean debug=true;
+
+  protected boolean debug = true;
   @Context
   protected javax.ws.rs.core.HttpHeaders httpHeaders;
 
@@ -57,18 +62,22 @@ public class TemplateResource {
   private RythmEngine engine;
   Map<String, Object> conf = new HashMap<String, Object>();
 
-  private File templateRoot=new File("src/main/rythm/jersey");
-  
+  private File templateRoot = new File("src/main/rythm/jersey");
+
   /**
    * set the template Root
-   * @see <a href="http://rythmengine.org/doc/configuration.md#home_template_dir">Rythmengine documentation</a>
-   * @param path - the path to the template root
+   * 
+   * @see <a href=
+   *      "http://rythmengine.org/doc/configuration.md#home_template_dir">Rythmengine
+   *      documentation</a>
+   * @param path
+   *          - the path to the template root
    */
   public void setTemplateRoot(String path) {
-    templateRoot=new File(path);
+    templateRoot = new File(path);
     conf.put(RythmConfigurationKey.HOME_TEMPLATE.getKey(), templateRoot);
   }
-  
+
   /**
    * get the Rythm engine
    * 
@@ -91,83 +100,100 @@ public class TemplateResource {
    * @return - the Response
    */
   public Response templateResponse(String templateName) {
-    File templateFile=new File(templateRoot,templateName);
-    String text=getEngine().render(templateFile, rootMap);
+    File templateFile = new File(templateRoot, templateName);
+    String text = getEngine().render(templateFile, rootMap);
     Response result = Response.status(Response.Status.OK).entity(text).build();
     return result;
   }
-  
+
   /**
    * create a standard Map from a MultivaluedMap
    * 
-   * @param form - the form
+   * @param form
+   *          - the form
    * @return the map
    */
   public Map<String, String> asMap(MultivaluedMap<String, String> form) {
-    Map<String,String> map = new HashMap<String, String>();
+    Map<String, String> map = new HashMap<String, String>();
     // take all inputs
-    for (String key:form.keySet()) {
-      String value=form.getFirst(key);
+    for (String key : form.keySet()) {
+      String value = form.getFirst(key);
       if (debug)
-        LOGGER.log(Level.INFO,key+"="+value);
-      map.put(key,value);
+        LOGGER.log(Level.INFO, key + "=" + value);
+      map.put(key, value);
     }
     return map;
   }
-  
+
   /**
-   * implode the given string list to a single string separating the parts with the given separator
+   * implode the given string list to a single string separating the parts with
+   * the given separator
+   * 
    * @param slist
    * @param separator
    * @return the imploded string
    */
   public static String implode(List<String> slist, String separator) {
-    StringBuilder builder=new StringBuilder();
-    boolean first=true;
-    for( String s : slist) {
+    StringBuilder builder = new StringBuilder();
+    boolean first = true;
+    for (String s : slist) {
       if (first)
-        first=false;
+        first = false;
       else
-        builder.append( separator);
-      builder.append( s);
-      
+        builder.append(separator);
+      builder.append(s);
+
     }
     return builder.toString();
   }
-  
+
   /**
-   * add the given formValues to the rootmap using the default separator character ";"
+   * add the given formValues to the rootmap using the default separator
+   * character ";"
+   * 
    * @param form
    */
   public void formToMap(MultivaluedMap<String, String> form) {
-    formToMap(form,";");
+    formToMap(form, ";");
   }
-    
+
   /**
    * convert form to Map
-   * @param form - the form
-   * @param separator - the separator character to use
+   * 
+   * @param form
+   *          - the form
+   * @param separator
+   *          - the separator character to use
    */
   public void formToMap(MultivaluedMap<String, String> form, String separator) {
     // take all inputs
-    for (String key:form.keySet()) {
+    for (String key : form.keySet()) {
       List<String> values = form.get(key);
-      String value=implode(values,separator);
+      String value = implode(values, separator);
       if (debug)
-        LOGGER.log(Level.INFO,key+"="+value);
-      rootMap.put(key,value);
+        LOGGER.log(Level.INFO, key + "=" + value);
+      rootMap.put(key, value);
     }
   }
-  
+
   /**
    * redirect to the given relative path
+   * 
    * @param path
    * @return the redirect response
    */
   public Response redirect(String path) {
     URI baseuri = uri.getBaseUri();
-    URI redirect=baseuri.resolve(baseuri.getPath()+path);
-    return Response.seeOther(redirect).build();
+    URI redirect = baseuri.resolve(baseuri.getPath() + path);
+    List<String> auth = httpHeaders
+        .getRequestHeader(ContainerRequest.AUTHORIZATION);
+    ResponseBuilder otherBuilder = Response.seeOther(redirect);
+    if (auth != null && auth.size() > 0) {
+      String basic=auth.get(0);
+      otherBuilder.header(ContainerRequest.AUTHORIZATION, basic);
+    }
+    Response other=otherBuilder.build();
+    return other;
   }
 
 }
