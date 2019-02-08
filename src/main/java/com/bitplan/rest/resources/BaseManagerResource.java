@@ -36,29 +36,34 @@ import com.bitplan.persistence.Manager;
  * 
  * @author wf
  *
- * @param <MT> - the manager type
- * @param <T> - the type
+ * @param <MT>
+ *          - the manager type
+ * @param <T>
+ *          - the type
  */
-public abstract class BaseManagerResource<MT extends Manager<MT,T>, T> extends BaseResource<MT,T> {
+public abstract class BaseManagerResource<MT extends Manager<MT, T>, T>
+    extends BaseResource<MT, T> {
   MT manager;
-  
+
   @SuppressWarnings("rawtypes")
   static BaseManagerResource instance;
   String managerTemplate;
+
   /**
    * set the templates
+   * 
    * @param managerTemplate
    * @param template
    */
   public void setTemplates(String managerTemplate, String template) {
-	  this.template=template;
-	  this.managerTemplate=managerTemplate;
+    this.template = template;
+    this.managerTemplate = managerTemplate;
   }
-  
+
   /**
    * get the Manager
    * 
-   * @return the managermvn 
+   * @return the managermvn
    */
   public MT getManager() {
     return manager;
@@ -81,31 +86,35 @@ public abstract class BaseManagerResource<MT extends Manager<MT,T>, T> extends B
   public BaseManagerResource() {
     instance = this;
   }
-  
+
   @GET
-  @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
   public MT getManagerAsResponse() throws Exception {
     return getManager();
   }
-  
+
   @GET
-  @Produces({ MediaType.TEXT_HTML})
+  @Produces({ MediaType.TEXT_HTML })
   @Path("at/{index}")
   public Response getElementByIndex(@Context UriInfo uri,
       @PathParam("index") Integer index) throws Exception {
-    T element=this.getManager().getElements().get(index-1);
-    rootMap.put("index",index);
-    rootMap.put(elementName,element);
+    MT m = this.getManager();
+    if (m == null)
+      throw new IllegalStateException(
+          "manager not set for " + uri.getRequestUri().toString());
+    T element = m.getElements().get(index - 1);
+    rootMap.put("index", index);
+    rootMap.put(elementName, element);
     Response response = super.templateResponse(template);
     return response;
   }
-  
+
   @GET
   @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
   @Path("at/{index}")
   public T getElementResponse(@Context UriInfo uri,
       @PathParam("index") Integer index) throws Exception {
-    T element=this.getManager().getElements().get(index-1);
+    T element = this.getManager().getElements().get(index - 1);
     return element;
   }
 }
