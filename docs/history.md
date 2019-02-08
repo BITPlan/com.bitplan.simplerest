@@ -18,3 +18,4 @@
 * 0.0.17: 2019-01-28 works around https://github.com/alibaba/fastjson/issues/2256
 * 0.0.18: 2019-02-03 adds getters and setters for urInfo and request
 * 0.0.19: 2019-02-03 adds redirect function to TemplateResource and fixes uri context
+* 0.0.20: 2019-02-08 adds reinit function to Manager interface

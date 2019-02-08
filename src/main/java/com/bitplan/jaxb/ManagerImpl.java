@@ -67,6 +67,13 @@ public abstract class ManagerImpl<MT, T> implements Manager<MT, T> {
 
   }
 
+  /**
+   * override this function to reinit
+   */
+  public void reinit() {
+   
+  }
+
   @XmlTransient
   public String getXmlPath() {
     return xmlPath;

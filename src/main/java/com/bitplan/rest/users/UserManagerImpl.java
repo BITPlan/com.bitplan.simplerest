@@ -118,6 +118,10 @@ public class UserManagerImpl extends ManagerImpl<UserManagerImpl,User> implement
       userById.put(luser.getId(), luser);
     }    
   }
+  
+  public void reinit() {
+    reinitUserById();
+  }
 
   /**
    * create a user manager form the given xml string
