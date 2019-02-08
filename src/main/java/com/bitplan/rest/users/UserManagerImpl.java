@@ -29,17 +29,20 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 import com.bitplan.jaxb.JaxbFactory;
 import com.bitplan.jaxb.JaxbFactoryApi;
 import com.bitplan.jaxb.ManagerImpl;
+import com.bitplan.persistence.Manager;
 import com.bitplan.rest.Crypt;
 import com.bitplan.rest.CryptImpl;
 import com.bitplan.rest.User;
 import com.bitplan.rest.UserManager;
 
 @XmlRootElement(name="UserManager")
-public class UserManagerImpl extends ManagerImpl<UserManagerImpl,User> implements UserManager {
+@XmlType(name="UserManager")
+public class UserManagerImpl extends ManagerImpl<UserManagerImpl,User> implements UserManager,Manager<UserManagerImpl,User> {
   static JaxbFactory<UserManagerImpl> jaxbFactory;
   
   transient List<User> users=new ArrayList<User>();
