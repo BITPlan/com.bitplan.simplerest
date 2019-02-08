@@ -169,7 +169,7 @@ public abstract class TestRestServer {
    * @throws Exception
    */
   protected void check(String path, String expected) throws Exception {
-    String responseString = getResponseString("text/html; charset=UTF-8", path);
+    String responseString = getResponseString("text/html; charset=utf-8", path);
     if (debug) {
       LOGGER.log(Level.INFO,"response for "+path+" is "+responseString);
     }

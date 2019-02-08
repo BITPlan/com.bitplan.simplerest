@@ -20,6 +20,7 @@
  */
 package com.bitplan.rest.cors;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
@@ -28,19 +29,42 @@ import com.sun.jersey.spi.container.ContainerResponse;
 import com.sun.jersey.spi.container.ContainerResponseFilter;
 
 /**
-* Filter that returns a response with headers that allows for Cross-Origin
-* Requests (CORs) to be performed against the platform API.
-*/
+ * Filter that returns a response with headers that allows for Cross-Origin
+ * Requests (CORs) to be performed against the platform API.
+ */
 public class CORSFilter implements ContainerResponseFilter {
   @Override
-  public ContainerResponse filter(final ContainerRequest request, final ContainerResponse   response) { 
-      final ResponseBuilder resp = Response.fromResponse(response.getResponse());
-      resp.header("Access-Control-Allow-Origin", "*")
-      .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-      final String reqHead = request.getHeaderValue("Access-Control-Request-Headers");
-      if (null != reqHead && !reqHead.equals(null)) {
-      resp.header("Access-Control-Allow-Headers", reqHead);}
-      response.setResponse(resp.build());
-      return response;
- }
+  public ContainerResponse filter(final ContainerRequest request,
+      final ContainerResponse response) {
+    final ResponseBuilder resp = Response.fromResponse(response.getResponse());
+    fixCharset(response, resp);
+    resp.header("Access-Control-Allow-Origin", "*").header(
+        "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    final String reqHead = request
+        .getHeaderValue("Access-Control-Request-Headers");
+    if (null != reqHead && !reqHead.equals(null)) {
+      resp.header("Access-Control-Allow-Headers", reqHead);
+    }
+    response.setResponse(resp.build());
+    return response;
+  }
+  
+  /**
+   * fix the Character set for the response see
+   * https://stackoverflow.com/a/20569571/1497139
+   * as of 2019-02-08 unfortunately does not work!
+   * 
+   * @param response
+   * @param resp
+   */
+  private void fixCharset(ContainerResponse response, ResponseBuilder resp) {
+    MediaType type = response.getMediaType();
+    if (type != null) {
+      String contentType = type.toString();
+      if (!contentType.contains("charset")) {
+        contentType = contentType + ";charset=utf-8";
+        resp.header("Content-Type", contentType);
+      }
+    }
+  }
 }

@@ -19,3 +19,4 @@
 * 0.0.18: 2019-02-03 adds getters and setters for urInfo and request
 * 0.0.19: 2019-02-03 adds redirect function to TemplateResource and fixes uri context
 * 0.0.20: 2019-02-08 adds reinit function to Manager interface
+* 0.0.21: 2019-02-08 fixes #12 redirect support with basic auth

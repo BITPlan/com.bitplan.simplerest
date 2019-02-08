@@ -26,8 +26,11 @@
  */
 package com.bitplan.rest.test;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 
+import com.bitplan.hello.resources.HelloResource;
 import com.bitplan.hello.rest.SecuredHelloServer;
 import com.bitplan.rest.RestServer;
 import com.bitplan.rest.User;
@@ -59,8 +62,7 @@ public class TestBasicAuth extends TestHelloServer {
     um.add(user);
     return user;
   }
-  
-  
+   
   @Test
   public void testBasicAuth() throws Exception {
     // debug=true;
@@ -68,7 +70,12 @@ public class TestBasicAuth extends TestHelloServer {
     // we need the unencrypted password here
     user.setPassword("tiger");
     setUser(user);
+    HelloResource.currentUser=null;
     super.check("/hello/hello", "Hello");
+    assertNotNull(HelloResource.currentUser);
+    HelloResource.currentUser=null;
+    super.check("/hello/hello/redirect","redirect");
+    assertNotNull(HelloResource.currentUser);
   }
 
 }

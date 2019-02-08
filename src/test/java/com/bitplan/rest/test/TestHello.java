@@ -57,6 +57,11 @@ public class TestHello extends TestHelloServer {
   }
   
   @Test
+  public void testRedirect() throws Exception {
+    super.check("/hello/hello/redirect","redirect");
+  }
+  
+  @Test
   public void testCORSheader() throws Exception {
     boolean debug=false;
     ClientResponse response = super.getResponse("text/html", "/hello/hello", debug);
@@ -70,10 +75,13 @@ public class TestHello extends TestHelloServer {
     assertEquals("GET, POST, PUT, DELETE, OPTIONS",headers.getFirst("Access-Control-Allow-Methods"));
   }
 
-  @Ignore
+  @Test
   public void testEcho() throws Exception {
     // https://java.net/jira/browse/GRIZZLY-1377
-    String values[] = { "World", "ÄÖÜßäöü" };
+    String values[] = { "World","redirect"
+        //, "ÄÖÜßäöü" 
+        };
+    // debug=true;
     for (String value : values) {
       super.check("/hello/hello/echo/" + value, value);
     }

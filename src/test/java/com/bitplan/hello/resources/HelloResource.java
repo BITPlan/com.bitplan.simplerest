@@ -28,8 +28,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Request;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import javax.ws.rs.core.UriInfo;
+
+import com.bitplan.rest.resources.TemplateResource;
 
 @Path("/hello")
 /**
@@ -38,23 +40,26 @@ import javax.ws.rs.core.UriInfo;
  * @author wf
  *
  */
-public class HelloResource {
-  @Context
-  UriInfo uriInfo;
+public class HelloResource extends TemplateResource {
 
   @Context
   Request request;
 
   @Context
   SecurityContext sc;
+  
+  public static Principal currentUser=null;
 
+  /**
+   * log the result
+   */
   public void log() {
-    System.out.println(request.getMethod() + ":" + uriInfo.getPath());
+    System.out.println(request.getMethod() + ":" + uri.getPath());
     if (sc != null) {
       // System.out.println("security context: " + sc.getClass().getName());
       try {
-        Principal p = sc.getUserPrincipal();
-        System.out.println("user=" + p.getName());
+        currentUser = sc.getUserPrincipal();
+        System.out.println("user=" + currentUser.getName());
       } catch (java.lang.UnsupportedOperationException e) {
         System.out.println("no Authorization active");
       }
@@ -65,6 +70,13 @@ public class HelloResource {
   public String getHello() {
     log();
     return "Hello";
+  }
+
+  @GET
+  @Produces("text/html")
+  @Path("redirect")
+  public Response getRedirect() {
+    return redirect("hello/echo/redirect");
   }
 
   @GET
