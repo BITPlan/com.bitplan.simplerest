@@ -30,7 +30,7 @@
 		<!-- Guice dependency injection framework -->
 		<guice.version>3.0</guice.version>
 		<!-- http://grizzly.java.net/ -->
-		<grizzly.version>2.3.25</grizzly.version>
+		<grizzly.version>2.3.35</grizzly.version>
 		<!-- Rythm Template Engine -->
 		<rythm.version>1.2.2</rythm.version>
 	</properties>

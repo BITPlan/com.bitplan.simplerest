@@ -79,7 +79,7 @@ public class TestHello extends TestHelloServer {
   public void testEcho() throws Exception {
     // https://java.net/jira/browse/GRIZZLY-1377
     String values[] = { "World","redirect"
-        //, "ÄÖÜßäöü" 
+        ,"ÄÖÜßäöü" 
         };
     // debug=true;
     for (String value : values) {
