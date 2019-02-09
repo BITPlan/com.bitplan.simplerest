@@ -22,6 +22,7 @@ package com.bitplan.rest.resources;
 
 import java.io.File;
 import java.net.URI;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,9 @@ import java.util.logging.Logger;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.UriInfo;
 
@@ -48,10 +51,14 @@ import com.sun.jersey.spi.container.ContainerRequest;
 public class TemplateResource {
   protected Logger LOGGER = Logger.getLogger("com.bitplan.rest.resources");
 
-  protected boolean debug = true;
+  protected static boolean debug = false;
+  @Context
+  Request request;
+  
   @Context
   protected javax.ws.rs.core.HttpHeaders httpHeaders;
-
+  @Context
+  protected SecurityContext securityContext;
   @Context
   protected UriInfo uri;
 
@@ -62,6 +69,26 @@ public class TemplateResource {
 
   private File templateRoot = new File("src/main/rythm/jersey");
 
+  /**
+   * log the result
+   * @return the current User
+   */
+  public Principal getPrincipal() {
+    Principal currentUser=null;
+    if (debug)
+      LOGGER.log(Level.INFO,request.getMethod() + ":" + uri.getPath());
+    if (securityContext != null) {
+      // System.out.println("security context: " + sc.getClass().getName());
+      try {
+        currentUser = securityContext.getUserPrincipal();
+        LOGGER.log(Level.INFO,"authorized principal=" + currentUser.getName());
+      } catch (java.lang.UnsupportedOperationException e) {
+        LOGGER.log(Level.INFO,"no principal - Authorization inactive");
+      }
+    }
+    return currentUser;
+  }
+  
   /**
    * set the template Root
    * 

@@ -64,7 +64,6 @@ import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
-import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 //import com.google.inject.servlet.GuiceFilter;
 // import com.sun.jersey.guice.JerseyServletModule;

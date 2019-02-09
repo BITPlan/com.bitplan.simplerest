@@ -34,8 +34,6 @@ import com.bitplan.persistence.Manager;
  */
 public class BaseResource<MT extends Manager<MT,T>,T> extends TemplateResource {
 
-  @Context
-  Request request;
   String template;
   
   String elementName;

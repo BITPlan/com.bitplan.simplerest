@@ -37,7 +37,6 @@ import com.bitplan.rest.UserManager;
 import com.bitplan.rest.users.UserImpl;
 import com.sun.jersey.api.container.MappableContainerException;
 import com.sun.jersey.api.core.HttpContext;
-import com.sun.jersey.api.core.HttpRequestContext;
 import com.sun.jersey.core.util.Base64;
 import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.ContainerRequestFilter;
@@ -66,10 +65,10 @@ public class BasicAuthSecurityProvider implements ContainerRequestFilter {
   // http://www.hameister.org/JEE7_JAXRS2_Filter.html
   @Override
   public ContainerRequest filter(ContainerRequest request) {
-    HttpRequestContext req = ctx.getRequest();
+    // HttpRequestContext req = ctx.getRequest();
     // ExtendedUriInfo uriinfo = ctx.getUriInfo();
-    LOGGER.log(Level.INFO, "req is " + req.getClass().getName() + "/"
-        + request.getClass().getName());
+    // LOGGER.log(Level.INFO, "req is " + req.getClass().getName() + "/"
+    //    + request.getClass().getName());
     // UnsupportedOperationException
     // Principal principal=req.getUserPrincipal();
     // Principal principal = request.getUserPrincipal();

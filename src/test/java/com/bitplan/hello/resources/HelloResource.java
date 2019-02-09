@@ -26,10 +26,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
 
 import com.bitplan.rest.resources.TemplateResource;
 
@@ -41,34 +38,10 @@ import com.bitplan.rest.resources.TemplateResource;
  *
  */
 public class HelloResource extends TemplateResource {
-
-  @Context
-  Request request;
-
-  @Context
-  SecurityContext sc;
-  
   public static Principal currentUser=null;
-
-  /**
-   * log the result
-   */
-  public void log() {
-    System.out.println(request.getMethod() + ":" + uri.getPath());
-    if (sc != null) {
-      // System.out.println("security context: " + sc.getClass().getName());
-      try {
-        currentUser = sc.getUserPrincipal();
-        System.out.println("user=" + currentUser.getName());
-      } catch (java.lang.UnsupportedOperationException e) {
-        System.out.println("no Authorization active");
-      }
-    }
-  }
-
   @GET
   public String getHello() {
-    log();
+    currentUser=getPrincipal();
     return "Hello";
   }
 
@@ -83,7 +56,7 @@ public class HelloResource extends TemplateResource {
   @Produces("text/html")
   @Path("echo/{value}")
   public String getEcho(@PathParam("value") String value) {
-    log();
+    currentUser=getPrincipal();
     return value;
   }
 }
