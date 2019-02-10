@@ -2,7 +2,7 @@
 [Needed Base Utilities and Functions for Jersey 1.x RESTFul applications](http://www.bitplan.com/SimpleRest)
 
 [![Travis (.org)](https://img.shields.io/travis/BITPlan/com.bitplan.simplerest.svg)](https://travis-ci.org/BITPlan/com.bitplan.simplerest)
-[![Maven Central](https://img.shields.io/maven-central/v/com.bitplan.rest/com.bitplan.simplerest.svg)](https://search.maven.org/artifact/com.bitplan.rest/com.bitplan.simplerest/0.0.22/jar)
+[![Maven Central](https://img.shields.io/maven-central/v/com.bitplan.rest/com.bitplan.simplerest.svg)](https://search.maven.org/artifact/com.bitplan.rest/com.bitplan.simplerest/0.0.23/jar)
 [![GitHub issues](https://img.shields.io/github/issues/BITPlan/com.bitplan.simplerest.svg)](https://github.com/BITPlan/com.bitplan.simplerest/issues)
 [![GitHub issues](https://img.shields.io/github/issues-closed/BITPlan/com.bitplan.simplerest.svg)](https://github.com/BITPlan/com.bitplan.simplerest/issues/?q=is%3Aissue+is%3Aclosed)
 [![GitHub](https://img.shields.io/github/license/BITPlan/com.bitplan.simplerest.svg)](https://www.apache.org/licenses/LICENSE-2.0)
@@ -21,11 +21,11 @@ Maven dependency
 <dependency>
   <groupId>com.bitplan.rest</groupId>
   <artifactId>com.bitplan.simplerest</artifactId>
-  <version>0.0.22</version>
+  <version>0.0.23</version>
 </dependency>
 ```
 
-[Current release at repo1.maven.org](http://repo1.maven.org/maven2/com/bitplan/rest/com.bitplan.simplerest/0.0.22/)
+[Current release at repo1.maven.org](http://repo1.maven.org/maven2/com/bitplan/rest/com.bitplan.simplerest/0.0.23/)
 
 ### How to build
 ```
@@ -56,3 +56,4 @@ mvn install
 * 0.0.20: 2019-02-08 adds reinit function to Manager interface
 * 0.0.21: 2019-02-08 fixes #12 redirect support with basic auth
 * 0.0.22: 2019-02-09 fixes #13 allow getting principal even when UnsupportedOperationException hits
+* 0.0.23: 2019-02-10 fixes #14 use temporaryRedirect instead of seeOther for redirect

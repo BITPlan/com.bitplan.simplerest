@@ -44,6 +44,7 @@ import javax.ws.rs.core.Response;
 import org.junit.Assert;
 
 import com.bitplan.rest.RestServer;
+import com.bitplan.rest.RestServerImpl;
 import com.bitplan.rest.SSLClientHelper;
 import com.bitplan.rest.User;
 import com.sun.jersey.api.client.Client;
@@ -83,7 +84,7 @@ public abstract class TestRestServer {
 
   private User user;
 
-  private Client client;
+  protected Client client;
 
   /**
    * start the server scanning for the next available port
@@ -120,12 +121,24 @@ public abstract class TestRestServer {
 
   /**
    * set the user for basic authentication
+   * 
    * @param user
    */
   public void setUser(User user) {
-    this.user=user;
+    this.user = user;
   }
-  
+
+  public void propagateHeaders() {
+    if (rs instanceof RestServerImpl) {
+      RestServerImpl rsi = (RestServerImpl) rs;
+      if (client != null) {
+        if (rsi.getHeaderPropagationFilter() != null) {
+          client.addFilter(rsi.getHeaderPropagationFilter());
+        }
+      }
+    }
+  }
+
   /**
    * get the base URL of the given RESTFul server
    * 
@@ -150,14 +163,14 @@ public abstract class TestRestServer {
     }
     return getBaseUrl(rs);
   }
-  
+
   /**
    * stop the server
    */
   public void stopServer() {
-    if (rs!=null) {
+    if (rs != null) {
       rs.stop();
-      rs=null;
+      rs = null;
     }
   }
 
@@ -171,7 +184,7 @@ public abstract class TestRestServer {
   protected void check(String path, String expected) throws Exception {
     String responseString = getResponseString("text/html; charset=utf-8", path);
     if (debug) {
-      LOGGER.log(Level.INFO,"response for "+path+" is "+responseString);
+      LOGGER.log(Level.INFO, "response for " + path + " is " + responseString);
     }
     assertTrue(expected, responseString.contains(expected));
   }
@@ -185,17 +198,18 @@ public abstract class TestRestServer {
    * @param url
    * @param uploadFile
    * @return the result
-   * @throws Exception 
+   * @throws Exception
    */
   public String upload(String url, File uploadFile) throws Exception {
     WebResource resource = getResource(url);
     FormDataMultiPart form = new FormDataMultiPart();
     form.field("fileName", uploadFile.getName());
-    FormDataBodyPart fdp = new FormDataBodyPart("content", new FileInputStream(
-        uploadFile), MediaType.APPLICATION_OCTET_STREAM_TYPE);
+    FormDataBodyPart fdp = new FormDataBodyPart("content",
+        new FileInputStream(uploadFile),
+        MediaType.APPLICATION_OCTET_STREAM_TYPE);
     form.bodyPart(fdp);
-    String response = resource.type(MediaType.MULTIPART_FORM_DATA).post(
-        String.class, form);
+    String response = resource.type(MediaType.MULTIPART_FORM_DATA)
+        .post(String.class, form);
     return response;
   }
 
@@ -224,10 +238,9 @@ public abstract class TestRestServer {
    * to be started
    * 
    * @param path
-   *          - either a relative or absolute path
-   *          for relative paths not starting with "http" the server is started
-   *          and the relative
-   *          path is added to the servers base url
+   *          - either a relative or absolute path for relative paths not
+   *          starting with "http" the server is started and the relative path
+   *          is added to the servers base url
    * @return
    * @throws Exception
    */
@@ -239,19 +252,18 @@ public abstract class TestRestServer {
     if (debug)
       System.out.println(url);
     /*
-     * FIXME - check issue and activate solution
-     * URI uri = convertToValid(url);
-     * if (debug)
-     * System.out.println(uri.toASCIIString());
+     * FIXME - check issue and activate solution URI uri = convertToValid(url);
+     * if (debug) System.out.println(uri.toASCIIString());
      */
     // path=path.replace("Ä","%C3%B6");
     if (rs.getSettings().isSecure()) {
-      client=SSLClientHelper.createClient();
+      client = SSLClientHelper.createClient();
     } else {
       client = Client.create();
     }
-    if (this.user!=null) {
-      client.addFilter(new HTTPBasicAuthFilter(user.getId(),user.getPassword()));
+    if (this.user != null) {
+      client
+          .addFilter(new HTTPBasicAuthFilter(user.getId(), user.getPassword()));
     }
     WebResource wrs = client.resource(url);
     return wrs;
@@ -312,8 +324,8 @@ public abstract class TestRestServer {
    * @return - the response
    * @throws Exception
    */
-  public String getResponseString(String contentType, String path, boolean debug)
-      throws Exception {
+  public String getResponseString(String contentType, String path,
+      boolean debug) throws Exception {
     ClientResponse cr = this.getResponse(contentType, path, debug);
     String response = this.getResponseString(cr);
     return response;
@@ -333,15 +345,16 @@ public abstract class TestRestServer {
       String data, boolean debug) throws Exception {
     WebResource wrs = getResource(path);
     if (debug)
-      LOGGER.log(Level.INFO, " posting to path " + path + " data='" + data
-          + "'");
+      LOGGER.log(Level.INFO,
+          " posting to path " + path + " data='" + data + "'");
     ClientResponse response = wrs.accept(contentType).type(contentType)
         .post(ClientResponse.class, data);
     return response;
   }
-  
+
   /**
    * get a post RESPONSE
+   * 
    * @param path
    * @param pFormData
    * @param debug
@@ -350,7 +363,7 @@ public abstract class TestRestServer {
    */
   public ClientResponse getPostResponse(String path,
       Map<String, String> pFormData, boolean debug) throws Exception {
-    return this.getPostResponse("text/html",path,pFormData,debug);
+    return this.getPostResponse("text/html", path, pFormData, debug);
   }
 
   /**
@@ -363,16 +376,16 @@ public abstract class TestRestServer {
    * @return
    * @throws Exception
    */
-  public ClientResponse getPostResponse(String contentType,String path,
+  public ClientResponse getPostResponse(String contentType, String path,
       Map<String, String> pFormData, boolean debug) throws Exception {
     MultivaluedMap<String, String> lFormData = new MultivaluedMapImpl();
     for (String key : pFormData.keySet()) {
       lFormData.add(key, pFormData.get(key));
     }
     WebResource wrs = getResource(path);
-    ClientResponse response = wrs.type(
-        MediaType.APPLICATION_FORM_URLENCODED_TYPE).accept(contentType).post(ClientResponse.class,
-        lFormData);
+    ClientResponse response = wrs
+        .type(MediaType.APPLICATION_FORM_URLENCODED_TYPE).accept(contentType)
+        .post(ClientResponse.class, lFormData);
     // do not force response string - further calls to getResponseString will
     // fail
     boolean force = false;
@@ -404,8 +417,8 @@ public abstract class TestRestServer {
    */
   protected BufferedImage getImageResponse(WebResource wrs) throws Exception {
     String contentType = "image/jpeg";
-    ClientResponse imageResponse = wrs.accept(contentType).get(
-        ClientResponse.class);
+    ClientResponse imageResponse = wrs.accept(contentType)
+        .get(ClientResponse.class);
     assertEquals(wrs.getURI().getPath(), Response.Status.OK.getStatusCode(),
         imageResponse.getStatus());
     BufferedImage image = imageResponse.getEntity(BufferedImage.class);
@@ -435,8 +448,8 @@ public abstract class TestRestServer {
    */
   protected ZipInputStream getZipResponse(WebResource wrs) throws Exception {
     String contentType = "application/x-zip-compressed";
-    ClientResponse zipResponse = wrs.accept(contentType).get(
-        ClientResponse.class);
+    ClientResponse zipResponse = wrs.accept(contentType)
+        .get(ClientResponse.class);
     assertEquals(wrs.getURI().getPath(), Response.Status.OK.getStatusCode(),
         zipResponse.getStatus());
     ZipInputStream result = new ZipInputStream(

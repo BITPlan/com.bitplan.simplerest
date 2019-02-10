@@ -39,6 +39,11 @@ import com.bitplan.rest.resources.TemplateResource;
  */
 public class HelloResource extends TemplateResource {
   public static Principal currentUser=null;
+  
+  public static void setDebug(boolean debug) {
+    TemplateResource.debug=true;
+  }
+  
   @GET
   public String getHello() {
     currentUser=getPrincipal();

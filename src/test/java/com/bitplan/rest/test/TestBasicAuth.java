@@ -37,6 +37,7 @@ import com.bitplan.rest.User;
 import com.bitplan.rest.UserManager;
 import com.bitplan.rest.users.UserImpl;
 import com.bitplan.rest.users.UserManagerImpl;
+import com.sun.jersey.api.client.Client;
 
 /**
  * test basic authentication
@@ -70,9 +71,14 @@ public class TestBasicAuth extends TestHelloServer {
     // we need the unencrypted password here
     user.setPassword("tiger");
     setUser(user);
+    HelloResource.setDebug(true);
+ 
     HelloResource.currentUser=null;
     super.check("/hello/hello", "Hello");
     assertNotNull(HelloResource.currentUser);
+      
+    propagateHeaders();
+    super.check("/hello/hello", "Hello"); 
     HelloResource.currentUser=null;
     super.check("/hello/hello/redirect","redirect");
     assertNotNull(HelloResource.currentUser);

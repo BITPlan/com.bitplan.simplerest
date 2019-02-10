@@ -50,6 +50,7 @@ public class BasicAuthSecurityProvider implements ContainerRequestFilter {
 
   private UserManager userManager;
 
+  public static boolean debug = false;
   public static boolean enabled = true;
   private static final String REALM = "simpleREST SecurityProvider";
 
@@ -68,17 +69,19 @@ public class BasicAuthSecurityProvider implements ContainerRequestFilter {
     // HttpRequestContext req = ctx.getRequest();
     // ExtendedUriInfo uriinfo = ctx.getUriInfo();
     // LOGGER.log(Level.INFO, "req is " + req.getClass().getName() + "/"
-    //    + request.getClass().getName());
+    // + request.getClass().getName());
     // UnsupportedOperationException
     // Principal principal=req.getUserPrincipal();
     // Principal principal = request.getUserPrincipal();
     String principal_id = request.getHeaderValue("principal_id");
     Principal principal = PrincipalCache.get(principal_id);
     if (principal != null) {
-      LOGGER.log(Level.INFO,
-          "principal in SecurityProvider is " + principal.getName());
+      if (debug)
+        LOGGER.log(Level.INFO,
+            "principal in SecurityProvider is " + principal.getName());
       request.setSecurityContext(new Authorizer(principal));
-      LOGGER.log(Level.INFO, "request " + request.getPath());
+      if (debug)
+        LOGGER.log(Level.INFO, "request " + request.getPath());
     } else {
       User user;
       try {
@@ -157,26 +160,34 @@ public class BasicAuthSecurityProvider implements ContainerRequestFilter {
     }
 
     // Validate the extracted credentials
+    if (debug)
+      LOGGER.log(Level.INFO, "trying to get user " + username);
     User user = userManager.getById(username);
     boolean valid = false;
     if (user != null) {
+      if (debug) {
+        String msg=String.format("found user id=%s: name=%s firstname=%s - role: %s", user.getId(),user.getFirstname(),user.getName(),user.getRole());
+        LOGGER.log(Level.INFO,msg);
+      }
+        
       String encryptedPassword;
       try {
         encryptedPassword = userManager.getCrypt().encrypt(password);
         if (encryptedPassword.equals(user.getPassword())) {
-          LOGGER.log(
-              Level.INFO,
-              "USER " + user.getId() + "(" + user.getFirstname() + " "
-                  + user.getName() + ") AUTHENTICATED");
+          if (debug)
+            LOGGER.log(Level.INFO,
+                "USER " + user.getId() + "(" + user.getFirstname() + " "
+                    + user.getName() + ") AUTHENTICATED");
           valid = true;
         }
       } catch (Exception e) {
         // This can't happen
-        LOGGER.log(Level.SEVERE,e.getMessage(),e);
+        LOGGER.log(Level.SEVERE, e.getMessage(), e);
       }
     }
     if (!valid) {
-      LOGGER.log(Level.INFO, "USER NOT AUTHENTICATED");
+      if (debug)
+        LOGGER.log(Level.INFO, "USER NOT AUTHENTICATED");
       throw new MappableContainerException(new AuthenticationException(
           "Invalid username or password\r\n", REALM));
     }

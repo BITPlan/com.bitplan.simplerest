@@ -63,7 +63,7 @@ public abstract class BaseManagerResource<MT extends Manager<MT, T>, T>
   /**
    * get the Manager
    * 
-   * @return the managermvn
+   * @return the manager
    */
   public MT getManager() {
     return manager;

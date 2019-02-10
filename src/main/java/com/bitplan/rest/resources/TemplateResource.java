@@ -212,11 +212,11 @@ public class TemplateResource {
     URI redirect = baseuri.resolve(baseuri.getPath() + path);
     List<String> auth = httpHeaders
         .getRequestHeader(ContainerRequest.AUTHORIZATION);
-    ResponseBuilder otherBuilder = Response.seeOther(redirect);
+    ResponseBuilder otherBuilder = Response.temporaryRedirect(redirect);
     if (auth != null && auth.size() > 0) {
       String basic=auth.get(0);
       otherBuilder.header(ContainerRequest.AUTHORIZATION, basic);
-      otherBuilder.header("X-BITPlan", "test");
+      // otherBuilder.header("X-BITPlan", "test");
     }
     Response other=otherBuilder.build();
     return other;

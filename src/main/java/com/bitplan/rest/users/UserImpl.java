@@ -207,6 +207,7 @@ public class UserImpl implements User {
     this.email = email;
     try {
       this.password = um.getCrypt().encrypt(password);
+      encrypted=true;
     } catch (Throwable th) {
       throw new RuntimeException(th);
     }

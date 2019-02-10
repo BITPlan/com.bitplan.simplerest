@@ -48,6 +48,7 @@ import org.glassfish.grizzly.http.server.Response;
 import org.glassfish.grizzly.http.server.ServerConfiguration;
 import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.glassfish.grizzly.http.server.util.Globals;
+import org.glassfish.grizzly.http.util.MimeHeaders;
 import org.glassfish.grizzly.servlet.ServletRegistration;
 import org.glassfish.grizzly.servlet.WebappContext;
 import org.glassfish.grizzly.ssl.SSLContextConfigurator;
@@ -58,6 +59,7 @@ import org.joda.time.Seconds;
 
 import com.bitplan.rest.basicauth.BasicAuthSecurityProvider;
 import com.bitplan.rest.cors.CORSFilter;
+import com.bitplan.rest.providers.HeaderPropagationFilter;
 import com.google.inject.AbstractModule;
 import com.sun.jersey.api.container.ContainerFactory;
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
@@ -106,6 +108,7 @@ public class RestServerImpl implements Runnable, UncaughtExceptionHandler,
   private boolean running;
   private DateTime startTime;
   private DateTime stopTime;
+  private HeaderPropagationFilter headerPropagationFilter;
 
   /**
    * @return the httpServer
@@ -155,6 +158,15 @@ public class RestServerImpl implements Runnable, UncaughtExceptionHandler,
   @Override
   public void setSettings(RestServerSettings settings) {
     this.settings = settings;
+  }
+
+  public HeaderPropagationFilter getHeaderPropagationFilter() {
+    return headerPropagationFilter;
+  }
+
+  public void setHeaderPropagationFilter(
+      HeaderPropagationFilter headerPropagationFilter) {
+    this.headerPropagationFilter = headerPropagationFilter;
   }
 
   /**
@@ -377,6 +389,21 @@ public class RestServerImpl implements Runnable, UncaughtExceptionHandler,
       System.out.println("req header: " + headerName + "="
           + req.getHeader(headerName));
     }
+    showDebug(req.getRequest());
+  }
+
+  /**
+   * show debug information for the given HttpRequestPacket
+   * @param req
+   */
+  public void showDebug(HttpRequestPacket req) {
+    
+    MimeHeaders headers = req.getHeaders();
+    System.out.println(String.format("%3d mime headers",headers.size()));
+    for (int i=0;i<headers.size();i++) {
+      System.out.println(String.format("%3d: %s=%s",i,headers.getName(i),headers.getValue(i).toString()));
+    }
+    
   }
 
   /**
@@ -493,11 +520,17 @@ public class RestServerImpl implements Runnable, UncaughtExceptionHandler,
            packages+=";com.alibaba.fastjson.support.jaxrs";
         String pa[] = packages.split(";");
         ResourceConfig rc = new PackagesResourceConfig(pa);
-        // more config for provider
+        // more configuration for providers
+        // Header Propagation
+        //headerPropagationFilter=new HeaderPropagationFilter();
+        //rc.getContainerRequestFilters().add(headerPropagationFilter);
+        // rc.getContainerResponseFilters().add(headerPropagationFilter);
+        // Authorization:
         UserManager userManager = settings.getUserManager();
         if (userManager!=null) {
           rc.getContainerRequestFilters().add(new BasicAuthSecurityProvider(userManager));
         }
+        // CORS
         rc.getContainerResponseFilters().add(new CORSFilter());
         // http://stackoverflow.com/questions/3677064/jax-rs-jersey-howto-force-a-response-contenttype-overwrite-content-negotiatio
         rc.getMediaTypeMappings().put("json", MediaType.APPLICATION_JSON_TYPE);
@@ -566,13 +599,14 @@ public class RestServerImpl implements Runnable, UncaughtExceptionHandler,
             HttpRequestPacket req = request.getRequest();
             String msg = "remote addr is " + remote_addr
                 + " for request of type " + req.getClass().getName();
-            if (settings.isDebug())
+            if (settings.isDebug()) {
               LOGGER.info(msg);
+              showDebug(request);
+            }
             req.setHeader("remote_addr", remote_addr);
             //String auth=request.getHeader(ContainerRequest.AUTHORIZATION);
             //if (auth!=null)
             // req.setHeader(ContainerRequest.AUTHORIZATION, auth);
-            // showDebug(request);
             Principal principal=null;
             if (settings.isSecure()) {
               principal = RestServerImpl.this
