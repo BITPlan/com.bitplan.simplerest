@@ -22,3 +22,4 @@
 * 0.0.21: 2019-02-08 fixes #12 redirect support with basic auth
 * 0.0.22: 2019-02-09 fixes #13 allow getting principal even when UnsupportedOperationException hits
 * 0.0.23: 2019-02-10 fixes #14 use temporaryRedirect instead of seeOther for redirect
+* 0.0.24: 2019-02-13 upgrades Apache POI to 4.0.1 to be compatible with other BITPlan projects

@@ -7,12 +7,12 @@
 	<parent>
 		<groupId>com.bitplan.pom</groupId>
 		<artifactId>com.bitplan.pom</artifactId>
-		<version>0.0.23</version>
+		<version>0.0.25</version>
 		<relativePath>../com.bitplan.pom/pom.xml</relativePath>
 	</parent>
 	<groupId>com.bitplan.rest</groupId>
 	<artifactId>com.bitplan.simplerest</artifactId>
-	<version>0.0.23</version>
+	<version>0.0.24</version>
 	<name>Simple Jersey RestFul Framework</name>
 	<description>Needed Base Utilities and Functions for Jersey 1.x RESTFul applications</description>
 	<properties>
@@ -20,8 +20,6 @@
 		<github.project>com.bitplan.simplerest</github.project>
 		<!-- for README.md generation -->
 		<documentation.wiki>http://www.bitplan.com/SimpleRest</documentation.wiki>
-		<!-- <apache-poi.version>3.12-beta1</apache-poi.version> -->
-		<apache-poi.version>3.13</apache-poi.version>
 		<!-- JPA / Moxy http://mvnrepository.com/artifact/org.eclipse.persistence/eclipselink/2.6.3 -->
 		<eclipselink.version>2.7.3</eclipselink.version>
 		<!-- jersey version -->
