@@ -1,4 +1,7 @@
 # this is a java project using maven
 language: java
+# make sure things work and are not broken by incompatibilities introduced
+# by oracles force-feeding approach
+jdk: openjdk8
 # switch off gpg handling
 install: mvn install -DskipTests=true -Dgpg.skip=true
