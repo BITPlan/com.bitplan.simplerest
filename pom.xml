@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2016-2018 BITPlan GmbH Project details and license at:
+<!-- Copyright (c) 2016-2018 BITPlan GmbH Project details and license at: 
 	https://github.com/BITPlan/com.bitplan.simplerest -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -76,10 +76,10 @@
 			<version>${eclipselink.version}</version>
 		</dependency>
 
-		<!-- <dependency> Moxy media JSOn support - Jersey 2.0 only <groupId>org.glassfish.jersey.media</groupId>
+		<!-- <dependency> Moxy media JSOn support - Jersey 2.0 only <groupId>org.glassfish.jersey.media</groupId> 
 			<artifactId>jersey-media-moxy</artifactId> </dependency> -->
-		<!-- http://mvnrepository.com/artifact/com.sun.jersey/jersey-bundle <dependency>
-			<groupId>com.sun.jersey</groupId> <artifactId>jersey-bundle</artifactId>
+		<!-- http://mvnrepository.com/artifact/com.sun.jersey/jersey-bundle <dependency> 
+			<groupId>com.sun.jersey</groupId> <artifactId>jersey-bundle</artifactId> 
 			<version>${jersey.version}</version> </dependency> -->
 		<!-- Jersey client -->
 		<dependency>
@@ -125,19 +125,19 @@
 			<version>3.0</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- javax.json.JsonException: Provider org.glassfish.json.JsonProviderImpl
+		<!-- javax.json.JsonException: Provider org.glassfish.json.JsonProviderImpl 
 			not found https://stackoverflow.com/questions/22812113/http-status-500-provider-org-glassfish-json-jsonproviderimpl-not-found -->
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>javax.json</artifactId>
 			<version>1.0.4</version>
 		</dependency>
-		<!-- bundle <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-server</artifactId>
-			<version>${jersey.version}</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-core</artifactId> <version>${jersey.version}</version>
-			</dependency> <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-servlet</artifactId>
-			<version>${jersey.version}</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-client</artifactId> <version>${jersey.version}</version>
+		<!-- bundle <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-server</artifactId> 
+			<version>${jersey.version}</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId> 
+			<artifactId>jersey-core</artifactId> <version>${jersey.version}</version> 
+			</dependency> <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-servlet</artifactId> 
+			<version>${jersey.version}</version> </dependency> <dependency> <groupId>com.sun.jersey</groupId> 
+			<artifactId>jersey-client</artifactId> <version>${jersey.version}</version> 
 			</dependency> -->
 		<!-- JSON support for jersey -->
 		<dependency>
@@ -157,29 +157,11 @@
 			<artifactId>jersey-multipart</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
-		<!-- Log 4 j (light) -->
+		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.sun.jdmk</groupId>
-					<artifactId>jmxtools</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.jmx</groupId>
-					<artifactId>jmxri</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>javax.mail</groupId>
-					<artifactId>mail</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>javax.jms</groupId>
-					<artifactId>jms</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.13.0</version>
 		</dependency>
 		<!-- JUnit testing -->
 		<dependency>
@@ -253,9 +235,9 @@
 			<artifactId>joda-time</artifactId>
 			<version>2.9.9</version>
 		</dependency>
-		<!-- Jersey <dependency> <groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-grizzly2-http</artifactId> </dependency> <dependency>
-			<groupId>org.glassfish.jersey.media</groupId> <artifactId>jersey-media-moxy</artifactId>
+		<!-- Jersey <dependency> <groupId>org.glassfish.jersey.containers</groupId> 
+			<artifactId>jersey-container-grizzly2-http</artifactId> </dependency> <dependency> 
+			<groupId>org.glassfish.jersey.media</groupId> <artifactId>jersey-media-moxy</artifactId> 
 			</dependency> -->
 
 	</dependencies>
