@@ -1,0 +1,4 @@
+#!/bin/bash
+# WF 2016-06-03
+. jdk8
+mvn -U install deploy -D skipTests -DaltDeploymentRepository=BITPlan-release-repository::default::scp://q.bitplan.com/srv/repo/releases

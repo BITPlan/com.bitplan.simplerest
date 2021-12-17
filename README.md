@@ -3,6 +3,7 @@
 
 [![Travis (.org)](https://img.shields.io/travis/BITPlan/com.bitplan.simplerest.svg)](https://travis-ci.org/BITPlan/com.bitplan.simplerest)
 [![Maven Central](https://img.shields.io/maven-central/v/com.bitplan.rest/com.bitplan.simplerest.svg)](https://search.maven.org/artifact/com.bitplan.rest/com.bitplan.simplerest/0.0.25/jar)
+
 [![GitHub issues](https://img.shields.io/github/issues/BITPlan/com.bitplan.simplerest.svg)](https://github.com/BITPlan/com.bitplan.simplerest/issues)
 [![GitHub issues](https://img.shields.io/github/issues-closed/BITPlan/com.bitplan.simplerest.svg)](https://github.com/BITPlan/com.bitplan.simplerest/issues/?q=is%3Aissue+is%3Aclosed)
 [![GitHub](https://img.shields.io/github/license/BITPlan/com.bitplan.simplerest.svg)](https://www.apache.org/licenses/LICENSE-2.0)
@@ -25,7 +26,7 @@ Maven dependency
 </dependency>
 ```
 
-[Current release at repo1.maven.org](http://repo1.maven.org/maven2/com/bitplan/rest/com.bitplan.simplerest/0.0.24/)
+[Current release at repo1.maven.org](https://repo1.maven.org/maven2/com/bitplan/rest/com.bitplan.simplerest/0.0.25/)
 
 ### How to build
 ```
@@ -58,4 +59,3 @@ mvn install
 * 0.0.22: 2019-02-09 fixes #13 allow getting principal even when UnsupportedOperationException hits
 * 0.0.23: 2019-02-10 fixes #14 use temporaryRedirect instead of seeOther for redirect
 * 0.0.24: 2019-02-13 upgrades Apache POI to 4.0.1 to be compatible with other BITPlan projects
-* 0.0.25: 2021-12-15 fixes log4j dependency to 2.16.0
